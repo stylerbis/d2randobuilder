@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destiny 2 Build Generator</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel for in-browser JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
+            min-height: 100vh;
+        }
+        
+        .d2-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .element-bg-solar { background: linear-gradient(135deg, rgba(234, 88, 12, 0.15) 0%, transparent 100%); border-top: 2px solid #ea580c; }
+        .element-bg-void { background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, transparent 100%); border-top: 2px solid #9333ea; }
+        .element-bg-arc { background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, transparent 100%); border-top: 2px solid #06b6d4; }
+        .element-bg-stasis { background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%); border-top: 2px solid #3b82f6; }
+        .element-bg-strand { background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, transparent 100%); border-top: 2px solid #22c55e; }
+        .element-bg-kinetic, .element-bg-neutral { background: linear-gradient(135deg, rgba(148, 163, 184, 0.15) 0%, transparent 100%); border-top: 2px solid #94a3b8; }
+        .element-bg-prismatic { background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, transparent 100%); border-top: 2px solid #ec4899; }
+
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top: 3px solid #38bdf8;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const KEYWORDS = {
+            solar: ["scorch", "ignite", "cure", "restoration", "radiant", "solar", "fire", "burn", "daybreak", "well of radiance", "golden gun", "blade barrage", "hammer of sol", "burning maul"],
+            void: ["suppress", "weaken", "volatile", "devour", "invisibility", "overshield", "void", "nova bomb", "nova warp", "shadowshot", "spectral blades", "ward of dawn", "sentinel shield", "tether"],
+            arc: ["jolt", "blind", "amplified", "ionic trace", "arc", "lightning", "stormtrance", "chaos reach", "arc staff", "gathering storm", "fists of havoc", "thundercrash", "electricity"],
+            stasis: ["slow", "freeze", "shatter", "stasis crystal", "stasis", "winter's wrath", "silence and squall", "glacial quake", "ice", "cold"],
+            strand: ["suspend", "unravel", "sever", "woven mail", "tangle", "strand", "needlestorm", "silkstrike", "bladefury", "thread"],
+            prismatic: ["prismatic", "transcendence", "facet", "ascension", "devotion", "hope"],
+            neutral: ["melee", "grenade", "class ability", "precision", "finisher", "orb of power", "kinetic", "reload", "handling", "sprint", "slide", "airborne"]
+        };
+
+        const CLASS_TYPES = {
+            0: "Titan",
+            1: "Hunter",
+            2: "Warlock"
+        };
+        
+        // Strict mapping of subclass strings to guaranteed elements
+        const SUBCLASS_MAPPING = {
+            "striker": "arc", "sentinel": "void", "sunbreaker": "solar", "behemoth": "stasis", "berserker": "strand", "prismatic titan": "prismatic",
+            "arcstrider": "arc", "nightstalker": "void", "gunslinger": "solar", "revenant": "stasis", "threadrunner": "strand", "prismatic hunter": "prismatic",
+            "stormcaller": "arc", "voidwalker": "void", "dawnblade": "solar", "shadebinder": "stasis", "broodweaver": "strand", "prismatic warlock": "prismatic"
+        };
+
+        function App() {
+            const [status, setStatus] = React.useState("Initializing...");
+            const [isReady, setIsReady] = React.useState(false);
+            const [db, setDb] = React.useState({ weapons: [], armor: [], subclasses: [], abilities: {}, sets: [] });
+            
+            const [selClass, setSelClass] = React.useState("");
+            const [selArmor, setSelArmor] = React.useState("");
+            const [selWeapon, setSelWeapon] = React.useState("");
+            const [selSubclass, setSelSubclass] = React.useState("");
+
+            const [build, setBuild] = React.useState(null);
+            const [dimCopied, setDimCopied] = React.useState(false);
+
+            React.useEffect(() => {
+                async function loadManifest() {
+                    try {
+                        setStatus("Connecting to Bungie Manifest...");
+                        let itemDefUrl = "https://destiny.plumbing/en/raw/DestinyInventoryItemDefinition.json";
+                        let setDefUrl = "https://destiny.plumbing/en/raw/DestinyEquipableItemSetDefinition.json";
+                        let perkDefUrl = "https://destiny.plumbing/en/raw/DestinySandboxPerkDefinition.json";
+                        let plugSetDefUrl = "https://destiny.plumbing/en/raw/DestinyPlugSetDefinition.json";
+                        
+                        try {
+                            const res = await fetch("https://www.bungie.net/Platform/Destiny2/Manifest/");
+                            if (res.ok) {
+                                const data = await res.json();
+                                itemDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinyInventoryItemDefinition;
+                                setDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinyEquipableItemSetDefinition;
+                                perkDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinySandboxPerkDefinition;
+                                plugSetDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinyPlugSetDefinition;
+                            }
+                        } catch (e) {
+                            console.warn("Bungie manifest endpoint failed, falling back to community mirror...");
+                        }
+
+                        setStatus("Downloading Databases (this may take a moment)...");
+                        const [itemsRes, setsRes, perksRes, plugSetsRes] = await Promise.all([
+                            fetch(itemDefUrl),
+                            fetch(setDefUrl),
+                            fetch(perkDefUrl),
+                            fetch(plugSetDefUrl)
+                        ]);
+                        
+                        const itemsData = await itemsRes.json();
+                        const setsData = await setsRes.json();
+                        const perksData = await perksRes.json();
+                        const plugSetsData = await plugSetsRes.json();
+
+                        setStatus("Processing Items & Sockets...");
+                        const weapons = [];
+                        const armor = [];
+                        const subclasses = [];
+                        const allAbilities = { super: [], melee: [], grenade: [], classAbility: [], aspects: [], fragments: [] };
+
+                        for (const hash in itemsData) {
+                            const item = itemsData[hash];
+                            if (!item.displayProperties || !item.displayProperties.name) continue;
+                            
+                            const name = item.displayProperties.name;
+                            const desc = item.displayProperties.description || "";
+                            const dName = item.itemTypeDisplayName || "";
+                            
+                            // 1. Exotics
+                            const isExoticWeapon = item.itemType === 3 && item.inventory?.tierType === 6;
+                            const isExoticArmor = item.itemType === 2 && item.inventory?.tierType === 6;
+                            
+                            if (isExoticWeapon || isExoticArmor) {
+                                let actualPerkName = "";
+                                let actualPerkDesc = "";
+                                
+                                // Dig into the socket graph to find the actual Exotic Intrinsic Trait instead of the item flavor text
+                                if (item.sockets && item.sockets.socketEntries) {
+                                    for (let socket of item.sockets.socketEntries) {
+                                        let plugHash = socket.singleInitialItemHash;
+                                        if (plugHash && itemsData[plugHash]) {
+                                            let plug = itemsData[plugHash];
+                                            let pci = (plug.plug && plug.plug.plugCategoryIdentifier) || "";
+                                            let typeName = plug.itemTypeDisplayName || "";
+                                            
+                                            // Identify the socket containing the actual Exotic Perk
+                                            if (pci.includes("intrinsic") || pci.includes("exotic") || typeName.toLowerCase().includes("trait") || typeName.toLowerCase().includes("armor perk")) {
+                                                if (plug.displayProperties && plug.displayProperties.description) {
+                                                    actualPerkName = plug.displayProperties.name;
+                                                    actualPerkDesc = plug.displayProperties.description;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                // Replace flavor text with the actual perk description for UI and Synergy scoring
+                                const finalDesc = actualPerkDesc || desc;
+                                const finalPerkName = actualPerkName || "";
+
+                                const itemData = { 
+                                    hash, 
+                                    name, 
+                                    icon: item.displayProperties.icon ? `https://www.bungie.net${item.displayProperties.icon}` : "", 
+                                    desc: finalDesc, 
+                                    perkName: finalPerkName,
+                                    classType: item.classType, 
+                                    itemType: item.itemType 
+                                };
+
+                                if (isExoticWeapon) weapons.push(itemData);
+                                else armor.push(itemData);
+                                continue;
+                            }
+
+                            // 2. Subclasses (Strictly ensure it's a subclass to avoid old supers)
+                            if (item.itemType === 16 && item.classType !== 3 && dName.includes("Subclass")) {
+                                let subName = name.toLowerCase();
+                                let determinedElement = "neutral";
+                                for (const [key, el] of Object.entries(SUBCLASS_MAPPING)) {
+                                    if (subName.includes(key)) {
+                                        determinedElement = el;
+                                        break;
+                                    }
+                                }
+
+                                if (determinedElement !== "neutral" || subName.includes("prismatic")) {
+                                    subclasses.push({
+                                        hash: hash,
+                                        name: name,
+                                        icon: item.displayProperties.icon ? `https://www.bungie.net${item.displayProperties.icon}` : "",
+                                        desc: desc,
+                                        classType: item.classType,
+                                        element: determinedElement
+                                    });
+                                }
+                            }
+
+                            // 3. Abilities (Global Pool via Plug Category Identifiers + Name Exclusions)
+                            if (item.plug && item.plug.plugCategoryIdentifier) {
+                                const pci = item.plug.plugCategoryIdentifier.toLowerCase();
+                                const nameLower = name.toLowerCase();
+                                const dNameLower = dName.toLowerCase();
+
+                                // Exclude explicitly banned terms in PCI
+                                const pciBans = ['armor', 'weapon', 'masterwork', 'mod', 'catalyst', 'upgrade', 'dummy', 'ghost', 'ornament', 'shader', 'emote', 'sparrow', 'ship', 'tracker', 'memento', 'crafting', 'hologram', 'glow', 'kill_tracker', 'test', 'events', 'finishers'];
+                                if (pciBans.some(term => pci.includes(term))) continue;
+
+                                // Exclude explicitly banned terms in itemTypeDisplayName to catch ornaments/weapons that bypassed PCI checks
+                                const dNameBans = ['launcher', 'ornament', 'mod', 'catalyst', 'masterwork', 'upgrade', 'shader', 'emote', 'ghost', 'sparrow', 'ship', 'dummy', 'finisher', 'weapon', 'armor'];
+                                if (dNameBans.some(term => dNameLower.includes(term))) continue;
+
+                                if (nameLower.includes("empty") || nameLower.includes("deprecated")) continue;
+
+                                let category = null;
+                                if (pci.includes('super') || dNameLower === 'super ability') category = 'super';
+                                else if (pci.includes('melee') || dNameLower === 'melee ability') category = 'melee';
+                                else if (pci.includes('grenade') || dNameLower === 'grenade') category = 'grenade';
+                                else if (pci.includes('class_ability') || pci.includes('dodge') || pci.includes('rift') || pci.includes('barricade') || pci.includes('thruster') || dNameLower === 'class ability') category = 'classAbility';
+                                else if (pci.includes('aspect') || dNameLower === 'aspect') category = 'aspects';
+                                else if (pci.includes('fragment') || dNameLower === 'fragment') category = 'fragments';
+
+                                if (category && name.length > 1) {
+                                    let classConstraint = "shared";
+                                    if (pci.includes('titan') || dName.toLowerCase().includes('titan')) classConstraint = 0;
+                                    else if (pci.includes('hunter') || dName.toLowerCase().includes('hunter')) classConstraint = 1;
+                                    else if (pci.includes('warlock') || dName.toLowerCase().includes('warlock')) classConstraint = 2;
+
+                                    let elementConstraint = "neutral";
+                                    const pciStr = pci.toLowerCase();
+                                    
+                                    // Strictly determine element using boundaries to prevent "arcane" matching "arc"
+                                    if (pciStr.match(/\bsolar\b/)) elementConstraint = 'solar';
+                                    else if (pciStr.match(/\bvoid\b/)) elementConstraint = 'void';
+                                    else if (pciStr.match(/\barc\b/)) elementConstraint = 'arc';
+                                    else if (pciStr.match(/\bstasis\b/)) elementConstraint = 'stasis';
+                                    else if (pciStr.match(/\bstrand\b/)) elementConstraint = 'strand';
+                                    else if (pciStr.match(/\bprismatic\b/) || dNameLower.includes('prismatic')) elementConstraint = 'prismatic';
+                                    else {
+                                        // Fallback to strict word boundary naming
+                                        if (/\bsolar\b/.test(nameLower)) elementConstraint = 'solar';
+                                        else if (/\bvoid\b/.test(nameLower)) elementConstraint = 'void';
+                                        else if (/\barc\b/.test(nameLower)) elementConstraint = 'arc';
+                                        else if (/\bstasis\b/.test(nameLower)) elementConstraint = 'stasis';
+                                        else if (/\bstrand\b/.test(nameLower)) elementConstraint = 'strand';
+                                        else {
+                                            // Handle element-specific abilities with neutral naming/PCIs
+                                            if (nameLower === "phoenix dive" || nameLower === "acrobat's dodge") elementConstraint = 'solar';
+                                            else if (nameLower === "thruster") elementConstraint = 'arc';
+                                            else if (nameLower.includes("arcane needle")) elementConstraint = 'strand';
+                                            // Fallback to strict keyword matching in description
+                                            else {
+                                                const descLower = desc.toLowerCase();
+                                                if (/\b(scorch|ignite|cure|restoration)\b/.test(descLower)) elementConstraint = 'solar';
+                                                else if (/\b(suppress|weaken|volatile|devour|overshield)\b/.test(descLower)) elementConstraint = 'void';
+                                                else if (/\b(jolt|blind|amplified|ionic trace)\b/.test(descLower)) elementConstraint = 'arc';
+                                                else if (/\b(slow|freeze|shatter|stasis crystal)\b/.test(descLower)) elementConstraint = 'stasis';
+                                                else if (/\b(suspend|unravel|sever|woven mail)\b/.test(descLower)) elementConstraint = 'strand';
+                                            }
+                                        }
+                                    }
+
+                                    let fragmentSlots = 0;
+                                    if (category === 'aspects') {
+                                        if (item.investmentStats) {
+                                            const stat = item.investmentStats.find(s => s.statTypeHash === 2586071856);
+                                            if (stat) fragmentSlots = stat.value;
+                                            else {
+                                                const fallback = item.investmentStats.find(s => s.value >= 1 && s.value <= 4);
+                                                if (fallback) fragmentSlots = fallback.value;
+                                            }
+                                        }
+                                        // Safest default for Destiny 2 Aspects if no stat is parsed
+                                        if (fragmentSlots === 0) fragmentSlots = 2; 
+                                    }
+
+                                    // Deduplicate at the manifest level using Name and Class Constraint.
+                                    // If an identical node exists, overwrite it only if the new one has valid/better fragment slots (removing 0-slot dummy duplicates).
+                                    const existingAbil = allAbilities[category].find(a => a.name === name && a.classConstraint === classConstraint);
+                                    
+                                    if (!existingAbil) {
+                                        allAbilities[category].push({ hash, name, desc, icon: item.displayProperties.icon ? `https://www.bungie.net${item.displayProperties.icon}` : "", pci, classConstraint, elementConstraint, fragmentSlots });
+                                    } else if (category === 'aspects' && fragmentSlots > (existingAbil.fragmentSlots || 0)) {
+                                        Object.assign(existingAbil, { hash, desc, pci, elementConstraint, fragmentSlots });
+                                        if (item.displayProperties.icon) existingAbil.icon = `https://www.bungie.net${item.displayProperties.icon}`;
+                                    }
+                                }
+                            }
+                        }
+
+                        const parsedSets = [];
+                        for (const hash in setsData) {
+                            const setDef = setsData[hash];
+                            const setPerksList = setDef.setPerks || setDef.setBlock?.setPerks || [];
+                            
+                            if (setPerksList.length > 0) {
+                                const parsedSetPerks = [];
+                                let has2 = false, has4 = false;
+
+                                setPerksList.forEach(sp => {
+                                    const count = sp.requiredSetCount || sp.requiredEquippedItemCount || sp.itemCount || sp.count || sp.equipCount;
+                                    if (count === 2 || count === 4) {
+                                        const perkHash = sp.sandboxPerkHash || sp.perkHash;
+                                        const perk = perksData[perkHash];
+                                        if (perk && perk.displayProperties && perk.displayProperties.description) {
+                                            parsedSetPerks.push({
+                                                count: count,
+                                                name: perk.displayProperties.name,
+                                                description: perk.displayProperties.description
+                                            });
+                                            if (count === 2) has2 = true;
+                                            if (count === 4) has4 = true;
+                                        }
+                                    }
+                                });
+
+                                if (parsedSetPerks.length > 0) {
+                                    parsedSets.push({
+                                        hash: hash,
+                                        name: setDef.displayProperties?.name || "Unknown Set",
+                                        perks: parsedSetPerks,
+                                        has2,
+                                        has4,
+                                        synergyText: parsedSetPerks.map(p => p.description.toLowerCase()).join(" ")
+                                    });
+                                }
+                            }
+                        }
+
+                        setDb({ weapons, armor, subclasses, abilities: allAbilities, sets: parsedSets });
+                        setIsReady(true);
+                    } catch (err) {
+                        setStatus("Error loading manifest. " + err.message);
+                    }
+                }
+
+                loadManifest();
+            }, []);
+
+            const generateBuild = () => {
+                if (!isReady) return;
+                
+                // 1. Determine Class & Armor
+                let finalClass = selClass !== "" ? parseInt(selClass) : Math.floor(Math.random() * 3);
+                let chosenArmor;
+                
+                if (selArmor) {
+                    chosenArmor = db.armor.find(a => a.hash === selArmor);
+                    finalClass = chosenArmor.classType; 
+                } else {
+                    const availableArmor = db.armor.filter(a => a.classType === finalClass);
+                    chosenArmor = availableArmor[Math.floor(Math.random() * availableArmor.length)];
+                }
+
+                const armorText = (chosenArmor.name + " " + chosenArmor.desc).toLowerCase();
+                let foundKeywords = [];
+                Object.values(KEYWORDS).flat().forEach(word => {
+                    if (armorText.includes(word)) foundKeywords.push(word);
+                });
+
+                // 2. Select Weapon based on synergy
+                let chosenWeapon;
+                if (selWeapon) {
+                    chosenWeapon = db.weapons.find(w => w.hash === selWeapon);
+                } else {
+                    let bestScore = -1;
+                    let candidates = [];
+                    
+                    db.weapons.forEach(weapon => {
+                        const wText = (weapon.name + " " + weapon.desc).toLowerCase();
+                        let score = 0;
+                        foundKeywords.forEach(kw => {
+                            if (wText.includes(kw)) score += 5; // Direct synergy priority
+                        });
+                        score += Math.random() * 0.5; 
+
+                        if (score > bestScore) {
+                            bestScore = score;
+                            candidates = [weapon];
+                        } else if (score === bestScore) {
+                            candidates.push(weapon);
+                        }
+                    });
+                    chosenWeapon = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : db.weapons[Math.floor(Math.random() * db.weapons.length)];
+                }
+
+                const weaponText = (chosenWeapon.name + " " + chosenWeapon.desc).toLowerCase();
+                Object.values(KEYWORDS).flat().forEach(word => {
+                    if (weaponText.includes(word) && !foundKeywords.includes(word)) foundKeywords.push(word);
+                });
+
+                // 3. Determine Subclass
+                let elementCounts = { solar: 0, void: 0, arc: 0, stasis: 0, strand: 0, prismatic: 0 };
+                const combinedText = (armorText + " " + weaponText).toLowerCase();
+                
+                for (const [el, words] of Object.entries(KEYWORDS)) {
+                    if (el !== 'neutral') {
+                        words.forEach(w => {
+                            if (combinedText.includes(w)) elementCounts[el]++;
+                        });
+                    }
+                }
+                
+                let dominantElement = "solar";
+                let maxCount = -1;
+                for (const [el, count] of Object.entries(elementCounts)) {
+                    const weightedCount = count + (Math.random() * 0.1); 
+                    if (weightedCount > maxCount) {
+                        maxCount = weightedCount;
+                        dominantElement = el;
+                    }
+                }
+
+                let chosenSubclass;
+                if (selSubclass) {
+                    chosenSubclass = db.subclasses.find(s => s.hash === selSubclass);
+                } else {
+                    const availableSubs = db.subclasses.filter(s => s.classType === finalClass && s.element === dominantElement);
+                    if (availableSubs.length > 0) {
+                        chosenSubclass = availableSubs[Math.floor(Math.random() * availableSubs.length)];
+                    } else {
+                        const allClassSubs = db.subclasses.filter(s => s.classType === finalClass);
+                        chosenSubclass = allClassSubs[Math.floor(Math.random() * allClassSubs.length)];
+                    }
+                }
+
+                if (chosenSubclass && chosenSubclass.element !== 'neutral') {
+                    dominantElement = chosenSubclass.element;
+                }
+
+                // 4. Ability Selection using Global PCI Pools
+                const getValidAbilities = (category, sub) => {
+                    if (!sub || !db.abilities[category]) return [];
+                    return db.abilities[category].filter(a => {
+                        const classMatch = a.classConstraint === "shared" || a.classConstraint === sub.classType;
+                        let elementMatch = false;
+                        
+                        // Critical Safety: Aspects, Fragments, Supers, Melees, and Grenades are NEVER neutral in Destiny 2. 
+                        // If they mapped as neutral, they must not leak into elemental pools.
+                        if (a.elementConstraint === 'neutral' && ['aspects', 'fragments', 'super', 'grenade', 'melee'].includes(category)) {
+                            return false; 
+                        }
+                        
+                        // Prismatic overrides elemental strictness. Otherwise, match exact element or neutral (like generic rifts/dodges)
+                        if (sub.element === 'prismatic') {
+                            elementMatch = true; 
+                        } else {
+                            elementMatch = a.elementConstraint === 'neutral' || a.elementConstraint === sub.element;
+                        }
+                        
+                        return classMatch && elementMatch;
+                    });
+                };
+
+                const pickAbilityFromPool = (pool, foundKws) => {
+                    if (!pool || pool.length === 0) return null;
+                    const shuffled = [...pool].sort(() => 0.5 - Math.random());
+                    let bestScore = -1;
+                    let candidates = [];
+                    
+                    shuffled.forEach(abil => {
+                        let score = 0;
+                        const text = (abil.name + " " + abil.desc).toLowerCase();
+                        foundKws.forEach(kw => { if (text.includes(kw)) score += 2; });
+                        
+                        if (score > bestScore) {
+                            bestScore = score;
+                            candidates = [abil];
+                        } else if (score === bestScore) {
+                            candidates.push(abil);
+                        }
+                    });
+                    
+                    return candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : null;
+                };
+
+                const superAbil = pickAbilityFromPool(getValidAbilities('super', chosenSubclass), foundKeywords);
+                const classAbil = pickAbilityFromPool(getValidAbilities('classAbility', chosenSubclass), foundKeywords);
+                const melee = pickAbilityFromPool(getValidAbilities('melee', chosenSubclass), foundKeywords);
+                const grenade = pickAbilityFromPool(getValidAbilities('grenade', chosenSubclass), foundKeywords);
+
+                // Aspects - Must pick up to TWO
+                let aspects = [];
+                let fragmentCapacity = 0;
+                const aspectPool = getValidAbilities('aspects', chosenSubclass);
+                
+                if (aspectPool.length > 0) {
+                    const shuffledPool = [...aspectPool].sort(() => 0.5 - Math.random());
+                    const scoredAspects = shuffledPool.map(abil => {
+                        let score = 0;
+                        const text = (abil.name + " " + abil.desc).toLowerCase();
+                        foundKeywords.forEach(kw => { if (text.includes(kw)) score += 3; });
+                        return { score, abil };
+                    }).sort((a, b) => b.score - a.score);
+                    
+                    for (let i = 0; i < scoredAspects.length; i++) {
+                        if (aspects.length >= 2) break;
+                        const abil = scoredAspects[i].abil;
+                        aspects.push(abil);
+                        fragmentCapacity += abil.fragmentSlots || 0;
+                    }
+                }
+
+                // Fragments - Must pick up to combined Capacity
+                let fragments = [];
+                const fragPool = getValidAbilities('fragments', chosenSubclass);
+                if (fragPool.length > 0 && fragmentCapacity > 0) {
+                    const shuffledFrags = [...fragPool].sort(() => 0.5 - Math.random());
+                    const scoredFrags = shuffledFrags.map(abil => {
+                        let score = 0;
+                        const text = (abil.name + " " + abil.desc).toLowerCase();
+                        foundKeywords.forEach(kw => { if (text.includes(kw)) score += 2; });
+                        return { score, abil };
+                    }).sort((a, b) => b.score - a.score);
+                    
+                    for (let i = 0; i < scoredFrags.length; i++) {
+                        if (fragments.length >= fragmentCapacity) break;
+                        const abil = scoredFrags[i].abil;
+                        fragments.push(abil);
+                    }
+                }
+
+                // 5. Armor Sets
+                const scoredSets = db.sets.map(set => {
+                    let score = 0;
+                    foundKeywords.forEach(kw => {
+                        if (set.synergyText.includes(kw)) score += 2;
+                    });
+                    return { ...set, score: score + Math.random() }; 
+                }).sort((a, b) => b.score - a.score);
+
+                let finalSets = [];
+                const prefers4Piece = Math.random() > 0.5;
+                const setsWith4 = scoredSets.filter(s => s.has4);
+                const setsWith2 = scoredSets.filter(s => s.has2);
+
+                if (prefers4Piece && setsWith4.length > 0) {
+                    const chosen4Piece = setsWith4[0];
+                    const perk2 = chosen4Piece.perks.find(p => p.count === 2);
+                    const perk4 = chosen4Piece.perks.find(p => p.count === 4);
+                    // Include both the 2-piece and 4-piece bonuses for full context
+                    if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2 });
+                    if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4 });
+                } else if (setsWith2.length >= 2) {
+                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2) });
+                    finalSets.push({ setName: setsWith2[1].name, perk: setsWith2[1].perks.find(p => p.count === 2) });
+                } else if (setsWith2.length === 1) {
+                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2) });
+                }
+
+                setBuild({
+                    class: CLASS_TYPES[finalClass],
+                    element: dominantElement,
+                    armor: chosenArmor,
+                    weapon: chosenWeapon,
+                    subclass: chosenSubclass,
+                    actualSetBonuses: finalSets,
+                    abilities: {
+                        superAbil,
+                        grenade,
+                        melee,
+                        classAbil,
+                        aspects,
+                        fragments,
+                        fragmentCapacity
+                    }
+                });
+                
+                setDimCopied(false);
+            };
+
+            const copyDimLink = () => {
+                if (!build) return;
+                
+                const equippedItems = [];
+                if(build.weapon) equippedItems.push({ id: build.weapon.hash, socketOverrides: {} });
+                if(build.armor) equippedItems.push({ id: build.armor.hash, socketOverrides: {} });
+                if(build.subclass) equippedItems.push({ id: build.subclass.hash, socketOverrides: {} });
+                
+                if(build.abilities.superAbil) equippedItems.push({ id: build.abilities.superAbil.hash, socketOverrides: {} });
+                if(build.abilities.grenade) equippedItems.push({ id: build.abilities.grenade.hash, socketOverrides: {} });
+                if(build.abilities.melee) equippedItems.push({ id: build.abilities.melee.hash, socketOverrides: {} });
+                if(build.abilities.classAbil) equippedItems.push({ id: build.abilities.classAbil.hash, socketOverrides: {} });
+                build.abilities.aspects.forEach(a => { if(a) equippedItems.push({ id: a.hash, socketOverrides: {} }); });
+                build.abilities.fragments.forEach(f => { if(f) equippedItems.push({ id: f.hash, socketOverrides: {} }); });
+
+                const loadout = {
+                    name: `Random ${build.class} Build`,
+                    notes: `Generated using Random Build tool. Focuses on ${build.weapon?.name} and ${build.armor?.name}.`,
+                    classType: Object.keys(CLASS_TYPES).find(key => CLASS_TYPES[key] === build.class),
+                    equipped: equippedItems,
+                    unequipped: []
+                };
+
+                const jsonStr = JSON.stringify(loadout);
+                const el = document.createElement('textarea');
+                el.value = jsonStr;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                
+                setDimCopied(true);
+                setTimeout(() => setDimCopied(false), 3000);
+            };
+
+            if (!isReady) {
+                return (
+                    <div className="flex flex-col items-center justify-center min-h-screen">
+                        <div className="spinner mb-4"></div>
+                        <h2 className="text-xl font-bold tracking-wider">{status}</h2>
+                        <p className="text-slate-400 mt-2 max-w-md text-center text-sm">Downloading and parsing manifest data. This runs entirely in your browser.</p>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="max-w-5xl mx-auto p-4 py-12">
+                    <div className="text-center mb-10">
+                        <h1 className="text-4xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-slate-200 to-slate-500 mb-2">Destiny 2 Build Generator</h1>
+                        <p className="text-slate-400">Set your starting points, or leave them blank for true chaos.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+                        {/* Seed Parameters Panel */}
+                        <div className="d2-card rounded-lg p-6 md:col-span-4 self-start sticky top-4">
+                            <h3 className="text-lg font-bold mb-4 uppercase tracking-wider text-slate-300">Seed Parameters</h3>
+                            
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-xs uppercase text-slate-400 mb-1">Class</label>
+                                    <select value={selClass} onChange={e => { setSelClass(e.target.value); setSelArmor(""); setSelSubclass(""); }} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
+                                        <option value="">Any Class</option>
+                                        <option value="0">Titan</option>
+                                        <option value="1">Hunter</option>
+                                        <option value="2">Warlock</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label className="block text-xs uppercase text-slate-400 mb-1">Specific Exotic Armor</label>
+                                    <select value={selArmor} onChange={e => setSelArmor(e.target.value)} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
+                                        <option value="">Random Armor</option>
+                                        {db.armor.filter(a => selClass === "" || a.classType.toString() === selClass).sort((a,b)=>a.name.localeCompare(b.name)).map(a => (
+                                            <option key={a.hash} value={a.hash}>{a.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs uppercase text-slate-400 mb-1">Specific Exotic Weapon</label>
+                                    <select value={selWeapon} onChange={e => setSelWeapon(e.target.value)} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
+                                        <option value="">Random Weapon (Synergy Based)</option>
+                                        {db.weapons.sort((a,b)=>a.name.localeCompare(b.name)).map(w => (
+                                            <option key={w.hash} value={w.hash}>{w.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs uppercase text-slate-400 mb-1">Subclass</label>
+                                    <select value={selSubclass} onChange={e => setSelSubclass(e.target.value)} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
+                                        <option value="">Random Subclass</option>
+                                        {db.subclasses.filter(s => selClass === "" || s.classType.toString() === selClass).sort((a,b)=>a.name.localeCompare(b.name)).map(s => (
+                                            <option key={s.hash} value={s.hash}>{s.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button 
+                                onClick={generateBuild}
+                                className="mt-6 w-full py-3 bg-white text-slate-900 font-bold uppercase tracking-widest rounded hover:bg-slate-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                                Create Build
+                            </button>
+                        </div>
+
+                        {/* Result Panel */}
+                        <div className={`d2-card rounded-lg flex flex-col md:col-span-8 ${build ? 'element-bg-' + build.element : ''}`}>
+                            {!build ? (
+                                <div className="flex-1 flex items-center justify-center text-slate-500 p-6 text-center min-h-[400px]">
+                                    Configure parameters and click "Create Build" to generate your loadout.
+                                </div>
+                            ) : (
+                                <div className="p-6 flex-1 flex flex-col h-full">
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div>
+                                            <h2 className="text-3xl font-black tracking-wider uppercase">{build.class}</h2>
+                                            <p className="text-slate-400 text-sm capitalize font-bold">{build.element} Element Synergy</p>
+                                        </div>
+                                        <button onClick={copyDimLink} className="text-xs bg-slate-800 border border-slate-600 hover:border-slate-400 px-3 py-2 rounded transition-colors flex items-center gap-2 font-bold uppercase">
+                                            {dimCopied ? "Copied!" : "Copy DIM Loadout JSON"}
+                                        </button>
+                                    </div>
+
+                                    {/* Main Exotics */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                        <div className="bg-slate-800/50 rounded p-4 flex gap-4 items-start">
+                                            {build.weapon?.icon && <img src={build.weapon.icon} className="w-16 h-16 rounded border-2 border-[#ceae33] shrink-0 mt-1" alt="Weapon" />}
+                                            <div>
+                                                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Exotic Weapon</div>
+                                                <div className="font-bold text-[#ceae33] text-lg leading-none mb-1.5">{build.weapon?.name}</div>
+                                                {build.weapon?.perkName && <div className="text-xs font-semibold text-slate-300 mb-0.5">{build.weapon.perkName}</div>}
+                                                <div className="text-[11px] text-slate-400 leading-tight">{build.weapon?.desc}</div>
+                                            </div>
+                                        </div>
+                                        <div className="bg-slate-800/50 rounded p-4 flex gap-4 items-start">
+                                            {build.armor?.icon && <img src={build.armor.icon} className="w-16 h-16 rounded border-2 border-[#ceae33] shrink-0 mt-1" alt="Armor" />}
+                                            <div>
+                                                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Exotic Armor</div>
+                                                <div className="font-bold text-[#ceae33] text-lg leading-none mb-1.5">{build.armor?.name}</div>
+                                                {build.armor?.perkName && <div className="text-xs font-semibold text-slate-300 mb-0.5">{build.armor.perkName}</div>}
+                                                <div className="text-[11px] text-slate-400 leading-tight">{build.armor?.desc}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Subclass Core Abilities */}
+                                    <div className="bg-slate-800/50 rounded p-5 mb-4">
+                                        <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300">Subclass & Core Abilities</h3>
+                                        
+                                        <div className="flex items-start gap-4 mb-6 bg-slate-900/50 p-3 rounded">
+                                            {build.subclass?.icon && <img src={build.subclass.icon} className="w-12 h-12 rounded-full bg-slate-800" alt="Subclass" />}
+                                            <div>
+                                                <span className="font-bold text-xl block text-white">{build.subclass?.name || "Subclass"}</span>
+                                                <span className="text-xs text-slate-400 mt-1 block leading-relaxed">{build.subclass?.desc || "Subclass missing from graph pool."}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                            {/* Helper to render abilities identically */}
+                                            {[
+                                                { label: 'Super', data: build.abilities.superAbil },
+                                                { label: 'Class Ability', data: build.abilities.classAbil },
+                                                { label: 'Melee', data: build.abilities.melee },
+                                                { label: 'Grenade', data: build.abilities.grenade }
+                                            ].map((slot, i) => slot.data && (
+                                                <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
+                                                    {slot.data.icon && <img src={slot.data.icon} className="w-10 h-10 rounded" alt={slot.label} />}
+                                                    <div>
+                                                        <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider mb-1">{slot.label}</span>
+                                                        <span className="font-semibold text-slate-200 block text-base leading-none mb-1">{slot.data.name}</span>
+                                                        <p className="text-[11px] text-slate-400 leading-tight">{slot.data.desc}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Aspects */}
+                                    {build.abilities.aspects && build.abilities.aspects.length > 0 && (
+                                        <div className="bg-slate-800/50 rounded p-5 mb-4">
+                                            <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300">Aspects</h3>
+                                            <div className="grid grid-cols-1 gap-4 text-sm">
+                                                {build.abilities.aspects.map((aspect, i) => aspect && (
+                                                    <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
+                                                        {aspect.icon && <img src={aspect.icon} className="w-12 h-12 rounded border border-slate-700" alt="Aspect" />}
+                                                        <div>
+                                                            <div className="flex items-center gap-2 mb-1">
+                                                                <span className="font-semibold text-slate-200 text-base">{aspect.name}</span>
+                                                                <span className="text-[10px] uppercase bg-slate-800 border border-slate-600 px-2 py-0.5 rounded-full text-[#ceae33] font-bold tracking-wider">{aspect.fragmentSlots} Slots</span>
+                                                            </div>
+                                                            <p className="text-xs text-slate-400 leading-relaxed">{aspect.desc}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Fragments */}
+                                    {build.abilities.fragments && build.abilities.fragments.length > 0 && (
+                                        <div className="bg-slate-800/50 rounded p-5 mb-4">
+                                            <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300 flex justify-between items-center">
+                                                Fragments
+                                                <span className="text-[10px] bg-slate-900 px-3 py-1 rounded-full text-slate-300 font-normal">
+                                                    {build.abilities.fragments.length} / {build.abilities.fragmentCapacity} Energy Used
+                                                </span>
+                                            </h3>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                                {build.abilities.fragments.map((frag, i) => frag && (
+                                                    <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
+                                                        {frag.icon && <img src={frag.icon} className="w-10 h-10 rounded border border-slate-700" alt="Fragment" />}
+                                                        <div>
+                                                            <span className="font-semibold text-slate-200 block text-base mb-1 leading-none">{frag.name}</span>
+                                                            <p className="text-[11px] text-slate-400 leading-tight">{frag.desc}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Set Bonuses */}
+                                    {build.actualSetBonuses && build.actualSetBonuses.length > 0 && (
+                                        <div className="bg-slate-800/50 rounded p-5 mt-auto">
+                                            <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300">Armor Set Bonuses</h3>
+                                            <div className="space-y-3">
+                                                {build.actualSetBonuses.map((setBonus, i) => (
+                                                    <div key={i} className="bg-slate-900/50 p-3 rounded text-sm">
+                                                        <div className="font-bold text-[#ceae33] text-[10px] uppercase tracking-wider mb-1">{setBonus.setName} ({setBonus.perk.count}-Piece)</div>
+                                                        <div className="text-slate-200 font-semibold mb-1 text-base leading-none">{setBonus.perk.name}</div>
+                                                        <div className="text-slate-400 text-xs leading-relaxed">{setBonus.perk.description}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
