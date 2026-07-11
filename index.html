@@ -304,6 +304,12 @@
                                         }
                                     }
 
+                                    if (['super', 'melee', 'grenade', 'classAbility'].includes(category)) {
+                                        if (KEYWORDS[elementConstraint] && !KEYWORDS[elementConstraint].includes(nameLower)) {
+                                            KEYWORDS[elementConstraint].push(nameLower);
+                                        }
+                                    }
+
                                     let fragmentSlots = 0;
                                     if (category === 'aspects') {
                                         if (item.investmentStats) {
