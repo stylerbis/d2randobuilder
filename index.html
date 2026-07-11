@@ -198,11 +198,22 @@
                                 const itemIndex = item.index || 0;
                                 const hasPerk = !!actualPerkName;
 
+                                // Extract strict damage types for Exotic Weapons
+                                let damageType = "kinetic";
+                                if (isExoticWeapon) {
+                                    if (item.defaultDamageType === 2) damageType = "arc";
+                                    else if (item.defaultDamageType === 3) damageType = "solar";
+                                    else if (item.defaultDamageType === 4) damageType = "void";
+                                    else if (item.defaultDamageType === 6) damageType = "stasis";
+                                    else if (item.defaultDamageType === 7) damageType = "strand";
+                                }
+
                                 const itemData = { 
                                     hash, name, icon: `https://www.bungie.net${item.displayProperties.icon}`, 
                                     desc: finalDesc, perkName: finalPerkName, classType: item.classType, 
                                     itemType: item.itemType, index: itemIndex, hasPerk,
-                                    bucket: item.inventory?.bucketTypeHash 
+                                    bucket: item.inventory?.bucketTypeHash,
+                                    damageType
                                 };
 
                                 const targetMap = isExoticWeapon ? weaponsMap : armorMap;
@@ -500,30 +511,96 @@
                     chosenArmor = db.armor.find(a => a.hash === selArmor);
                     finalClass = chosenArmor.classType; 
                 } else {
-                    const availableArmor = db.armor.filter(a => a.classType === finalClass);
+                    let availableArmor = db.armor.filter(a => a.classType === finalClass);
+                    
+                    // Enforce pre-selected weapon compatibility on random armor roll
+                    if (selWeapon) {
+                        const preSelWep = db.weapons.find(w => w.hash === selWeapon);
+                        if (preSelWep && preSelWep.damageType) {
+                            const filteredArmor = availableArmor.filter(a => {
+                                const aText = (a.name + " " + a.desc + " " + (a.perkName || "")).replace(/[-]/g, ' ').toLowerCase();
+                                let reqElements = [];
+                                ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
+                                    if (new RegExp('\\b' + el + '\\b(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(aText)) {
+                                        reqElements.push(el);
+                                    }
+                                });
+                                // Filter out armor that strictly demands an element different from our chosen weapon
+                                return reqElements.length === 0 || reqElements.includes(preSelWep.damageType);
+                            });
+                            // Apply filtered list if valid options remain
+                            if (filteredArmor.length > 0) availableArmor = filteredArmor;
+                        }
+                    }
+
                     chosenArmor = availableArmor[Math.floor(Math.random() * availableArmor.length)];
                 }
 
-                const armorText = (chosenArmor.name + " " + chosenArmor.desc).toLowerCase();
-                let foundKeywords = [];
-                Object.values(KEYWORDS).flat().forEach(word => {
-                    if (armorText.includes(word)) foundKeywords.push(word);
+                const armorText = (chosenArmor.name + " " + chosenArmor.desc + " " + (chosenArmor.perkName || "")).toLowerCase();
+                const armorFullText = armorText.replace(/[-]/g, ' ');
+
+                // CASCADE SYNERGY ENGINE: Dynamically track keywords as the build grows
+                const activeKeywords = new Set();
+                const addKeywords = (text) => {
+                    const lowerText = text.replace(/[-]/g, ' ').toLowerCase();
+                    Object.values(KEYWORDS).flat().forEach(word => {
+                        const safeWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        if (new RegExp('\\b' + safeWord + '\\b', 'i').test(lowerText)) {
+                            activeKeywords.add(word);
+                        }
+                    });
+                };
+                
+                // 1. Initialize with Armor Keywords
+                addKeywords(armorFullText);
+
+                // Extract strict element requirements from chosen armor to enforce on random weapon
+                let requiredWeaponElements = [];
+                ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
+                    if (new RegExp('\\b' + el + '\\b(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(armorFullText)) {
+                        requiredWeaponElements.push(el);
+                    }
                 });
+
+                // Pre-calculate target element from subclass if user selected one
+                let targetElement = null;
+                if (selSubclass) {
+                    const preSub = db.subclasses.find(s => s.hash === selSubclass);
+                    if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic') targetElement = preSub.element;
+                }
 
                 // 2. Select Weapon based on synergy
                 let chosenWeapon;
                 if (selWeapon) {
                     chosenWeapon = db.weapons.find(w => w.hash === selWeapon);
                 } else {
+                    let weaponPool = db.weapons;
+                    // Apply strict elemental filter if the chosen armor demands it
+                    if (requiredWeaponElements.length > 0) {
+                        const filteredPool = weaponPool.filter(w => requiredWeaponElements.includes(w.damageType));
+                        if (filteredPool.length > 0) weaponPool = filteredPool;
+                    }
+
                     let bestScore = -1;
                     let candidates = [];
                     
-                    db.weapons.forEach(weapon => {
-                        const wText = (weapon.name + " " + weapon.desc).toLowerCase();
+                    weaponPool.forEach(weapon => {
+                        const wText = (weapon.name + " " + weapon.desc + " " + (weapon.perkName || "")).replace(/[-]/g, ' ').toLowerCase();
                         let score = 0;
-                        foundKeywords.forEach(kw => {
-                            if (wText.includes(kw)) score += 5; // Direct synergy priority
+                        
+                        // Keyword Synergy
+                        activeKeywords.forEach(kw => {
+                            const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            if (new RegExp('\\b' + safeKw + '\\b', 'i').test(wText)) score += 5;
                         });
+                        
+                        // Elemental Synergy Fallback (Closely Related)
+                        if (requiredWeaponElements.includes(weapon.damageType)) {
+                            score += 3;
+                        } else if (targetElement && weapon.damageType === targetElement) {
+                            score += 2;
+                        }
+
                         score += Math.random() * 0.5; 
 
                         if (score > bestScore) {
@@ -533,51 +610,40 @@
                             candidates.push(weapon);
                         }
                     });
-                    chosenWeapon = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : db.weapons[Math.floor(Math.random() * db.weapons.length)];
+                    chosenWeapon = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : weaponPool[Math.floor(Math.random() * weaponPool.length)];
                 }
 
-                const weaponText = (chosenWeapon.name + " " + chosenWeapon.desc).toLowerCase();
-                Object.values(KEYWORDS).flat().forEach(word => {
-                    if (weaponText.includes(word) && !foundKeywords.includes(word)) foundKeywords.push(word);
-                });
-
-                // 3. Determine Subclass
-                let elementCounts = { solar: 0, void: 0, arc: 0, stasis: 0, strand: 0, prismatic: 0 };
-                const combinedText = (armorText + " " + weaponText).toLowerCase();
+                const weaponText = (chosenWeapon.name + " " + chosenWeapon.desc + " " + (chosenWeapon.perkName || "")).toLowerCase();
+                addKeywords(weaponText);
                 
-                for (const [el, words] of Object.entries(KEYWORDS)) {
-                    if (el !== 'neutral') {
-                        words.forEach(w => {
-                            if (combinedText.includes(w)) elementCounts[el]++;
-                        });
-                    }
-                }
-                
-                let dominantElement = "solar";
-                let maxCount = -1;
-                for (const [el, count] of Object.entries(elementCounts)) {
-                    const weightedCount = count + (Math.random() * 0.1); 
-                    if (weightedCount > maxCount) {
-                        maxCount = weightedCount;
-                        dominantElement = el;
-                    }
-                }
-
+                // 3. Select Subclass
                 let chosenSubclass;
+                let dominantElement = "neutral";
+                
                 if (selSubclass) {
                     chosenSubclass = db.subclasses.find(s => s.hash === selSubclass);
                 } else {
-                    const availableSubs = db.subclasses.filter(s => s.classType === finalClass && s.element === dominantElement);
-                    if (availableSubs.length > 0) {
-                        chosenSubclass = availableSubs[Math.floor(Math.random() * availableSubs.length)];
-                    } else {
-                        const allClassSubs = db.subclasses.filter(s => s.classType === finalClass);
-                        chosenSubclass = allClassSubs[Math.floor(Math.random() * allClassSubs.length)];
+                    let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
+                    
+                    // Try to match exotic element demands if any exist
+                    let preferredElements = [];
+                    if (requiredWeaponElements.length > 0) preferredElements.push(...requiredWeaponElements);
+                    if (chosenWeapon && chosenWeapon.damageType !== 'kinetic') {
+                        preferredElements.push(chosenWeapon.damageType);
                     }
+                    
+                    if (preferredElements.length > 0) {
+                        const matchingSubs = subclassPool.filter(s => preferredElements.includes(s.element) || s.element === 'prismatic');
+                        if (matchingSubs.length > 0) {
+                            subclassPool = matchingSubs;
+                        }
+                    }
+                    chosenSubclass = subclassPool[Math.floor(Math.random() * subclassPool.length)];
                 }
 
                 if (chosenSubclass && chosenSubclass.element !== 'neutral') {
                     dominantElement = chosenSubclass.element;
+                    activeKeywords.add(dominantElement); // Inject subclass element natively as a valid keyword
                 }
 
                 // 4. Ability Selection using Global PCI Pools
@@ -604,16 +670,20 @@
                     });
                 };
 
-                const pickAbilityFromPool = (pool, foundKws) => {
+                const pickAbilityFromPool = (pool, kwsSet) => {
                     if (!pool || pool.length === 0) return null;
-                    const shuffled = [...pool].sort(() => 0.5 - Math.random());
                     let bestScore = -1;
                     let candidates = [];
                     
-                    shuffled.forEach(abil => {
+                    pool.forEach(abil => {
                         let score = 0;
-                        const text = (abil.name + " " + abil.desc).toLowerCase();
-                        foundKws.forEach(kw => { if (text.includes(kw)) score += 2; });
+                        const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
+                        kwsSet.forEach(kw => { 
+                            const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += 2; 
+                        });
+                        
+                        score += Math.random() * 0.5; // Tiebreaker
                         
                         if (score > bestScore) {
                             bestScore = score;
@@ -623,13 +693,41 @@
                         }
                     });
                     
-                    return candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : null;
+                    const picked = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : null;
+                    if (picked) {
+                        addKeywords((picked.name + " " + picked.desc));
+                    }
+                    return picked;
                 };
 
-                const superAbil = pickAbilityFromPool(getValidAbilities('super', chosenSubclass), foundKeywords);
-                const classAbil = pickAbilityFromPool(getValidAbilities('classAbility', chosenSubclass), foundKeywords);
-                const melee = pickAbilityFromPool(getValidAbilities('melee', chosenSubclass), foundKeywords);
-                const grenade = pickAbilityFromPool(getValidAbilities('grenade', chosenSubclass), foundKeywords);
+                const superAbil = pickAbilityFromPool(getValidAbilities('super', chosenSubclass), activeKeywords);
+                const classAbil = pickAbilityFromPool(getValidAbilities('classAbility', chosenSubclass), activeKeywords);
+                const melee = pickAbilityFromPool(getValidAbilities('melee', chosenSubclass), activeKeywords);
+                
+                // 4.5 Grenade Selection with Zero-Damage Exception Protocol
+                let grenadePool = getValidAbilities('grenade', chosenSubclass);
+                
+                const damageGrenadeRegexes = [
+                    /grenade final blow/i, 
+                    /grenade kill/i, 
+                    /grenade damage/i, 
+                    /damage .*? with .*? grenade/i, 
+                    /kills? .*? with .*? grenade/i, 
+                    /defeating .*? with .*? grenade/i,
+                    /final blows? .*? with .*? grenade/i
+                ];
+
+                // Check if the current build strictly requires the grenade to deal damage or get kills
+                const combinedText = (armorFullText + " " + weaponText).toLowerCase();
+                const needsGrenadeDamage = damageGrenadeRegexes.some(regex => regex.test(combinedText));
+
+                // If damage is required, explicitly ban the Healing Grenade
+                if (needsGrenadeDamage) {
+                    grenadePool = grenadePool.filter(g => g.name.toLowerCase() !== "healing grenade");
+                }
+                
+                const grenade = pickAbilityFromPool(grenadePool, activeKeywords);
+                const isHealingGrenade = grenade && grenade.name.toLowerCase() === "healing grenade";
 
                 // Aspects - Must pick up to TWO
                 let aspects = [];
@@ -637,11 +735,18 @@
                 const aspectPool = getValidAbilities('aspects', chosenSubclass);
                 
                 if (aspectPool.length > 0) {
-                    const shuffledPool = [...aspectPool].sort(() => 0.5 - Math.random());
-                    const scoredAspects = shuffledPool.map(abil => {
+                    const scoredAspects = aspectPool.filter(abil => {
+                        if (!isHealingGrenade) return true;
+                        const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
+                        return !damageGrenadeRegexes.some(r => r.test(text));
+                    }).map(abil => {
                         let score = 0;
-                        const text = (abil.name + " " + abil.desc).toLowerCase();
-                        foundKeywords.forEach(kw => { if (text.includes(kw)) score += 3; });
+                        const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
+                        activeKeywords.forEach(kw => { 
+                            const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += 3; 
+                        });
+                        score += Math.random() * 0.5;
                         return { score, abil };
                     }).sort((a, b) => b.score - a.score);
                     
@@ -650,33 +755,54 @@
                         const abil = scoredAspects[i].abil;
                         aspects.push(abil);
                         fragmentCapacity += abil.fragmentSlots || 0;
+                        addKeywords((abil.name + " " + abil.desc));
                     }
                 }
 
-                // Fragments - Must pick up to combined Capacity
+                // Fragments - STRICT KEYWORD CONSTRAINT
                 let fragments = [];
                 const fragPool = getValidAbilities('fragments', chosenSubclass);
                 if (fragPool.length > 0 && fragmentCapacity > 0) {
-                    const shuffledFrags = [...fragPool].sort(() => 0.5 - Math.random());
-                    const scoredFrags = shuffledFrags.map(abil => {
-                        let score = 0;
-                        const text = (abil.name + " " + abil.desc).toLowerCase();
-                        foundKeywords.forEach(kw => { if (text.includes(kw)) score += 2; });
-                        return { score, abil };
-                    }).sort((a, b) => b.score - a.score);
+                    const strictFrags = [];
                     
-                    for (let i = 0; i < scoredFrags.length; i++) {
+                    fragPool.forEach(abil => {
+                        const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
+                        
+                        // NEW: Exclude grenade-damage dependent fragments if using Healing Grenade
+                        if (isHealingGrenade && damageGrenadeRegexes.some(regex => regex.test(text))) return;
+
+                        let score = 0;
+                        let hasMatch = false;
+                        
+                        activeKeywords.forEach(kw => { 
+                            const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) {
+                                score += 2;
+                                hasMatch = true;
+                            }
+                        });
+                        
+                        // Strict Rule: ONLY allow a fragment if it matches a keyword already present in the build
+                        if (hasMatch) {
+                            score += Math.random() * 0.5;
+                            strictFrags.push({ score, abil });
+                        }
+                    });
+                    
+                    strictFrags.sort((a, b) => b.score - a.score);
+                    
+                    for (let i = 0; i < strictFrags.length; i++) {
                         if (fragments.length >= fragmentCapacity) break;
-                        const abil = scoredFrags[i].abil;
-                        fragments.push(abil);
+                        fragments.push(strictFrags[i].abil);
                     }
                 }
 
                 // 5. Armor Sets
                 const scoredSets = db.sets.map(set => {
                     let score = 0;
-                    foundKeywords.forEach(kw => {
-                        if (set.synergyText.includes(kw)) score += 2;
+                    activeKeywords.forEach(kw => {
+                        const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        if (new RegExp('\\b' + safeKw + '\\b', 'i').test(set.synergyText.replace(/[-]/g, ' '))) score += 2;
                     });
                     return { ...set, score: score + Math.random() }; 
                 }).sort((a, b) => b.score - a.score);
