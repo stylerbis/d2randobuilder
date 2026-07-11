@@ -93,7 +93,6 @@
             const [selSubclass, setSelSubclass] = React.useState("");
 
             const [build, setBuild] = React.useState(null);
-            const [dimCopied, setDimCopied] = React.useState(false);
 
             React.useEffect(() => {
                 async function loadManifest() {
@@ -139,6 +138,7 @@
                             super: new Map(), melee: new Map(), grenade: new Map(), 
                             classAbility: new Map(), aspects: new Map(), fragments: new Map()
                         };
+                        const legendaryArmor = [];
 
                         for (const hash in itemsData) {
                             const item = itemsData[hash];
@@ -157,6 +157,16 @@
                             if (descLower.includes("deprecated")) continue;
                             if (!item.displayProperties.icon) continue; // Invisible items are usually backend dev placeholders
                             
+                            // Cache Valid Legendary Armor for Set Extraction Fallbacks
+                            if (item.itemType === 2 && item.inventory?.tierType === 5) {
+                                legendaryArmor.push({
+                                    hash: hash,
+                                    nameLower: nameLower,
+                                    classType: item.classType,
+                                    bucket: item.inventory.bucketTypeHash
+                                });
+                            }
+
                             // 1. Exotics
                             const isExoticWeapon = item.itemType === 3 && item.inventory?.tierType === 6;
                             const isExoticArmor = item.itemType === 2 && item.inventory?.tierType === 6;
@@ -192,7 +202,8 @@
                                 const itemData = { 
                                     hash, name, icon: `https://www.bungie.net${item.displayProperties.icon}`, 
                                     desc: finalDesc, perkName: finalPerkName, classType: item.classType, 
-                                    itemType: item.itemType, index: itemIndex, hasPerk 
+                                    itemType: item.itemType, index: itemIndex, hasPerk,
+                                    bucket: item.inventory?.bucketTypeHash 
                                 };
 
                                 const targetMap = isExoticWeapon ? weaponsMap : armorMap;
@@ -408,14 +419,56 @@
                                     }
                                 });
 
-                                if (parsedSetPerks.length > 0) {
+                                const setArmor = { 0: [], 1: [], 2: [] };
+                                if (setDef.itemList) {
+                                    setDef.itemList.forEach(entry => {
+                                        const itemHash = entry.itemHash;
+                                        const item = itemsData[itemHash];
+                                        if (item && item.itemType === 2 && item.inventory) {
+                                            const cType = item.classType;
+                                            if (cType >= 0 && cType <= 2) {
+                                                setArmor[cType].push({
+                                                    hash: itemHash,
+                                                    bucket: item.inventory.bucketTypeHash
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+
+                                // FALLBACK: If Bungie forgot to populate the itemList (common for modern sets), 
+                                // rebuild the set using a naming heuristic against our Legendary Armor cache!
+                                const setNamePrefix = (setDef.displayProperties?.name || "").toLowerCase()
+                                    .replace(/\b(set|armor|suit|gear|vestments|plate)\b/gi, "")
+                                    .trim();
+                                
+                                if (setNamePrefix.length > 3) {
+                                    for (let i = 0; i < 3; i++) {
+                                        if (setArmor[i].length < 5) {
+                                            const existingBuckets = new Set(setArmor[i].map(a => a.bucket));
+                                            const matchingLegendaries = legendaryArmor.filter(a => a.classType === i && a.nameLower.includes(setNamePrefix));
+                                            
+                                            for (const leg of matchingLegendaries) {
+                                                if (!existingBuckets.has(leg.bucket)) {
+                                                    setArmor[i].push({ hash: leg.hash, bucket: leg.bucket });
+                                                    existingBuckets.add(leg.bucket);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                const totalArmorPieces = setArmor[0].length + setArmor[1].length + setArmor[2].length;
+
+                                if (parsedSetPerks.length > 0 && totalArmorPieces > 0) {
                                     parsedSets.push({
                                         hash: hash,
                                         name: setDef.displayProperties?.name || "Unknown Set",
                                         perks: parsedSetPerks,
                                         has2,
                                         has4,
-                                        synergyText: parsedSetPerks.map(p => p.description.toLowerCase()).join(" ")
+                                        synergyText: parsedSetPerks.map(p => p.description.toLowerCase()).join(" "),
+                                        setArmor: setArmor
                                     });
                                 }
                             }
@@ -633,14 +686,45 @@
                     const perk2 = chosen4Piece.perks.find(p => p.count === 2);
                     const perk4 = chosen4Piece.perks.find(p => p.count === 4);
                     // Include both the 2-piece and 4-piece bonuses for full context
-                    if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2 });
-                    if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4 });
+                    if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2, setDef: chosen4Piece });
+                    if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4, setDef: chosen4Piece });
                 } else if (setsWith2.length >= 2) {
-                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2) });
-                    finalSets.push({ setName: setsWith2[1].name, perk: setsWith2[1].perks.find(p => p.count === 2) });
+                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
+                    finalSets.push({ setName: setsWith2[1].name, perk: setsWith2[1].perks.find(p => p.count === 2), setDef: setsWith2[1] });
                 } else if (setsWith2.length === 1) {
-                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2) });
+                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
                 }
+
+                let selectedSetArmor = [];
+                let occupiedBuckets = new Set();
+                
+                // Do not put a set piece in the slot occupied by the Exotic Armor
+                if (chosenArmor && chosenArmor.bucket) {
+                    occupiedBuckets.add(chosenArmor.bucket);
+                }
+
+                // Determine max required pieces per set (e.g. if 2 and 4 piece are active for same set, max is 4)
+                const requiredCounts = new Map();
+                finalSets.forEach(fs => {
+                    const currentReq = requiredCounts.get(fs.setDef.hash) || 0;
+                    requiredCounts.set(fs.setDef.hash, Math.max(currentReq, fs.perk.count));
+                });
+
+                // Pick the available armor pieces for the final class
+                requiredCounts.forEach((requiredCount, setHash) => {
+                    const setDef = finalSets.find(fs => fs.setDef.hash === setHash).setDef;
+                    const armorForClass = setDef.setArmor[finalClass] || [];
+                    
+                    let piecesEquipped = 0;
+                    for (const piece of armorForClass) {
+                        if (piecesEquipped >= requiredCount) break;
+                        if (!occupiedBuckets.has(piece.bucket)) {
+                            selectedSetArmor.push(piece);
+                            occupiedBuckets.add(piece.bucket);
+                            piecesEquipped++;
+                        }
+                    }
+                });
 
                 setBuild({
                     class: CLASS_TYPES[finalClass],
@@ -649,6 +733,7 @@
                     weapon: chosenWeapon,
                     subclass: chosenSubclass,
                     actualSetBonuses: finalSets,
+                    setArmorPieces: selectedSetArmor,
                     abilities: {
                         superAbil,
                         grenade,
@@ -659,43 +744,62 @@
                         fragmentCapacity
                     }
                 });
-                
-                setDimCopied(false);
             };
 
-            const copyDimLink = () => {
+            const openInDim = () => {
                 if (!build) return;
                 
                 const equippedItems = [];
-                if(build.weapon) equippedItems.push({ id: build.weapon.hash, socketOverrides: {} });
-                if(build.armor) equippedItems.push({ id: build.armor.hash, socketOverrides: {} });
-                if(build.subclass) equippedItems.push({ id: build.subclass.hash, socketOverrides: {} });
+                // Use 'hash' and cast to Number as required by DIM schema
+                if (build.weapon) equippedItems.push({ hash: Number(build.weapon.hash) });
+                if (build.armor) equippedItems.push({ hash: Number(build.armor.hash) });
                 
-                if(build.abilities.superAbil) equippedItems.push({ id: build.abilities.superAbil.hash, socketOverrides: {} });
-                if(build.abilities.grenade) equippedItems.push({ id: build.abilities.grenade.hash, socketOverrides: {} });
-                if(build.abilities.melee) equippedItems.push({ id: build.abilities.melee.hash, socketOverrides: {} });
-                if(build.abilities.classAbil) equippedItems.push({ id: build.abilities.classAbil.hash, socketOverrides: {} });
-                build.abilities.aspects.forEach(a => { if(a) equippedItems.push({ id: a.hash, socketOverrides: {} }); });
-                build.abilities.fragments.forEach(f => { if(f) equippedItems.push({ id: f.hash, socketOverrides: {} }); });
+                // Add the hidden legendary set armor pieces required for bonuses
+                if (build.setArmorPieces) {
+                    build.setArmorPieces.forEach(piece => {
+                        equippedItems.push({ hash: Number(piece.hash) });
+                    });
+                }
+                
+                // Abilities are not separate items; they are socket overrides on the Subclass
+                if (build.subclass) {
+                    const socketOverrides = {};
+                    
+                    // Standard Subclass 3.0 socket indexes
+                    if (build.abilities.superAbil) socketOverrides["0"] = Number(build.abilities.superAbil.hash);
+                    if (build.abilities.classAbil) socketOverrides["1"] = Number(build.abilities.classAbil.hash);
+                    // Socket 2 is Movement (Jump), omitting so DIM uses user's default
+                    if (build.abilities.melee) socketOverrides["3"] = Number(build.abilities.melee.hash);
+                    if (build.abilities.grenade) socketOverrides["4"] = Number(build.abilities.grenade.hash);
+                    
+                    build.abilities.aspects.forEach((a, i) => { 
+                        if (a) socketOverrides[String(5 + i)] = Number(a.hash); 
+                    });
+                    
+                    build.abilities.fragments.forEach((f, i) => { 
+                        if (f) socketOverrides[String(7 + i)] = Number(f.hash); 
+                    });
+
+                    equippedItems.push({
+                        hash: Number(build.subclass.hash),
+                        socketOverrides: socketOverrides
+                    });
+                }
+
+                const classTypeNum = parseInt(Object.keys(CLASS_TYPES).find(key => CLASS_TYPES[key] === build.class) || "0");
 
                 const loadout = {
                     name: `Random ${build.class} Build`,
                     notes: `Generated using Random Build tool. Focuses on ${build.weapon?.name} and ${build.armor?.name}.`,
-                    classType: Object.keys(CLASS_TYPES).find(key => CLASS_TYPES[key] === build.class),
+                    classType: classTypeNum,
                     equipped: equippedItems,
                     unequipped: []
                 };
 
                 const jsonStr = JSON.stringify(loadout);
-                const el = document.createElement('textarea');
-                el.value = jsonStr;
-                document.body.appendChild(el);
-                el.select();
-                document.execCommand('copy');
-                document.body.removeChild(el);
+                const dimUrl = `https://app.destinyitemmanager.com/loadouts?loadout=${encodeURIComponent(jsonStr)}`;
                 
-                setDimCopied(true);
-                setTimeout(() => setDimCopied(false), 3000);
+                window.open(dimUrl, '_blank');
             };
 
             if (!isReady) {
@@ -782,8 +886,8 @@
                                             <h2 className="text-3xl font-black tracking-wider uppercase">{build.class}</h2>
                                             <p className="text-slate-400 text-sm capitalize font-bold">{build.element} Element Synergy</p>
                                         </div>
-                                        <button onClick={copyDimLink} className="text-xs bg-slate-800 border border-slate-600 hover:border-slate-400 px-3 py-2 rounded transition-colors flex items-center gap-2 font-bold uppercase">
-                                            {dimCopied ? "Copied!" : "Copy DIM Loadout JSON"}
+                                        <button onClick={openInDim} className="text-xs bg-slate-800 border border-slate-600 hover:border-slate-400 px-3 py-2 rounded transition-colors flex items-center gap-2 font-bold uppercase">
+                                            Open in DIM
                                         </button>
                                     </div>
 
