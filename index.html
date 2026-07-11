@@ -131,10 +131,14 @@
                         const plugSetsData = await plugSetsRes.json();
 
                         setStatus("Processing Items & Sockets...");
-                        const weapons = [];
-                        const armor = [];
-                        const subclasses = [];
-                        const allAbilities = { super: [], melee: [], grenade: [], classAbility: [], aspects: [], fragments: [] };
+                        
+                        const weaponsMap = new Map();
+                        const armorMap = new Map();
+                        const subclassesMap = new Map();
+                        const abilitiesMaps = {
+                            super: new Map(), melee: new Map(), grenade: new Map(), 
+                            classAbility: new Map(), aspects: new Map(), fragments: new Map()
+                        };
 
                         for (const hash in itemsData) {
                             const item = itemsData[hash];
@@ -144,6 +148,15 @@
                             const desc = item.displayProperties.description || "";
                             const dName = item.itemTypeDisplayName || "";
                             
+                            const nameLower = name.toLowerCase();
+                            const dNameLower = dName.toLowerCase();
+                            const descLower = desc.toLowerCase();
+
+                            // GLOBAL DEPRECATION & DUMMY CHECK
+                            if (nameLower.includes("empty") || nameLower.includes("deprecated") || nameLower.includes("dummy")) continue;
+                            if (descLower.includes("deprecated")) continue;
+                            if (!item.displayProperties.icon) continue; // Invisible items are usually backend dev placeholders
+                            
                             // 1. Exotics
                             const isExoticWeapon = item.itemType === 3 && item.inventory?.tierType === 6;
                             const isExoticArmor = item.itemType === 2 && item.inventory?.tierType === 6;
@@ -152,7 +165,6 @@
                                 let actualPerkName = "";
                                 let actualPerkDesc = "";
                                 
-                                // Dig into the socket graph to find the actual Exotic Intrinsic Trait instead of the item flavor text
                                 if (item.sockets && item.sockets.socketEntries) {
                                     for (let socket of item.sockets.socketEntries) {
                                         let plugHash = socket.singleInitialItemHash;
@@ -161,7 +173,6 @@
                                             let pci = (plug.plug && plug.plug.plugCategoryIdentifier) || "";
                                             let typeName = plug.itemTypeDisplayName || "";
                                             
-                                            // Identify the socket containing the actual Exotic Perk
                                             if (pci.includes("intrinsic") || pci.includes("exotic") || typeName.toLowerCase().includes("trait") || typeName.toLowerCase().includes("armor perk")) {
                                                 if (plug.displayProperties && plug.displayProperties.description) {
                                                     actualPerkName = plug.displayProperties.name;
@@ -173,26 +184,30 @@
                                     }
                                 }
                                 
-                                // Replace flavor text with the actual perk description for UI and Synergy scoring
                                 const finalDesc = actualPerkDesc || desc;
                                 const finalPerkName = actualPerkName || "";
+                                const itemIndex = item.index || 0;
+                                const hasPerk = !!actualPerkName;
 
                                 const itemData = { 
-                                    hash, 
-                                    name, 
-                                    icon: item.displayProperties.icon ? `https://www.bungie.net${item.displayProperties.icon}` : "", 
-                                    desc: finalDesc, 
-                                    perkName: finalPerkName,
-                                    classType: item.classType, 
-                                    itemType: item.itemType 
+                                    hash, name, icon: `https://www.bungie.net${item.displayProperties.icon}`, 
+                                    desc: finalDesc, perkName: finalPerkName, classType: item.classType, 
+                                    itemType: item.itemType, index: itemIndex, hasPerk 
                                 };
 
-                                if (isExoticWeapon) weapons.push(itemData);
-                                else armor.push(itemData);
+                                const targetMap = isExoticWeapon ? weaponsMap : armorMap;
+                                const existing = targetMap.get(name);
+                                
+                                // Keep if it's the first time seeing it. If seen, prioritize versions with actual perks. If tied, pick highest index (newest).
+                                if (!existing) {
+                                    targetMap.set(name, itemData);
+                                } else if ((hasPerk && !existing.hasPerk) || (hasPerk === existing.hasPerk && itemIndex > existing.index)) {
+                                    targetMap.set(name, itemData);
+                                }
                                 continue;
                             }
 
-                            // 2. Subclasses (Strictly ensure it's a subclass to avoid old supers)
+                            // 2. Subclasses
                             if (item.itemType === 16 && item.classType !== 3 && dName.includes("Subclass")) {
                                 let subName = name.toLowerCase();
                                 let determinedElement = "neutral";
@@ -204,77 +219,74 @@
                                 }
 
                                 if (determinedElement !== "neutral" || subName.includes("prismatic")) {
-                                    subclasses.push({
-                                        hash: hash,
-                                        name: name,
-                                        icon: item.displayProperties.icon ? `https://www.bungie.net${item.displayProperties.icon}` : "",
-                                        desc: desc,
-                                        classType: item.classType,
-                                        element: determinedElement
-                                    });
+                                    const subKey = `${name}-${item.classType}`;
+                                    const itemIndex = item.index || 0;
+                                    const existing = subclassesMap.get(subKey);
+                                    
+                                    if (!existing || itemIndex > existing.index) {
+                                        subclassesMap.set(subKey, {
+                                            hash: hash, name: name, icon: `https://www.bungie.net${item.displayProperties.icon}`,
+                                            desc: desc, classType: item.classType, element: determinedElement, index: itemIndex
+                                        });
+                                    }
                                 }
                             }
 
-                            // 3. Abilities (Global Pool via Plug Category Identifiers + Name Exclusions)
+                            // 3. Abilities
                             if (item.plug && item.plug.plugCategoryIdentifier) {
                                 const pci = item.plug.plugCategoryIdentifier.toLowerCase();
-                                const nameLower = name.toLowerCase();
-                                const dNameLower = dName.toLowerCase();
 
-                                // Exclude explicitly banned terms in PCI
-                                const pciBans = ['armor', 'weapon', 'masterwork', 'mod', 'catalyst', 'upgrade', 'dummy', 'ghost', 'ornament', 'shader', 'emote', 'sparrow', 'ship', 'tracker', 'memento', 'crafting', 'hologram', 'glow', 'kill_tracker', 'test', 'events', 'finishers'];
+                                const pciBans = ['armor', 'weapon', 'masterwork', 'mod', 'catalyst', 'upgrade', 'ghost', 'ornament', 'shader', 'emote', 'sparrow', 'ship', 'tracker', 'memento', 'crafting', 'hologram', 'glow', 'kill_tracker', 'test', 'events', 'finishers'];
                                 if (pciBans.some(term => pci.includes(term))) continue;
 
-                                // Exclude explicitly banned terms in itemTypeDisplayName to catch ornaments/weapons that bypassed PCI checks
                                 const dNameBans = ['launcher', 'ornament', 'mod', 'catalyst', 'masterwork', 'upgrade', 'shader', 'emote', 'ghost', 'sparrow', 'ship', 'dummy', 'finisher', 'weapon', 'armor'];
                                 if (dNameBans.some(term => dNameLower.includes(term))) continue;
 
-                                if (nameLower.includes("empty") || nameLower.includes("deprecated")) continue;
+                                const meleeNames = ["hammer strike", "throwing hammer", "shield bash", "shield throw", "seismic strike", "thunderclap", "shiver strike", "frenzied blade", "knife trick", "proximity explosive knife", "weighted heavy knife", "lightweight knife", "snare bomb", "combination blow", "disorienting blow", "withering blade", "threaded spike", "celestial fire", "incinerator snap", "pocket singularity", "ball lightning", "chain lightning", "penumbral blast", "arcane needle"];
+                                const classAbilNames = ["phoenix dive", "acrobat's dodge", "thruster", "healing rift", "empowering rift", "marksman's dodge", "gambler's dodge", "towering barricade", "rally barricade"];
+                                const superNames = ["well of radiance", "daybreak", "golden gun", "blade barrage", "hammer of sol", "burning maul", "nova bomb", "nova warp", "shadowshot", "spectral blades", "ward of dawn", "sentinel shield", "stormtrance", "chaos reach", "arc staff", "gathering storm", "fists of havoc", "thundercrash", "glacial quake", "silence and squall", "winter's wrath", "bladefury", "silkstrike", "needlestorm"];
 
                                 let category = null;
-                                if (pci.includes('super') || dNameLower === 'super ability') category = 'super';
-                                else if (pci.includes('melee') || dNameLower === 'melee ability') category = 'melee';
+                                if (pci.includes('super') || dNameLower === 'super ability' || superNames.some(n => nameLower.includes(n))) category = 'super';
+                                else if (pci.includes('melee') || dNameLower.includes('melee') || meleeNames.includes(nameLower)) category = 'melee';
                                 else if (pci.includes('grenade') || dNameLower === 'grenade') category = 'grenade';
-                                else if (pci.includes('class_ability') || pci.includes('dodge') || pci.includes('rift') || pci.includes('barricade') || pci.includes('thruster') || dNameLower === 'class ability') category = 'classAbility';
+                                else if (pci.includes('class_ability') || pci.includes('dodge') || pci.includes('rift') || pci.includes('barricade') || pci.includes('thruster') || dNameLower === 'class ability' || classAbilNames.includes(nameLower)) category = 'classAbility';
                                 else if (pci.includes('aspect') || dNameLower === 'aspect') category = 'aspects';
                                 else if (pci.includes('fragment') || dNameLower === 'fragment') category = 'fragments';
 
                                 if (category && name.length > 1) {
                                     let classConstraint = "shared";
-                                    if (pci.includes('titan') || dName.toLowerCase().includes('titan')) classConstraint = 0;
-                                    else if (pci.includes('hunter') || dName.toLowerCase().includes('hunter')) classConstraint = 1;
-                                    else if (pci.includes('warlock') || dName.toLowerCase().includes('warlock')) classConstraint = 2;
+                                    if (pci.includes('titan') || dNameLower.includes('titan')) classConstraint = 0;
+                                    else if (pci.includes('hunter') || dNameLower.includes('hunter')) classConstraint = 1;
+                                    else if (pci.includes('warlock') || dNameLower.includes('warlock')) classConstraint = 2;
 
                                     let elementConstraint = "neutral";
-                                    const pciStr = pci.toLowerCase();
                                     
-                                    // Strictly determine element using boundaries to prevent "arcane" matching "arc"
-                                    if (pciStr.match(/\bsolar\b/)) elementConstraint = 'solar';
-                                    else if (pciStr.match(/\bvoid\b/)) elementConstraint = 'void';
-                                    else if (pciStr.match(/\barc\b/)) elementConstraint = 'arc';
-                                    else if (pciStr.match(/\bstasis\b/)) elementConstraint = 'stasis';
-                                    else if (pciStr.match(/\bstrand\b/)) elementConstraint = 'strand';
-                                    else if (pciStr.match(/\bprismatic\b/) || dNameLower.includes('prismatic')) elementConstraint = 'prismatic';
+                                    if (pci.match(/\bsolar\b/)) elementConstraint = 'solar';
+                                    else if (pci.match(/\bvoid\b/)) elementConstraint = 'void';
+                                    else if (pci.match(/\barc\b/)) elementConstraint = 'arc';
+                                    else if (pci.match(/\bstasis\b/)) elementConstraint = 'stasis';
+                                    else if (pci.match(/\bstrand\b/)) elementConstraint = 'strand';
+                                    else if (pci.match(/\bprismatic\b/) || dNameLower.includes('prismatic')) elementConstraint = 'prismatic';
                                     else {
-                                        // Fallback to strict word boundary naming
                                         if (/\bsolar\b/.test(nameLower)) elementConstraint = 'solar';
                                         else if (/\bvoid\b/.test(nameLower)) elementConstraint = 'void';
                                         else if (/\barc\b/.test(nameLower)) elementConstraint = 'arc';
                                         else if (/\bstasis\b/.test(nameLower)) elementConstraint = 'stasis';
                                         else if (/\bstrand\b/.test(nameLower)) elementConstraint = 'strand';
                                         else {
-                                            // Handle element-specific abilities with neutral naming/PCIs
-                                            if (nameLower === "phoenix dive" || nameLower === "acrobat's dodge") elementConstraint = 'solar';
-                                            else if (nameLower === "thruster") elementConstraint = 'arc';
-                                            else if (nameLower.includes("arcane needle")) elementConstraint = 'strand';
-                                            // Fallback to strict keyword matching in description
-                                            else {
-                                                const descLower = desc.toLowerCase();
-                                                if (/\b(scorch|ignite|cure|restoration)\b/.test(descLower)) elementConstraint = 'solar';
-                                                else if (/\b(suppress|weaken|volatile|devour|overshield)\b/.test(descLower)) elementConstraint = 'void';
-                                                else if (/\b(jolt|blind|amplified|ionic trace)\b/.test(descLower)) elementConstraint = 'arc';
-                                                else if (/\b(slow|freeze|shatter|stasis crystal)\b/.test(descLower)) elementConstraint = 'stasis';
-                                                else if (/\b(suspend|unravel|sever|woven mail)\b/.test(descLower)) elementConstraint = 'strand';
+                                            const knownElements = {
+                                                solar: ["hammer strike", "throwing hammer", "knife trick", "proximity explosive knife", "weighted heavy knife", "lightweight knife", "celestial fire", "incinerator snap", "phoenix dive", "acrobat's dodge", "well of radiance", "daybreak", "golden gun", "blade barrage", "hammer of sol", "burning maul", "consecration", "gunpowder gamble", "knock 'em down", "on your mark", "touch of flame", "heat rises", "icarus dash", "sol invictus", "roaring flames"],
+                                                void: ["shield bash", "shield throw", "snare bomb", "pocket singularity", "nova bomb", "nova warp", "shadowshot", "spectral blades", "ward of dawn", "sentinel shield", "bastion", "controlled demolition", "offensive bulwark", "vanishing step", "stylish executioner", "trapper's ambush", "chaos accelerant", "feed the void", "child of the old gods"],
+                                                arc: ["seismic strike", "thunderclap", "combination blow", "disorienting blow", "ball lightning", "chain lightning", "thruster", "stormtrance", "chaos reach", "arc staff", "gathering storm", "fists of havoc", "thundercrash", "touch of thunder", "juggernaut", "knockout", "flow state", "lethal current", "tempest strike", "electrostatic mind", "lightning surge", "arc soul"],
+                                                stasis: ["shiver strike", "withering blade", "penumbral blast", "glacial quake", "silence and squall", "winter's wrath", "cryoclasm", "howl of the storm", "tectonic harvest", "grim harvest", "shatterdive", "touch of winter", "iceflare bolts", "bleak watcher", "frostpulse"],
+                                                strand: ["frenzied blade", "threaded spike", "arcane needle", "bladefury", "silkstrike", "needlestorm", "into the fray", "drengr's lash", "banner of war", "ensnaring slam", "widow's silk", "threaded specter", "whirling maelstrom", "weaver's call", "mindspun invocation", "the wanderer", "weavewalk", "flechette storm"]
+                                            };
+                                            for (const [el, abilities] of Object.entries(knownElements)) {
+                                                if (abilities.some(a => nameLower.includes(a))) {
+                                                    elementConstraint = el;
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
@@ -289,23 +301,83 @@
                                                 if (fallback) fragmentSlots = fallback.value;
                                             }
                                         }
-                                        // Safest default for Destiny 2 Aspects if no stat is parsed
                                         if (fragmentSlots === 0) fragmentSlots = 2; 
                                     }
 
-                                    // Deduplicate at the manifest level using Name and Class Constraint.
-                                    // If an identical node exists, overwrite it only if the new one has valid/better fragment slots (removing 0-slot dummy duplicates).
-                                    const existingAbil = allAbilities[category].find(a => a.name === name && a.classConstraint === classConstraint);
-                                    
+                                    // Extract real mechanical descriptions from connected Sandbox Perks
+                                    let abilDesc = desc;
+                                    if (item.perks && item.perks.length > 0) {
+                                        const perkHash = item.perks[0].perkHash;
+                                        if (perkHash && perksData[perkHash] && perksData[perkHash].displayProperties && perksData[perkHash].displayProperties.description) {
+                                            const perkDesc = perksData[perkHash].displayProperties.description;
+                                            if (perkDesc.length > abilDesc.length) {
+                                                abilDesc = perkDesc;
+                                            }
+                                        }
+                                    }
+
+                                    // Extract Fragment Stat Penalties/Bonuses
+                                    let statBonuses = [];
+                                    if (category === 'fragments' && item.investmentStats) {
+                                        item.investmentStats.forEach(stat => {
+                                            if (stat.value !== 0) {
+                                                let statName = "";
+                                                if (stat.statTypeHash === 2996146975) statName = "Mobility";
+                                                else if (stat.statTypeHash === 392767087) statName = "Resilience";
+                                                else if (stat.statTypeHash === 1943323491) statName = "Recovery";
+                                                else if (stat.statTypeHash === 1735777505) statName = "Discipline";
+                                                else if (stat.statTypeHash === 144602215) statName = "Intellect";
+                                                else if (stat.statTypeHash === 4244567218) statName = "Strength";
+                                                
+                                                if (statName) {
+                                                    statBonuses.push(`${stat.value > 0 ? '+' : ''}${stat.value} ${statName}`);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    const itemIndex = item.index || 0;
+                                    const abilKey = `${name}-${classConstraint}`;
+                                    const targetMap = abilitiesMaps[category];
+                                    const existingAbil = targetMap.get(abilKey);
+
+                                    const abilData = { 
+                                        hash, name, desc: abilDesc, icon: `https://www.bungie.net${item.displayProperties.icon}`, 
+                                        pci, classConstraint, elementConstraint, fragmentSlots, index: itemIndex, stats: statBonuses 
+                                    };
+
                                     if (!existingAbil) {
-                                        allAbilities[category].push({ hash, name, desc, icon: item.displayProperties.icon ? `https://www.bungie.net${item.displayProperties.icon}` : "", pci, classConstraint, elementConstraint, fragmentSlots });
-                                    } else if (category === 'aspects' && fragmentSlots > (existingAbil.fragmentSlots || 0)) {
-                                        Object.assign(existingAbil, { hash, desc, pci, elementConstraint, fragmentSlots });
-                                        if (item.displayProperties.icon) existingAbil.icon = `https://www.bungie.net${item.displayProperties.icon}`;
+                                        targetMap.set(abilKey, abilData);
+                                    } else {
+                                        // Prioritize keeping the item with the best/longest description
+                                        const isBetterDesc = abilDesc.length > (existingAbil.desc?.length || 0);
+                                        
+                                        if (category === 'aspects') {
+                                            if (fragmentSlots > existingAbil.fragmentSlots || (fragmentSlots === existingAbil.fragmentSlots && isBetterDesc) || (fragmentSlots === existingAbil.fragmentSlots && !isBetterDesc && itemIndex > existingAbil.index)) {
+                                                targetMap.set(abilKey, abilData);
+                                            }
+                                        } else {
+                                            if (isBetterDesc || (abilDesc === existingAbil.desc && itemIndex > existingAbil.index)) {
+                                                targetMap.set(abilKey, abilData);
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        // Convert Maps back to Arrays for the UI state
+                        const weapons = Array.from(weaponsMap.values());
+                        const armor = Array.from(armorMap.values());
+                        const subclasses = Array.from(subclassesMap.values());
+                        const allAbilities = {
+                            super: Array.from(abilitiesMaps.super.values()),
+                            melee: Array.from(abilitiesMaps.melee.values()),
+                            grenade: Array.from(abilitiesMaps.grenade.values()),
+                            classAbility: Array.from(abilitiesMaps.classAbility.values()),
+                            aspects: Array.from(abilitiesMaps.aspects.values()),
+                            fragments: Array.from(abilitiesMaps.fragments.values())
+                        };
 
                         const parsedSets = [];
                         for (const hash in setsData) {
@@ -738,11 +810,10 @@
                                     <div className="bg-slate-800/50 rounded p-5 mb-4">
                                         <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300">Subclass & Core Abilities</h3>
                                         
-                                        <div className="flex items-start gap-4 mb-6 bg-slate-900/50 p-3 rounded">
+                                        <div className="flex items-center gap-4 mb-6 bg-slate-900/50 p-3 rounded">
                                             {build.subclass?.icon && <img src={build.subclass.icon} className="w-12 h-12 rounded-full bg-slate-800" alt="Subclass" />}
                                             <div>
                                                 <span className="font-bold text-xl block text-white">{build.subclass?.name || "Subclass"}</span>
-                                                <span className="text-xs text-slate-400 mt-1 block leading-relaxed">{build.subclass?.desc || "Subclass missing from graph pool."}</span>
                                             </div>
                                         </div>
 
@@ -779,7 +850,7 @@
                                                                 <span className="font-semibold text-slate-200 text-base">{aspect.name}</span>
                                                                 <span className="text-[10px] uppercase bg-slate-800 border border-slate-600 px-2 py-0.5 rounded-full text-[#ceae33] font-bold tracking-wider">{aspect.fragmentSlots} Slots</span>
                                                             </div>
-                                                            <p className="text-xs text-slate-400 leading-relaxed">{aspect.desc}</p>
+                                                            <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line">{aspect.desc}</p>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -801,8 +872,15 @@
                                                     <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
                                                         {frag.icon && <img src={frag.icon} className="w-10 h-10 rounded border border-slate-700" alt="Fragment" />}
                                                         <div>
-                                                            <span className="font-semibold text-slate-200 block text-base mb-1 leading-none">{frag.name}</span>
-                                                            <p className="text-[11px] text-slate-400 leading-tight">{frag.desc}</p>
+                                                            <div className="flex flex-wrap items-center gap-2 mb-1">
+                                                                <span className="font-semibold text-slate-200 block text-base leading-none">{frag.name}</span>
+                                                                {frag.stats && frag.stats.length > 0 && frag.stats.map((stat, idx) => (
+                                                                    <span key={idx} className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-bold tracking-wider ${stat.startsWith('+') ? 'bg-green-900/30 text-green-400 border border-green-800' : 'bg-red-900/30 text-red-400 border border-red-800'}`}>
+                                                                        {stat}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                            <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{frag.desc}</p>
                                                         </div>
                                                     </div>
                                                 ))}
