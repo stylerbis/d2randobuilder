@@ -25,19 +25,18 @@
         }
         
         .d2-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
+            background-color: #1e293b;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
         }
 
-        .element-bg-solar { background: linear-gradient(135deg, rgba(234, 88, 12, 0.15) 0%, transparent 100%); border-top: 2px solid #ea580c; }
-        .element-bg-void { background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, transparent 100%); border-top: 2px solid #9333ea; }
-        .element-bg-arc { background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, transparent 100%); border-top: 2px solid #06b6d4; }
-        .element-bg-stasis { background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%); border-top: 2px solid #3b82f6; }
-        .element-bg-strand { background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, transparent 100%); border-top: 2px solid #22c55e; }
-        .element-bg-kinetic, .element-bg-neutral { background: linear-gradient(135deg, rgba(148, 163, 184, 0.15) 0%, transparent 100%); border-top: 2px solid #94a3b8; }
-        .element-bg-prismatic { background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, transparent 100%); border-top: 2px solid #ec4899; }
+        .element-bg-solar { background-image: linear-gradient(135deg, rgba(234, 88, 12, 0.15) 0%, transparent 100%); border-top: 2px solid #ea580c; }
+        .element-bg-void { background-image: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, transparent 100%); border-top: 2px solid #9333ea; }
+        .element-bg-arc { background-image: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, transparent 100%); border-top: 2px solid #06b6d4; }
+        .element-bg-stasis { background-image: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%); border-top: 2px solid #3b82f6; }
+        .element-bg-strand { background-image: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, transparent 100%); border-top: 2px solid #22c55e; }
+        .element-bg-kinetic, .element-bg-neutral { background-image: linear-gradient(135deg, rgba(148, 163, 184, 0.15) 0%, transparent 100%); border-top: 2px solid #94a3b8; }
+        .element-bg-prismatic { background-image: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, transparent 100%); border-top: 2px solid #ec4899; }
 
         .spinner {
             border: 3px solid rgba(255,255,255,0.1);
@@ -821,7 +820,7 @@
 
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
                         {/* Seed Parameters Panel */}
-                        <div className="d2-card rounded-lg p-6 md:col-span-4 self-start sticky top-4">
+                        <div className="d2-card rounded-lg p-6 md:col-span-4 self-start md:sticky md:top-4">
                             <h3 className="text-lg font-bold mb-4 uppercase tracking-wider text-slate-300">Seed Parameters</h3>
                             
                             <div className="space-y-4">
