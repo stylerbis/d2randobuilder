@@ -982,7 +982,7 @@
                         const scoredCols = artifact.columns.map(column => {
                             return column.map(perk => {
                                 let score = 0;
-                                const text = (perk.name + " " + perk.desc).replace(/[-]/g, ' ').toLowerCase();
+                                const text = perk.desc.replace(/[-]/g, ' ').toLowerCase(); // Strictly score based on description
                                 activeKeywords.forEach(kw => {
                                     const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                                     if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) {
