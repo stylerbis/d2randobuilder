@@ -497,12 +497,12 @@
                                         item.investmentStats.forEach(stat => {
                                             if (stat.value !== 0) {
                                                 let statName = "";
-                                                if (stat.statTypeHash === 2996146975) statName = "Mobility";
-                                                else if (stat.statTypeHash === 392767087) statName = "Resilience";
-                                                else if (stat.statTypeHash === 1943323491) statName = "Recovery";
-                                                else if (stat.statTypeHash === 1735777505) statName = "Discipline";
-                                                else if (stat.statTypeHash === 144602215) statName = "Intellect";
-                                                else if (stat.statTypeHash === 4244567218) statName = "Strength";
+                                                if (stat.statTypeHash === 2996146975) statName = "Class";
+                                                else if (stat.statTypeHash === 392767087) statName = "Health";
+                                                else if (stat.statTypeHash === 1943323491) statName = "Health";
+                                                else if (stat.statTypeHash === 1735777505) statName = "Grenade";
+                                                else if (stat.statTypeHash === 144602215) statName = "Super";
+                                                else if (stat.statTypeHash === 4244567218) statName = "Melee";
                                                 
                                                 if (statName) {
                                                     statBonuses.push(`${stat.value > 0 ? '+' : ''}${stat.value} ${statName}`);
@@ -1357,6 +1357,49 @@
                     }
                 }
 
+                const statScores = {
+                    Health: finalClass === 0 ? 80 : 60, // Titans naturally favor defensive scaling
+                    Class: finalClass === 1 ? 60 : 30, // Hunters naturally want class ability stat
+                    Melee: 20,
+                    Grenade: 20,
+                    Super: 10,
+                    Weapons: 20
+                };
+
+                const buildText = [
+                    armorFullText,
+                    superAbil?.desc, superAbil?.name,
+                    melee?.desc, melee?.name,
+                    grenade?.desc, grenade?.name,
+                    classAbil?.desc, classAbil?.name,
+                    ...aspects.map(a => a?.desc),
+                    ...fragments.map(f => f?.desc)
+                ].filter(Boolean).join(" ").toLowerCase();
+
+                // Weighted Keyword Counting
+                const countOccurrences = (str, word) => {
+                    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                    return (str.match(regex) || []).length;
+                };
+
+                const grenadeCount = countOccurrences(buildText, "grenade") + countOccurrences(buildText, "cure") + countOccurrences(buildText, "restoration");
+                const meleeCount = countOccurrences(buildText, "melee") + countOccurrences(buildText, "glaive");
+                const superCount = countOccurrences(buildText, "super");
+                const classAbilCount = countOccurrences(buildText, "class ability") + countOccurrences(buildText, "dodge") + countOccurrences(buildText, "barricade") + countOccurrences(buildText, "rift") + countOccurrences(buildText, "overshield");
+                const weaponCount = countOccurrences(buildText, "weapon") + countOccurrences(buildText, "precision") + countOccurrences(buildText, "ammo") + countOccurrences(buildText, "reload") + countOccurrences(buildText, "handling") + countOccurrences(buildText, "damage");
+                const healthCount = countOccurrences(buildText, "orb of power") + countOccurrences(buildText, "orbs of power") + countOccurrences(buildText, "flinch") + countOccurrences(buildText, "shield");
+
+                statScores.Grenade += (grenadeCount * 15);
+                statScores.Melee += (meleeCount * 15);
+                statScores.Super += (superCount * 10);
+                statScores.Weapons += (weaponCount * 10);
+                statScores.Class += (classAbilCount * 15);
+                statScores.Health += (healthCount * 15);
+
+                const sortedStats = Object.entries(statScores).sort((a, b) => b[1] - a[1]);
+                const primaryStat = sortedStats[0][0];
+                const secondaryStat = sortedStats[1][0];
+
                 // 7. Armor Sets
                 const scoredSets = db.sets.map(set => {
                     let score = 0;
@@ -1400,6 +1443,7 @@
                     actualSetBonuses: finalSets,
                     artifact: bestArtifact,
                     artifactPerks: bestArtifactPerks,
+                    stats: { primary: primaryStat, secondary: secondaryStat },
                     abilities: {
                         superAbil,
                         grenade,
@@ -1629,6 +1673,19 @@
                                                     </React.Fragment>
                                                 )}
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    {}
+                                    <div className="bg-slate-800/50 rounded p-4 mb-6 flex flex-row items-center justify-around border border-slate-700/50 shadow-inner">
+                                        <div className="text-center">
+                                            <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Recommended Primary Stat</div>
+                                            <div className="font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 text-2xl tracking-wider">{build.stats.primary}</div>
+                                        </div>
+                                        <div className="w-px h-10 bg-slate-700"></div>
+                                        <div className="text-center">
+                                            <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Recommended Secondary Stat</div>
+                                            <div className="font-bold text-slate-200 text-xl tracking-wider">{build.stats.secondary}</div>
                                         </div>
                                     </div>
 
