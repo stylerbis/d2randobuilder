@@ -59,13 +59,13 @@
 
     <script type="text/babel">
         const KEYWORDS = {
-            solar: ["scorch", "ignite", "cure", "restoration", "radiant", "solar", "fire", "burn", "daybreak", "well of radiance", "golden gun", "blade barrage", "hammer of sol", "burning maul"],
+            solar: ["scorch", "ignite", "cure", "restoration", "radiant", "solar", "fire", "burn", "daybreak", "well of radiance", "golden gun", "blade barrage", "hammer of sol", "burning maul", "fusion grenade"],
             void: ["suppress", "weaken", "volatile", "devour", "invisibility", "overshield", "void", "nova bomb", "nova warp", "shadowshot", "spectral blades", "ward of dawn", "sentinel shield", "tether"],
             arc: ["jolt", "blind", "amplified", "ionic trace", "arc", "lightning", "stormtrance", "chaos reach", "arc staff", "gathering storm", "fists of havoc", "thundercrash", "electricity"],
-            stasis: ["slow", "freeze", "shatter", "stasis crystal", "stasis", "winter's wrath", "silence and squall", "glacial quake", "ice", "cold"],
-            strand: ["suspend", "unravel", "sever", "woven mail", "tangle", "strand", "needlestorm", "silkstrike", "bladefury", "thread"],
+            stasis: ["slow", "freeze", "shatter", "stasis crystal", "stasis", "winter's wrath", "silence and squall", "glacial quake", "ice", "cold", "duskfield", "coldsnap"],
+            strand: ["suspend", "unravel", "sever", "woven mail", "tangle", "strand", "needlestorm", "silkstrike", "bladefury", "thread", "threadling"],
             prismatic: ["prismatic", "transcendence", "facet", "ascension", "devotion", "hope"],
-            neutral: ["melee", "grenade", "class ability", "precision", "finisher", "orb of power", "kinetic", "reload", "handling", "sprint", "slide", "airborne"]
+            neutral: ["melee", "grenade", "class ability", "precision", "finisher", "orb of power", "kinetic", "reload", "handling", "sprint", "slide", "airborne", "poison"]
         };
 
         const CLASS_TYPES = {
@@ -139,8 +139,79 @@
                         const legendaryArmor = [];
                         const globalAbilityNames = new Set();
                         const globalWeaponTypes = new Set();
+                        
+                        const exoticClassItems = ["stoicism", "relativism", "solipsism"];
 
                         const rawArtifacts = [];
+
+                        const perfectClassItemPools = { 0: [[],[]], 1: [[],[]], 2: [[],[]] };
+                        
+                        // Exact mapping of the Destiny 2 Meta. This guarantees 100% correct class & column separation.
+                        const TRAIT_MAP = {
+                            0: { 0: ["assassin", "inmost light", "ophidian", "severance", "hoarfrost", "bear", "abeyant"], 1: ["star-eater", "synthoceps", "verity", "contact", "scars", "horn", "armamentarium", "lupi"] },
+                            1: { 0: ["assassin", "inmost light", "ophidian", "galanor", "renewal", "foetracer", "caliban", "dragon"], 1: ["star-eater", "synthoceps", "verity", "cyrtarachne", "gyrfalcon", "liar", "coyote", "wormhusk"] },
+                            2: { 0: ["assassin", "inmost light", "ophidian", "apotheosis", "osmiomancy", "necrotic", "filaments"], 1: ["star-eater", "synthoceps", "verity", "swarm", "vesper", "harmony", "starfire", "claw"] }
+                        };
+
+                        // Pass 1: Scrape Plugs globally (Preferred so DIM export hashes work)
+                        for (const hash in itemsData) {
+                            const item = itemsData[hash];
+                            if (!item.displayProperties) continue;
+                            let name = item.displayProperties.name || "";
+                            let desc = item.displayProperties.description || "";
+                            let icon = item.displayProperties.icon || "";
+                            let isTrait = name.toLowerCase().includes("spirit of");
+
+                            if (item.perks && item.perks.length > 0) {
+                                const sbDef = perksData[item.perks[0].perkHash];
+                                if (sbDef && sbDef.displayProperties?.name?.toLowerCase().includes("spirit of")) {
+                                    isTrait = true;
+                                    name = sbDef.displayProperties.name;
+                                    desc = sbDef.displayProperties.description || desc;
+                                    icon = sbDef.displayProperties.icon || icon;
+                                }
+                            }
+
+                            if (isTrait && !name.toLowerCase().includes("empty") && !name.toLowerCase().includes("deprecated")) {
+                                const nameLower = name.toLowerCase();
+                                const perkObj = { hash, name, desc: desc || "No description available.", icon: icon ? `https://www.bungie.net${icon}` : "" };
+                                
+                                [0, 1, 2].forEach(cId => {
+                                    [0, 1].forEach(colIdx => {
+                                        if (TRAIT_MAP[cId][colIdx].some(t => nameLower.includes(t))) {
+                                            const existing = perfectClassItemPools[cId][colIdx].findIndex(p => p.name === name);
+                                            if (existing === -1) {
+                                                perfectClassItemPools[cId][colIdx].push(perkObj);
+                                            } else if (desc.length > perfectClassItemPools[cId][colIdx][existing].desc.length) {
+                                                perfectClassItemPools[cId][colIdx][existing] = perkObj; // Keep the version with the best description
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
+
+                        // Pass 2: Scrape Sandbox Perks directly as a fallback to guarantee pools are full
+                        for (const hash in perksData) {
+                            const perk = perksData[hash];
+                            let name = perk.displayProperties?.name || "";
+                            let desc = perk.displayProperties?.description || "";
+                            if (name.toLowerCase().includes("spirit of") && !name.toLowerCase().includes("empty") && !name.toLowerCase().includes("deprecated")) {
+                                const nameLower = name.toLowerCase();
+                                const perkObj = { hash, name, desc: desc || "No description available.", icon: perk.displayProperties?.icon ? `https://www.bungie.net${perk.displayProperties.icon}` : "" };
+                                
+                                [0, 1, 2].forEach(cId => {
+                                    [0, 1].forEach(colIdx => {
+                                        if (TRAIT_MAP[cId][colIdx].some(t => nameLower.includes(t))) {
+                                            const existing = perfectClassItemPools[cId][colIdx].findIndex(p => p.name === name);
+                                            if (existing === -1) {
+                                                perfectClassItemPools[cId][colIdx].push(perkObj);
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
 
                         for (const hash in itemsData) {
                             const item = itemsData[hash];
@@ -172,34 +243,43 @@
                             // 1. Exotics
                             const isExoticWeapon = item.itemType === 3 && item.inventory?.tierType === 6;
                             const isExoticArmor = item.itemType === 2 && item.inventory?.tierType === 6;
+                            const isExoticClassItem = isExoticArmor && exoticClassItems.some(n => nameLower.includes(n));
                             
                             if (isExoticWeapon || isExoticArmor) {
                                 let actualPerkName = "";
                                 let actualPerkDesc = "";
+                                let perkColumns = [];
                                 
-                                if (item.sockets && item.sockets.socketEntries) {
-                                    for (let socket of item.sockets.socketEntries) {
-                                        let plugHash = socket.singleInitialItemHash;
-                                        if (plugHash && itemsData[plugHash]) {
-                                            let plug = itemsData[plugHash];
-                                            let pci = (plug.plug && plug.plug.plugCategoryIdentifier) || "";
-                                            let typeName = plug.itemTypeDisplayName || "";
-                                            
-                                            if (pci.includes("intrinsic") || pci.includes("exotic") || typeName.toLowerCase().includes("trait") || typeName.toLowerCase().includes("armor perk")) {
-                                                if (plug.displayProperties && plug.displayProperties.description) {
-                                                    actualPerkName = plug.displayProperties.name;
-                                                    actualPerkDesc = plug.displayProperties.description;
-                                                    break;
+                                if (isExoticClassItem) {
+                                    // SPECIAL CASE: Force inject the perfectly mapped arrays!
+                                    perkColumns = perfectClassItemPools[item.classType] || [[], []];
+                                    actualPerkName = "Exotic Class Item";
+                                    actualPerkDesc = "Rolls with two random Exotic perks.";
+                                } else {
+                                    // Standard Exotics: Bypass broken trait pools and grab the static intrinsic perk
+                                    if (item.sockets && item.sockets.socketEntries) {
+                                        for (let socket of item.sockets.socketEntries) {
+                                            let plugHash = socket.singleInitialItemHash;
+                                            if (plugHash && itemsData[plugHash]) {
+                                                let plug = itemsData[plugHash];
+                                                let pci = (plug.plug && plug.plug.plugCategoryIdentifier) || "";
+                                                let typeName = plug.itemTypeDisplayName || "";
+                                                
+                                                if (!actualPerkName && (pci.includes("intrinsic") || pci.includes("exotic") || typeName.toLowerCase().includes("trait") || typeName.toLowerCase().includes("armor perk"))) {
+                                                    if (plug.displayProperties && plug.displayProperties.description) {
+                                                        actualPerkName = plug.displayProperties.name;
+                                                        actualPerkDesc = plug.displayProperties.description;
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                
+                        
                                 const finalDesc = actualPerkDesc || desc;
                                 const finalPerkName = actualPerkName || "";
                                 const itemIndex = item.index || 0;
-                                const hasPerk = !!actualPerkName;
+                                const hasPerk = !!actualPerkName || perkColumns.length > 0;
 
                                 let damageType = "kinetic";
                                 if (isExoticWeapon) {
@@ -218,15 +298,29 @@
                                     desc: finalDesc, perkName: finalPerkName, classType: item.classType, 
                                     itemType: item.itemType, index: itemIndex, hasPerk,
                                     bucket: item.inventory?.bucketTypeHash,
-                                    damageType, weaponType
+                                    damageType, weaponType, perkColumns
                                 };
 
                                 const targetMap = isExoticWeapon ? weaponsMap : armorMap;
                                 const existing = targetMap.get(name);
                                 
+                                const totalPerks = perkColumns.reduce((acc, col) => acc + col.length, 0);
+                                const existingTotalPerks = existing?.perkColumns?.reduce((acc, col) => acc + col.length, 0) || 0;
+                                
+                                // Strict deduplication: ALWAYS protect versions with full randomized perk pools from static dummy items
+                                let shouldSave = false;
                                 if (!existing) {
-                                    targetMap.set(name, itemData);
-                                } else if ((hasPerk && !existing.hasPerk) || (hasPerk === existing.hasPerk && itemIndex > existing.index)) {
+                                    shouldSave = true;
+                                } else {
+                                    if (totalPerks > existingTotalPerks) {
+                                        shouldSave = true; 
+                                    } else if (totalPerks === existingTotalPerks) {
+                                        if (hasPerk && !existing.hasPerk) shouldSave = true;
+                                        else if (hasPerk === existing.hasPerk && itemIndex > existing.index) shouldSave = true;
+                                    }
+                                }
+
+                                if (shouldSave) {
                                     targetMap.set(name, itemData);
                                 }
                                 continue;
@@ -607,8 +701,15 @@
                 // Helper for Top-N weighted variance pool
                 const pickFromScoredList = (scoredList, topN = 3) => {
                     if (scoredList.length === 0) return null;
-                    // Sort descending by score
-                    scoredList.sort((a, b) => b.score - a.score);
+                    
+                    // Add random jitter to shuffle exact ties
+                    scoredList.forEach(i => i._rand = Math.random());
+                    
+                    // Sort descending by score, then randomly if tied
+                    scoredList.sort((a, b) => {
+                        if (b.score === a.score) return b._rand - a._rand;
+                        return b.score - a.score;
+                    });
                     
                     // 1. Hard Override Constraint: If something is fundamentally required (+1000), bypass the pool and pick it
                     if (scoredList[0].score >= 1000) {
@@ -632,6 +733,8 @@
                 // 1. Determine Class & Armor
                 let finalClass = selClass !== "" ? parseInt(selClass) : Math.floor(Math.random() * 3);
                 let chosenArmor;
+                
+                const exoticClassItems = ["stoicism", "relativism", "solipsism"];
                 
                 if (selArmor) {
                     chosenArmor = db.armor.find(a => a.hash === selArmor);
@@ -659,15 +762,49 @@
                     if (selSubclass) {
                         const preSub = db.subclasses.find(s => s.hash === selSubclass);
                         if (preSub && preSub.element !== 'prismatic') {
-                            const exoticClassItems = ["stoicism", "relativism", "solipsism"];
-                            availableArmor = availableArmor.filter(a => !exoticClassItems.includes(a.name.toLowerCase()));
+                            availableArmor = availableArmor.filter(a => !exoticClassItems.some(n => a.name.toLowerCase().includes(n)));
                         }
                     }
 
                     chosenArmor = availableArmor[Math.floor(Math.random() * availableArmor.length)];
                 }
+                
+                // NEW: Exotic Class Item Perk Evaluation
+                let chosenArmorPerks = [];
+                if (chosenArmor && exoticClassItems.some(n => chosenArmor.name.toLowerCase().includes(n)) && chosenArmor.perkColumns && chosenArmor.perkColumns.length >= 1) {
+                    const scoreCol = (col) => {
+                        if (!col || col.length === 0) return null;
+                        let scored = col.map(perk => {
+                            let score = 0;
+                            let text = (perk.name + " " + perk.desc).toLowerCase().replace(/[-]/g, ' ');
+                            if (selWeapon) {
+                                 const preSelWep = db.weapons.find(w => w.hash === selWeapon);
+                                 if (preSelWep && text.includes(preSelWep.damageType)) score += 50;
+                            }
+                            if (selSubclass) {
+                                 const preSub = db.subclasses.find(s => s.hash === selSubclass);
+                                 if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic' && text.includes(preSub.element)) score += 50;
+                            }
+                            return { item: perk, score };
+                        });
+                        return pickFromScoredList(scored, 3) || col[Math.floor(Math.random() * col.length)];
+                    };
 
-                const armorText = (chosenArmor.name + " " + chosenArmor.desc + " " + (chosenArmor.perkName || "")).toLowerCase();
+                    let p1 = scoreCol(chosenArmor.perkColumns[0]);
+                    let p2 = chosenArmor.perkColumns.length > 1 ? scoreCol(chosenArmor.perkColumns[1]) : null;
+                    
+                    // Safety check to ensure we don't pick the exact same perk twice if Bungie combined the pools
+                    if (p1 && p2 && p1.hash === p2.hash && chosenArmor.perkColumns[1].length > 1) {
+                        const filteredCol2 = chosenArmor.perkColumns[1].filter(p => p.hash !== p1.hash);
+                        p2 = scoreCol(filteredCol2);
+                    }
+
+                    chosenArmorPerks = [p1, p2].filter(Boolean); // Safely bundle and drop any nulls
+                }
+
+                // Combine the armor's base text with BOTH Exotic Class Item traits (if present)
+                // This ensures the two randomly chosen traits act as the authoritative "seed" for the entire keyword engine.
+                const armorText = (chosenArmor.name + " " + chosenArmor.desc + " " + (chosenArmor.perkName || "") + " " + chosenArmorPerks.map(p => p.name + " " + p.desc).join(" ")).toLowerCase();
                 const armorFullText = armorText.replace(/[-]/g, ' ');
 
                 // CASCADE SYNERGY ENGINE - Armor Authoritative Update
@@ -777,8 +914,7 @@
                 let chosenSubclass;
                 let dominantElement = "neutral";
                 
-                const exoticClassItems = ["stoicism", "relativism", "solipsism"];
-                const isExoticClassItem = chosenArmor && exoticClassItems.includes(chosenArmor.name.toLowerCase());
+                const isExoticClassItem = chosenArmor && exoticClassItems.some(n => chosenArmor.name.toLowerCase().includes(n));
                 
                 // Strict Exotic Armor Ability Overrides (50/50 Prismatic Lock)
                 let forcedSubclasses = [];
@@ -806,6 +942,15 @@
                             });
                         }
                     });
+                    
+                    // SPECIAL CASE: Getaway Artist implicitly requires Arc/Prismatic subclasses to have an Arc grenade
+                    if (chosenArmor.name.toLowerCase().includes("getaway artist")) {
+                        let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
+                        let arcSub = subclassPool.find(s => s.element === 'arc');
+                        let prismSub = subclassPool.find(s => s.element === 'prismatic');
+                        if (arcSub && !forcedSubclasses.includes(arcSub)) forcedSubclasses.push(arcSub);
+                        if (prismSub && !forcedSubclasses.includes(prismSub)) forcedSubclasses.push(prismSub);
+                    }
                 }
 
                 if (selSubclass) {
@@ -963,6 +1108,14 @@
                     grenadePool = grenadePool.filter(g => g.name.toLowerCase() !== "healing grenade");
                 }
                 
+                // SPECIAL CASE: Getaway Artist strictly requires an Arc grenade to consume
+                if (chosenArmor && chosenArmor.name.toLowerCase().includes("getaway artist")) {
+                    const arcGrenades = grenadePool.filter(g => g.elementConstraint === 'arc');
+                    if (arcGrenades.length > 0) {
+                        grenadePool = arcGrenades;
+                    }
+                }
+
                 const grenade = pickAbilityFromPool(grenadePool, activeKeywords);
                 const isHealingGrenade = grenade && grenade.name.toLowerCase() === "healing grenade";
 
@@ -1230,6 +1383,7 @@
                     class: CLASS_TYPES[finalClass],
                     element: dominantElement,
                     armor: chosenArmor,
+                    armorPerks: chosenArmorPerks,
                     weapon: chosenWeapon,
                     subclass: chosenSubclass,
                     actualSetBonuses: finalSets,
@@ -1279,10 +1433,15 @@
                 }
 
                 const classTypeNum = parseInt(Object.keys(CLASS_TYPES).find(key => CLASS_TYPES[key] === build.class) || "0");
+                
+                let notes = `Generated using Random Build tool. Focuses on ${build.weapon?.name} and ${build.armor?.name}.`;
+                if (build.armorPerks && build.armorPerks.length > 0) {
+                    notes = `Generated using Random Build tool. Focuses on ${build.weapon?.name} and ${build.armor?.name} (${build.armorPerks.map(p => p.name.replace('Spirit of ', '')).join(' / ')}).`;
+                }
 
                 const loadout = {
                     name: `Random ${build.class} Build`,
-                    notes: `Generated using Random Build tool. Focuses on ${build.weapon?.name} and ${build.armor?.name}.`,
+                    notes: notes,
                     classType: classTypeNum,
                     equipped: equippedItems,
                     unequipped: [],
@@ -1429,8 +1588,25 @@
                                             <div>
                                                 <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Exotic Armor</div>
                                                 <div className="font-bold text-[#ceae33] text-lg leading-none mb-1.5">{build.armor?.name}</div>
-                                                {build.armor?.perkName && <div className="text-xs font-semibold text-slate-300 mb-0.5">{build.armor.perkName}</div>}
-                                                <div className="text-[11px] text-slate-400 leading-tight">{build.armor?.desc}</div>
+                                                
+                                                {build.armorPerks && build.armorPerks.length > 0 ? (
+                                                    <div className="mt-3 space-y-2">
+                                                        {build.armorPerks.map((p, idx) => (
+                                                            <div key={idx} className="flex gap-2 items-start bg-slate-900/50 p-2 rounded border border-slate-700/50">
+                                                                {p.icon && <img src={p.icon} className="w-6 h-6 rounded border border-slate-600" alt="Perk" />}
+                                                                <div>
+                                                                    <div className="text-xs font-bold text-slate-200 leading-none mb-1">{p.name}</div>
+                                                                    <div className="text-[10px] text-slate-400 leading-tight">{p.desc}</div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <React.Fragment>
+                                                        {build.armor?.perkName && <div className="text-xs font-semibold text-slate-300 mb-0.5">{build.armor.perkName}</div>}
+                                                        <div className="text-[11px] text-slate-400 leading-tight">{build.armor?.desc}</div>
+                                                    </React.Fragment>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
