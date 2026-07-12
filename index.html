@@ -604,6 +604,31 @@
             const generateBuild = () => {
                 if (!isReady) return;
                 
+                // Helper for Top-N weighted variance pool
+                const pickFromScoredList = (scoredList, topN = 3) => {
+                    if (scoredList.length === 0) return null;
+                    // Sort descending by score
+                    scoredList.sort((a, b) => b.score - a.score);
+                    
+                    // 1. Hard Override Constraint: If something is fundamentally required (+1000), bypass the pool and pick it
+                    if (scoredList[0].score >= 1000) {
+                        const required = scoredList.filter(i => i.score >= 1000);
+                        return required[Math.floor(Math.random() * required.length)].item;
+                    }
+
+                    // 2. Build the Top N Pool
+                    const topScore = scoredList[0].score;
+                    // Safety check: Filter out options that score terribly compared to the leader (e.g. less than 40% of the top score)
+                    // This prevents completely dead synergies from sneaking into the random pool
+                    let validList = scoredList.filter(i => i.score >= topScore * 0.4); 
+                    
+                    let poolSize = Math.min(topN, validList.length);
+                    const topPool = validList.slice(0, poolSize);
+                    
+                    // 3. Randomly select from the elite Top N pool
+                    return topPool[Math.floor(Math.random() * topPool.length)].item;
+                };
+
                 // 1. Determine Class & Armor
                 let finalClass = selClass !== "" ? parseInt(selClass) : Math.floor(Math.random() * 3);
                 let chosenArmor;
@@ -645,15 +670,24 @@
                 const armorText = (chosenArmor.name + " " + chosenArmor.desc + " " + (chosenArmor.perkName || "")).toLowerCase();
                 const armorFullText = armorText.replace(/[-]/g, ' ');
 
-                // CASCADE SYNERGY ENGINE - Hierarchical Weights
+                // CASCADE SYNERGY ENGINE - Armor Authoritative Update
                 const activeKeywords = new Set();
-                const addKeywords = (text) => {
+                const armorElements = new Set(); // Tracks the implicit elements demanded by the Exotic Armor
+
+                const addKeywords = (text, isArmor = false) => {
                     const lowerText = text.replace(/[-]/g, ' ').toLowerCase();
-                    Object.values(KEYWORDS).flat().forEach(word => {
-                        const safeWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                        if (new RegExp('\\b' + safeWord + '\\b', 'i').test(lowerText)) {
-                            activeKeywords.add(word);
-                        }
+                    Object.entries(KEYWORDS).forEach(([el, words]) => {
+                        words.forEach(word => {
+                            const safeWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            if (new RegExp('\\b' + safeWord + '\\b', 'i').test(lowerText)) {
+                                activeKeywords.add(word);
+                                // If this keyword belongs to an element, inject the parent element
+                                if (['solar', 'void', 'arc', 'stasis', 'strand', 'prismatic'].includes(el)) {
+                                    activeKeywords.add(el);
+                                    if (isArmor) armorElements.add(el); // Armor dictates the build's core
+                                }
+                            }
+                        });
                     });
 
                     if (db.weaponTypes) {
@@ -673,7 +707,8 @@
                     return 2;
                 };
                 
-                addKeywords(armorFullText);
+                // 1. Initialize with Armor Keywords (Authoritative)
+                addKeywords(armorFullText, true);
 
                 let requiredWeaponElements = [];
                 ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
@@ -688,7 +723,7 @@
                     if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic') targetElement = preSub.element;
                 }
 
-                // 2. Select Weapon based on synergy
+                // 2. Select Weapon based on synergy (Using Top-N Pool)
                 let chosenWeapon;
                 if (selWeapon) {
                     chosenWeapon = db.weapons.find(w => w.hash === selWeapon);
@@ -699,10 +734,7 @@
                         if (filteredPool.length > 0) weaponPool = filteredPool;
                     }
 
-                    let bestScore = -1;
-                    let candidates = [];
-                    
-                    weaponPool.forEach(weapon => {
+                    let scoredWeapons = weaponPool.map(weapon => {
                         const wText = (weapon.name + " " + (weapon.weaponType || "") + " " + weapon.desc + " " + (weapon.perkName || "")).replace(/[-]/g, ' ').toLowerCase();
                         let score = 0;
                         
@@ -711,26 +743,24 @@
                             if (new RegExp('\\b' + safeKw + '\\b', 'i').test(wText)) score += getKeywordWeight(kw);
                         });
                         
+                        // Elemental Weighting
                         if (requiredWeaponElements.includes(weapon.damageType)) {
-                            score += 3;
+                            score += 1000; // Hard override for explicitly required elements
                         } else if (targetElement && weapon.damageType === targetElement) {
-                            score += 2;
+                            score += 20; 
+                        } else if (armorElements.has(weapon.damageType)) {
+                            score += 15; // Strongly favor weapons matching the implicit element of the armor
                         }
 
-                        score += Math.random() * 0.5; 
-
-                        if (score > bestScore) {
-                            bestScore = score;
-                            candidates = [weapon];
-                        } else if (score === bestScore) {
-                            candidates.push(weapon);
-                        }
+                        return { item: weapon, score };
                     });
-                    chosenWeapon = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : weaponPool[Math.floor(Math.random() * weaponPool.length)];
+                    
+                    // Choose randomly from the top 4 scoring weapons to introduce variance
+                    chosenWeapon = pickFromScoredList(scoredWeapons, 4) || weaponPool[Math.floor(Math.random() * weaponPool.length)];
                 }
 
                 const weaponText = (chosenWeapon.name + " " + (chosenWeapon.weaponType || "") + " " + chosenWeapon.desc + " " + (chosenWeapon.perkName || "")).toLowerCase();
-                addKeywords(weaponText);
+                addKeywords(weaponText, false);
                 
                 // 3. Select Subclass
                 let chosenSubclass;
@@ -739,6 +769,34 @@
                 const exoticClassItems = ["stoicism", "relativism", "solipsism"];
                 const isExoticClassItem = chosenArmor && exoticClassItems.includes(chosenArmor.name.toLowerCase());
                 
+                // Strict Exotic Armor Ability Overrides (50/50 Prismatic Lock)
+                let forcedSubclasses = [];
+                if (chosenArmor && !isExoticClassItem) {
+                    ['super', 'melee', 'grenade', 'classAbility', 'jump'].forEach(cat => {
+                        if (db.abilities[cat]) {
+                            db.abilities[cat].forEach(a => {
+                                const aName = a.name.toLowerCase();
+                                // Ensure ability name is substantial enough to avoid false positive generic words
+                                // We add (?:s)? to handle pluralized abilities in descriptions (e.g. "Coldsnap grenades")
+                                if (aName.length > 4 && new RegExp('\\b' + aName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s)?\\b', 'i').test(armorFullText)) {
+                                    let el = a.elementConstraint;
+                                    if (el !== 'neutral' && el !== 'prismatic') {
+                                        let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
+                                        let nativeSub = subclassPool.find(s => s.element === el);
+                                        let prismSub = subclassPool.find(s => s.element === 'prismatic');
+                                        
+                                        if (nativeSub && !forcedSubclasses.includes(nativeSub)) forcedSubclasses.push(nativeSub);
+                                        // If Prismatic actually has this exact ability in its kit, it joins the 50/50 pool
+                                        if (prismSub && prismSub.validPlugs && prismSub.validPlugs.has(String(a.hash)) && !forcedSubclasses.includes(prismSub)) {
+                                            forcedSubclasses.push(prismSub);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+
                 if (selSubclass) {
                     chosenSubclass = db.subclasses.find(s => s.hash === selSubclass);
                     if (isExoticClassItem && chosenSubclass && chosenSubclass.element !== 'prismatic') {
@@ -752,67 +810,64 @@
                     if (isExoticClassItem) {
                         subclassPool = subclassPool.filter(s => s.element === 'prismatic');
                         chosenSubclass = subclassPool[Math.floor(Math.random() * subclassPool.length)];
+                    } else if (forcedSubclasses.length > 0) {
+                        // Strict 50/50 lock-in dictated by Exotic Armor
+                        chosenSubclass = forcedSubclasses[Math.floor(Math.random() * forcedSubclasses.length)];
                     } else {
-                        let bestScore = -1;
-                        let candidates = [];
-                        
-                        subclassPool.forEach(sub => {
+                        let scoredSubclasses = subclassPool.map(sub => {
                             let score = 0;
                             
-                            if (requiredWeaponElements.length > 0 && requiredWeaponElements.includes(sub.element)) {
-                                score += 50;
-                            }
-                            
-                            if (chosenWeapon && chosenWeapon.damageType !== 'kinetic' && chosenWeapon.damageType === sub.element) {
-                                score += 20;
-                            }
-                            
-                            if (activeKeywords.has(sub.element)) {
-                                score += 30;
-                            }
-                            
-                            activeKeywords.forEach(kw => {
-                                const weight = getKeywordWeight(kw);
-                                if (weight === 10) {
-                                    let canEquip = false;
-                                    ['super', 'melee', 'grenade', 'classAbility', 'jump', 'aspects'].forEach(cat => {
-                                        if (db.abilities[cat]) {
-                                            db.abilities[cat].forEach(a => {
-                                                if (a.name.toLowerCase() === kw && (a.classConstraint === "shared" || a.classConstraint === sub.classType)) {
-                                                    if (sub.validPlugs && sub.validPlugs.has(String(a.hash))) {
-                                                        canEquip = true;
-                                                    } else if (sub.element !== 'prismatic' && (a.elementConstraint === sub.element || a.elementConstraint === 'neutral')) {
-                                                        canEquip = true;
-                                                    }
-                                                }
-                                            });
+                            const evaluateElementSynergy = (el) => {
+                                let elScore = 0;
+                                if (armorElements.has(el)) elScore += 200;
+                                if (requiredWeaponElements.length > 0 && requiredWeaponElements.includes(el)) elScore += 50;
+                                if (chosenWeapon && chosenWeapon.damageType !== 'kinetic' && chosenWeapon.damageType === el) elScore += 20;
+                                if (activeKeywords.has(el)) elScore += 30;
+                                
+                                if (chosenWeapon && KEYWORDS[el]) {
+                                    let weaponKeywordHits = 0;
+                                    KEYWORDS[el].forEach(kw => {
+                                        const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                        if (new RegExp('\\b' + safeKw + '\\b', 'i').test(weaponText)) {
+                                            weaponKeywordHits++;
                                         }
                                     });
-                                    
-                                    if (canEquip) {
-                                        score += 1000; 
+                                    if (weaponKeywordHits > 0) {
+                                        if (armorElements.has(el) || armorElements.has('prismatic')) {
+                                            elScore += weaponKeywordHits * 100;
+                                        } else {
+                                            elScore += weaponKeywordHits * 25;
+                                        }
                                     }
-                                } else if (KEYWORDS[sub.element] && KEYWORDS[sub.element].includes(kw)) {
-                                    score += weight * 2; 
                                 }
-                            });
-                            
+
+                                // Apply keyword weights belonging directly to this element
+                                activeKeywords.forEach(kw => {
+                                    const weight = getKeywordWeight(kw);
+                                    if (weight !== 10 && KEYWORDS[el] && KEYWORDS[el].includes(kw)) {
+                                        elScore += weight * 2;
+                                    }
+                                });
+
+                                return elScore;
+                            };
+
                             if (sub.element === 'prismatic') {
-                                let activeElements = ['solar', 'void', 'arc', 'stasis', 'strand'].filter(el => activeKeywords.has(el));
-                                if (activeElements.length > 0) score += 15;
+                                // PRISMATIC MIMICRY: Prismatic evaluates exactly on par with the best element, preventing double-dipping.
+                                let maxScore = evaluateElementSynergy('prismatic');
+                                ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
+                                    maxScore = Math.max(maxScore, evaluateElementSynergy(el));
+                                });
+                                score = maxScore;
+                            } else {
+                                score = evaluateElementSynergy(sub.element);
                             }
                             
-                            score += Math.random() * 0.5;
-                            
-                            if (score > bestScore) {
-                                bestScore = score;
-                                candidates = [sub];
-                            } else if (score === bestScore) {
-                                candidates.push(sub);
-                            }
+                            return { item: sub, score };
                         });
                         
-                        chosenSubclass = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : subclassPool[Math.floor(Math.random() * subclassPool.length)];
+                        // Pick randomly from the top 3 scoring subclasses to allow flexible starting points
+                        chosenSubclass = pickFromScoredList(scoredSubclasses, 3) || subclassPool[Math.floor(Math.random() * subclassPool.length)];
                     }
                 }
 
@@ -847,10 +902,8 @@
 
                 const pickAbilityFromPool = (pool, kwsSet) => {
                     if (!pool || pool.length === 0) return null;
-                    let bestScore = -1;
-                    let candidates = [];
                     
-                    pool.forEach(abil => {
+                    let scored = pool.map(abil => {
                         let score = 0;
                         const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
                         kwsSet.forEach(kw => { 
@@ -858,17 +911,16 @@
                             if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += getKeywordWeight(kw); 
                         });
                         
-                        score += Math.random() * 0.5;
-                        
-                        if (score > bestScore) {
-                            bestScore = score;
-                            candidates = [abil];
-                        } else if (score === bestScore) {
-                            candidates.push(abil);
+                        // If this exact ability was demanded by the Exotic Armor, assign it a hard override score
+                        if (new RegExp('\\b' + abil.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s)?\\b', 'i').test(armorFullText)) {
+                            score += 1000;
                         }
+                        
+                        return { item: abil, score };
                     });
                     
-                    const picked = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : null;
+                    // Pick from the top 3 scoring abilities for this slot
+                    const picked = pickFromScoredList(scored, 3);
                     if (picked) {
                         addKeywords((picked.name + " " + picked.desc));
                     }
@@ -920,16 +972,22 @@
                             const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                             if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += getKeywordWeight(kw) * 1.5; 
                         });
-                        score += Math.random() * 0.5;
-                        return { score, abil };
-                    }).sort((a, b) => b.score - a.score);
+                        return { item: abil, score };
+                    });
                     
-                    for (let i = 0; i < scoredAspects.length; i++) {
-                        if (aspects.length >= 2) break;
-                        const abil = scoredAspects[i].abil;
-                        aspects.push(abil);
-                        fragmentCapacity += abil.fragmentSlots || 0;
-                        addKeywords((abil.name + " " + abil.desc));
+                    let aspect1 = pickFromScoredList(scoredAspects, 3);
+                    if (aspect1) {
+                        aspects.push(aspect1);
+                        fragmentCapacity += aspect1.fragmentSlots || 0;
+                        addKeywords((aspect1.name + " " + aspect1.desc));
+                        
+                        let remainingAspects = scoredAspects.filter(a => a.item.hash !== aspect1.hash);
+                        let aspect2 = pickFromScoredList(remainingAspects, 3);
+                        if (aspect2) {
+                            aspects.push(aspect2);
+                            fragmentCapacity += aspect2.fragmentSlots || 0;
+                            addKeywords((aspect2.name + " " + aspect2.desc));
+                        }
                     }
                 }
 
@@ -956,23 +1014,19 @@
                         });
 
                         if (hasKeywordMatch) {
-                            score += Math.random() * 0.5;
-                            strictFrags.push({ score, abil });
+                            strictFrags.push({ item: abil, score });
                         }
                     });
                     
-                    strictFrags.sort((a, b) => b.score - a.score);
-                    
-                    for (let i = 0; i < strictFrags.length; i++) {
-                        if (fragments.length >= fragmentCapacity) break;
-                        fragments.push(strictFrags[i].abil);
+                    for (let i = 0; i < fragmentCapacity; i++) {
+                        let remainingFrags = strictFrags.filter(f => !fragments.some(sel => sel.hash === f.item.hash));
+                        let picked = pickFromScoredList(remainingFrags, 4); // Fragments have deep pools, 4 gives good variance
+                        if (picked) fragments.push(picked);
                     }
                 }
 
                 // 6. Artifact & Perks - Multi-Artifact Synergy Evaluation
-                let bestArtifact = null;
-                let bestArtifactPerks = [];
-                let bestArtifactScore = -1;
+                let scoredArtifacts = [];
 
                 if (db.artifacts && db.artifacts.length > 0) {
                     db.artifacts.forEach(artifact => {
@@ -983,25 +1037,80 @@
                         const scoredCols = artifact.columns.map(column => {
                             return column.map(perk => {
                                 let score = 0;
-                                // Strictly score based on description, ignoring perk names
                                 const text = perk.desc.replace(/[-]/g, ' ').toLowerCase(); 
                                 
                                 let mentionsOtherWeapons = false;
                                 let mentionsChosenWeapon = false;
+                                let abilityElementMismatch = false;
 
-                                // Prevent selecting perks that buff weapon types we aren't using
                                 if (chosenWeapon && chosenWeapon.weaponType && db.weaponTypes) {
                                     db.weaponTypes.forEach(wt => {
                                         if (!wt) return;
                                         const safeWt = wt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                                        if (new RegExp('\\b' + safeWt + 's?\\b', 'i').test(text)) {
+                                        
+                                        const regex = new RegExp('(?:\\b(\\w+)\\W+)?(?:\\b(\\w+)\\W+)?(?:\\b(\\w+)\\W+)?\\b' + safeWt + 's?\\b', 'gi');
+                                        let match;
+                                        let foundWt = false;
+                                        let fitsOurWeapon = false;
+                                        
+                                        while ((match = regex.exec(text)) !== null) {
+                                            foundWt = true;
+                                            const words = [match[1], match[2], match[3]].map(w => w ? w.toLowerCase() : "");
+                                            const elements = ['solar', 'void', 'arc', 'stasis', 'strand', 'kinetic'];
+                                            const precedingElements = words.filter(w => elements.includes(w));
+                                            
                                             if (wt === chosenWeapon.weaponType) {
+                                                if (precedingElements.length === 0 || precedingElements.includes(chosenWeapon.damageType)) {
+                                                    fitsOurWeapon = true;
+                                                }
+                                            }
+                                        }
+
+                                        if (foundWt) {
+                                            if (wt === chosenWeapon.weaponType && fitsOurWeapon) {
                                                 mentionsChosenWeapon = true;
                                             } else {
                                                 mentionsOtherWeapons = true;
                                             }
                                         }
                                     });
+                                }
+
+                                // NEW: Strict Elemental Weapon Checks (e.g. "Stasis weapon hits", "Solar damage final blows")
+                                let demandedWeaponElements = [];
+                                ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
+                                    const regex = new RegExp('\\b' + el + '\\b(?:\\s+or\\s+\\w+)?(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?|hits?)\\b', 'i');
+                                    if (regex.test(text)) demandedWeaponElements.push(el);
+                                });
+
+                                if (demandedWeaponElements.length > 0) {
+                                    if (chosenWeapon && !demandedWeaponElements.includes(chosenWeapon.damageType)) {
+                                        mentionsOtherWeapons = true; // Demands an element our weapon doesn't have
+                                    } else {
+                                        mentionsChosenWeapon = true; // Perfect match
+                                    }
+                                }
+
+                                // NEW: Strict Elemental Ability Checks (e.g. "Stasis grenade", "Void ability", "Arc super")
+                                let demandedAbilityElements = [];
+                                ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
+                                    const regex = new RegExp('\\b' + el + '\\b\\s+(?:damage\\s+)?(?:grenades?|melees?|super|abilities|ability)\\b', 'i');
+                                    if (regex.test(text)) demandedAbilityElements.push(el);
+                                });
+
+                                if (demandedAbilityElements.length > 0) {
+                                    // Gather the elements of all currently selected abilities in this build
+                                    const activeElements = new Set([dominantElement]);
+                                    if (superAbil && superAbil.elementConstraint && superAbil.elementConstraint !== 'neutral' && superAbil.elementConstraint !== 'prismatic') activeElements.add(superAbil.elementConstraint);
+                                    if (grenade && grenade.elementConstraint && grenade.elementConstraint !== 'neutral' && grenade.elementConstraint !== 'prismatic') activeElements.add(grenade.elementConstraint);
+                                    if (melee && melee.elementConstraint && melee.elementConstraint !== 'neutral' && melee.elementConstraint !== 'prismatic') activeElements.add(melee.elementConstraint);
+                                    if (classAbil && classAbil.elementConstraint && classAbil.elementConstraint !== 'neutral' && classAbil.elementConstraint !== 'prismatic') activeElements.add(classAbil.elementConstraint);
+                                    
+                                    if (demandedAbilityElements.some(el => activeElements.has(el))) {
+                                        score += 50; // Build perfectly matches the required ability element!
+                                    } else {
+                                        abilityElementMismatch = true; // Build is entirely missing the required ability element. Ban it.
+                                    }
                                 }
 
                                 activeKeywords.forEach(kw => {
@@ -1011,59 +1120,56 @@
                                     }
                                 });
 
-                                if (mentionsChosenWeapon) {
-                                    score += 25; // Massive boost for matching our exotic
-                                } else if (mentionsOtherWeapons) {
-                                    score -= 1000; // Ban perks that strictly buff unequipped weapon types
-                                }
+                                if (mentionsChosenWeapon) score += 25; 
+                                else if (mentionsOtherWeapons) score -= 1000; 
+                                
+                                if (abilityElementMismatch) score -= 1000;
 
-                                score += Math.random() * 0.5; // Tiebreaker
                                 return { ...perk, score };
                             });
                         });
 
-                        // Helper to get available perks up to a specific column index
                         const getPool = (maxColIndex) => {
                             let pool = [];
                             for (let i = 0; i <= Math.min(maxColIndex, scoredCols.length - 1); i++) {
                                 pool.push(...scoredCols[i]);
                             }
-                            // Filter out already selected perks and sort by score descending
                             return pool
                                 .filter(p => !currentSelectedPerks.some(sel => sel.hash === p.hash))
-                                .sort((a, b) => b.score - a.score);
+                                .map(p => ({...p, rand: Math.random()}))
+                                .sort((a, b) => {
+                                    if (b.score === a.score) return b.rand - a.rand;
+                                    return b.score - a.score;
+                                });
                         };
 
-                        // Selection logic:
-                        // 2 perks from Tier 1 (Column 0)
                         let t1Pool = getPool(0);
-                        for (let i = 0; i < 2; i++) {
-                            if (t1Pool.length > 0) currentSelectedPerks.push(t1Pool.shift());
-                        }
+                        for (let i = 0; i < 2; i++) if (t1Pool.length > 0) currentSelectedPerks.push(t1Pool.shift());
 
-                        // 3 perks from Tier 2 (Columns 0, 1)
                         let t2Pool = getPool(1);
-                        for (let i = 0; i < 3; i++) {
-                            if (t2Pool.length > 0) currentSelectedPerks.push(t2Pool.shift());
-                        }
+                        for (let i = 0; i < 3; i++) if (t2Pool.length > 0) currentSelectedPerks.push(t2Pool.shift());
 
-                        // 2 perks from Tier 3 (Columns 0, 1, 2)
                         let t3Pool = getPool(2);
-                        for (let i = 0; i < 2; i++) {
-                            if (t3Pool.length > 0) currentSelectedPerks.push(t3Pool.shift());
-                        }
+                        for (let i = 0; i < 2; i++) if (t3Pool.length > 0) currentSelectedPerks.push(t3Pool.shift());
 
-                        // Tally score for this artifact configuration
-                        currentSelectedPerks.forEach(perk => {
-                            currentArtifactScore += perk.score;
+                        currentSelectedPerks.forEach(perk => currentArtifactScore += perk.score);
+
+                        scoredArtifacts.push({ 
+                            item: { artifact, perks: currentSelectedPerks }, 
+                            score: currentArtifactScore 
                         });
-
-                        if (currentArtifactScore > bestArtifactScore) {
-                            bestArtifactScore = currentArtifactScore;
-                            bestArtifact = artifact;
-                            bestArtifactPerks = currentSelectedPerks;
-                        }
                     });
+                }
+
+                let bestArtifact = null;
+                let bestArtifactPerks = [];
+                if (scoredArtifacts.length > 0) {
+                    // Pick randomly between the top 2 overall artifact paths
+                    const chosenData = pickFromScoredList(scoredArtifacts, 2);
+                    if (chosenData) {
+                        bestArtifact = chosenData.artifact;
+                        bestArtifactPerks = chosenData.perks;
+                    }
                 }
 
                 // 7. Armor Sets
@@ -1075,8 +1181,11 @@
                             score += getKeywordWeight(kw);
                         }
                     });
-                    return { ...set, score: score + Math.random() }; 
-                }).sort((a, b) => b.score - a.score);
+                    return { ...set, score: score, rand: Math.random() }; 
+                }).sort((a, b) => {
+                    if (b.score === a.score) return b.rand - a.rand;
+                    return b.score - a.score;
+                });
 
                 let finalSets = [];
                 const prefers4Piece = Math.random() > 0.5;
@@ -1087,7 +1196,6 @@
                     const chosen4Piece = setsWith4[0];
                     const perk2 = chosen4Piece.perks.find(p => p.count === 2);
                     const perk4 = chosen4Piece.perks.find(p => p.count === 4);
-                    // Include both the 2-piece and 4-piece bonuses for full context
                     if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2, setDef: chosen4Piece });
                     if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4, setDef: chosen4Piece });
                 } else if (setsWith2.length >= 2) {
