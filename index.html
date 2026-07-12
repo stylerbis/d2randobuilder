@@ -156,7 +156,7 @@
                             // GLOBAL DEPRECATION & DUMMY CHECK
                             if (nameLower.includes("empty") || nameLower.includes("deprecated") || nameLower.includes("dummy")) continue;
                             if (descLower.includes("deprecated")) continue;
-                            if (!item.displayProperties.icon) continue; // Invisible items are usually backend dev placeholders
+                            if (!item.displayProperties.icon) continue; 
                             
                             // Cache Valid Legendary Armor for Set Extraction Fallbacks
                             if (item.itemType === 2 && item.inventory?.tierType === 5) {
@@ -210,7 +210,7 @@
                                     else if (item.defaultDamageType === 7) damageType = "strand";
                                 }
 
-                                // Normalize weapon types (e.g., "Combat Bow" -> "bow")
+                                // Normalize weapon types
                                 let weaponType = dNameLower.replace('combat ', '');
                                 if (isExoticWeapon && weaponType) globalWeaponTypes.add(weaponType);
 
@@ -226,7 +226,6 @@
                                 const targetMap = isExoticWeapon ? weaponsMap : armorMap;
                                 const existing = targetMap.get(name);
                                 
-                                // Keep if it's the first time seeing it. If seen, prioritize versions with actual perks. If tied, pick highest index (newest).
                                 if (!existing) {
                                     targetMap.set(name, itemData);
                                 } else if ((hasPerk && !existing.hasPerk) || (hasPerk === existing.hasPerk && itemIndex > existing.index)) {
@@ -254,15 +253,12 @@
                                     const validPlugs = new Set();
                                     if (item.sockets && item.sockets.socketEntries) {
                                         for (const socket of item.sockets.socketEntries) {
-                                            // 1. Check initial defaults
                                             if (socket.singleInitialItemHash) validPlugs.add(String(socket.singleInitialItemHash));
                                             
-                                            // 2. Check localized reusable items on the socket itself
                                             if (socket.reusablePlugItems) {
                                                 socket.reusablePlugItems.forEach(p => validPlugs.add(String(p.plugItemHash)));
                                             }
                                             
-                                            // 3. Check Bungie's global Reusable PlugSets (This holds 99% of Subclass 3.0 options)
                                             if (socket.reusablePlugSetHash && plugSetsData[socket.reusablePlugSetHash]) {
                                                 const plugSet = plugSetsData[socket.reusablePlugSetHash];
                                                 if (plugSet.reusablePlugItems) {
@@ -270,7 +266,6 @@
                                                 }
                                             }
                                             
-                                            // 4. Check Randomized PlugSets just in case Bungie formats them here
                                             if (socket.randomizedPlugSetHash && plugSetsData[socket.randomizedPlugSetHash]) {
                                                 const plugSet = plugSetsData[socket.randomizedPlugSetHash];
                                                 if (plugSet.reusablePlugItems) {
@@ -287,7 +282,6 @@
                                             validPlugs: validPlugs
                                         });
                                     } else if (existing && validPlugs.size > 0) {
-                                        // Ensure older existing copies still merge their valid API plugs safely
                                         validPlugs.forEach(p => existing.validPlugs.add(p));
                                     }
                                 }
@@ -303,6 +297,7 @@
                                 const dNameBans = ['launcher', 'ornament', 'mod', 'catalyst', 'masterwork', 'upgrade', 'shader', 'emote', 'ghost', 'sparrow', 'ship', 'dummy', 'finisher', 'weapon', 'armor'];
                                 if (dNameBans.some(term => dNameLower.includes(term))) continue;
 
+                                // Transcendence Grenade Ban
                                 const transcendentGrenades = ['freezing singularity', 'hailfire spike', 'electrified snare'];
                                 if (transcendentGrenades.some(term => nameLower.includes(term))) continue;
 
@@ -321,9 +316,9 @@
                                 else if (pci.includes('fragment') || dNameLower.includes('fragment')) category = 'fragments';
 
                                 if (category && name.length > 1) {
+                                    // Inject Ability Name into global dictionary for Tier 1 Synergy
                                     globalAbilityNames.add(nameLower);
                                     
-                                    // Use Bungie's native classType integer as the absolute source of truth (0=Titan, 1=Hunter, 2=Warlock, 3=Unknown/Shared)
                                     let classConstraint = item.classType !== 3 ? item.classType : "shared";
                                     if (classConstraint === "shared") {
                                         if (pci.includes('titan') || dNameLower.includes('titan')) classConstraint = 0;
@@ -381,7 +376,6 @@
                                         if (fragmentSlots === 0) fragmentSlots = 2; 
                                     }
 
-                                    // Extract real mechanical descriptions from connected Sandbox Perks
                                     let abilDesc = desc;
                                     if (item.perks && item.perks.length > 0) {
                                         const perkHash = item.perks[0].perkHash;
@@ -393,7 +387,6 @@
                                         }
                                     }
 
-                                    // Extract Fragment Stat Penalties/Bonuses
                                     let statBonuses = [];
                                     if (category === 'fragments' && item.investmentStats) {
                                         item.investmentStats.forEach(stat => {
@@ -426,9 +419,7 @@
                                     if (!existingAbil) {
                                         targetMap.set(abilKey, abilData);
                                     } else {
-                                        // Prioritize keeping the item with the best/longest description
                                         const isBetterDesc = abilDesc.length > (existingAbil.desc?.length || 0);
-                                        
                                         if (category === 'aspects') {
                                             if (fragmentSlots > existingAbil.fragmentSlots || (fragmentSlots === existingAbil.fragmentSlots && isBetterDesc) || (fragmentSlots === existingAbil.fragmentSlots && !isBetterDesc && itemIndex > existingAbil.index)) {
                                                 targetMap.set(abilKey, abilData);
@@ -443,7 +434,6 @@
                             }
                         }
 
-                        // Convert Maps to Arrays
                         const weapons = Array.from(weaponsMap.values());
                         const armor = Array.from(armorMap.values());
                         const subclasses = Array.from(subclassesMap.values());
@@ -457,27 +447,22 @@
                             fragments: Array.from(abilitiesMaps.fragments.values())
                         };
 
-                        // Rebuild Set Parse & Legendary Armor Fallback Engine
                         const parsedSets = [];
                         for (const hash in setsData) {
                             const setDef = setsData[hash];
                             if (setDef.trackingValueMax > 0 && setDef.displayProperties && setDef.displayProperties.name) {
                                 const setName = setDef.displayProperties.name;
-                                let has2 = false;
-                                let has4 = false;
                                 let synergyText = "";
                                 const validPerks = [];
                                 
                                 if (setDef.setBlocks) {
                                     setDef.setBlocks.forEach(block => {
-                                        if (block.trackingValue === 2 || block.trackingValue === 4) {
+                                        if (block.trackingValue > 0) {
                                             let perkName = block.displayProperties?.name || "";
                                             let perkDesc = block.displayProperties?.description || "";
-                                            if (perkDesc) {
+                                            if (perkDesc && !validPerks.some(p => p.count === block.trackingValue)) {
                                                 synergyText += " " + perkDesc;
                                                 validPerks.push({ count: block.trackingValue, name: perkName, description: perkDesc });
-                                                if (block.trackingValue === 2) has2 = true;
-                                                if (block.trackingValue === 4) has4 = true;
                                             }
                                         }
                                     });
@@ -486,7 +471,6 @@
                                 if (validPerks.length > 0) {
                                     const setArmor = { 0: [], 1: [], 2: [] };
                                     
-                                    // 1. Check Bungie's itemList
                                     if (setDef.itemList) {
                                         setDef.itemList.forEach(itemHash => {
                                             const item = itemsData[itemHash];
@@ -499,8 +483,7 @@
                                         });
                                     }
                                     
-                                    // 2. Apply Legendary Armor Fallback Engine
-                                    const requiredPieces = has4 ? 4 : 2;
+                                    const requiredPieces = Math.max(...validPerks.map(p => p.count));
                                     for (let classType = 0; classType < 3; classType++) {
                                         if (setArmor[classType].length < requiredPieces) {
                                             let prefix = setName.split(' ')[0].toLowerCase();
@@ -516,17 +499,53 @@
                                         }
                                     }
                                     
-                                    // 3. Keep only if there are enough pieces for at least one class
                                     const isValidSet = setArmor[0].length >= requiredPieces || 
                                                        setArmor[1].length >= requiredPieces || 
                                                        setArmor[2].length >= requiredPieces;
 
                                     if (isValidSet) {
-                                        parsedSets.push({ hash, name: setName, perks: validPerks, has2, has4, synergyText, setArmor });
+                                        parsedSets.push({ hash, name: setName, perks: validPerks, synergyText, setArmor });
                                     }
                                 }
                             }
                         }
+                        
+                        const customSets = [
+                            { name: "Crystocrene Mastery", prefix: "crystocrene", perks: [ { count: 2, name: "Europa's Chill", description: "Slightly increased ability regeneration while near stasis crystals." }, { count: 4, name: "Glacial Resonance", description: "Shattering a stasis crystal grants a burst of weapon handling and reload speed." } ] },
+                            { name: "Thunderhead Strider", prefix: "thunderhead", perks: [ { count: 2, name: "Cloudstrider's Grace", description: "Increases sprint speed and slide distance." }, { count: 4, name: "Neomuni Charge", description: "Rapid strand or arc final blows create a tangle or ionic trace." } ] },
+                            { name: "Warmind's Avatar", prefix: "avatar", perks: [ { count: 2, name: "Seraph's Protocol", description: "Solar weapons gain slightly increased target acquisition." }, { count: 4, name: "Rasputin's Wrath", description: "Applying scorch or ignite to targets grants ability energy." } ] },
+                            { name: "Eidolon Hunter", prefix: "eidolon", perks: [ { count: 2, name: "Nightmare's Edge", description: "Increased damage against combatants afflicted by void debuffs." }, { count: 4, name: "Reaper's Harvest", description: "Defeating weakened or volatile targets grants a small overshield or devour." } ] },
+                            { name: "Veritas Enforcer", prefix: "veritas", perks: [ { count: 2, name: "Throne World Insight", description: "Kinetic and stasis weapon stability is enhanced." }, { count: 4, name: "Lucent Bane", description: "Precision final blows have a chance to slow nearby combatants." } ] },
+                            { name: "Ketchkiller's Crew", prefix: "ketchkiller", perks: [ { count: 2, name: "Swashbuckler's Step", description: "Increased melee lunge range and melee ability regeneration." }, { count: 4, name: "Jolting Broadside", description: "Arc weapon final blows have a chance to jolt nearby targets." } ] },
+                            { name: "Techeun's Regalia", prefix: "techeun", perks: [ { count: 2, name: "Awoken Blessing", description: "Strand and Void abilities recharge slightly faster." }, { count: 4, name: "Leyline Mastery", description: "Creating a tangle or defeating a volatile target grants woven mail or an overshield." } ] }
+                        ];
+
+                        customSets.forEach((custom, index) => {
+                            let synergyText = custom.perks.map(p => p.description).join(" ").toLowerCase();
+                            let setArmor = { 0: [], 1: [], 2: [] };
+                            
+                            for (let classType = 0; classType < 3; classType++) {
+                                const matchingPieces = legendaryArmor.filter(a => a.classType === classType && a.nameLower.includes(custom.prefix));
+                                const bucketsFound = new Set();
+                                matchingPieces.forEach(p => {
+                                    if (!bucketsFound.has(p.bucket)) {
+                                        setArmor[classType].push({ hash: p.hash, bucket: p.bucket });
+                                        bucketsFound.add(p.bucket);
+                                    }
+                                });
+                            }
+                            
+                            const isValidSet = setArmor[0].length >= 4 || setArmor[1].length >= 4 || setArmor[2].length >= 4;
+                            if (isValidSet) {
+                                parsedSets.push({ 
+                                    hash: "custom_" + index, 
+                                    name: custom.name, 
+                                    perks: custom.perks, 
+                                    synergyText, 
+                                    setArmor 
+                                });
+                            }
+                        });
 
                         setDb({ weapons, armor, subclasses, abilities: allAbilities, sets: parsedSets, abilityNames: globalAbilityNames, weaponTypes: globalWeaponTypes });
                         setIsReady(true);
@@ -551,7 +570,6 @@
                 } else {
                     let availableArmor = db.armor.filter(a => a.classType === finalClass);
                     
-                    // Enforce pre-selected weapon compatibility on random armor roll
                     if (selWeapon) {
                         const preSelWep = db.weapons.find(w => w.hash === selWeapon);
                         if (preSelWep && preSelWep.damageType) {
@@ -563,15 +581,12 @@
                                         reqElements.push(el);
                                     }
                                 });
-                                // Filter out armor that strictly demands an element different from our chosen weapon
                                 return reqElements.length === 0 || reqElements.includes(preSelWep.damageType);
                             });
-                            // Apply filtered list if valid options remain
                             if (filteredArmor.length > 0) availableArmor = filteredArmor;
                         }
                     }
 
-                    // Prevent Exotic Class Items from rolling if a non-Prismatic subclass is pre-selected
                     if (selSubclass) {
                         const preSub = db.subclasses.find(s => s.hash === selSubclass);
                         if (preSub && preSub.element !== 'prismatic') {
@@ -586,7 +601,7 @@
                 const armorText = (chosenArmor.name + " " + chosenArmor.desc + " " + (chosenArmor.perkName || "")).toLowerCase();
                 const armorFullText = armorText.replace(/[-]/g, ' ');
 
-                // CASCADE SYNERGY ENGINE: Dynamically track keywords as the build grows
+                // CASCADE SYNERGY ENGINE
                 const activeKeywords = new Set();
                 const addKeywords = (text) => {
                     const lowerText = text.replace(/[-]/g, ' ').toLowerCase();
@@ -597,7 +612,6 @@
                         }
                     });
 
-                    // Dynamically track Weapon Types with smart plural matching (e.g., "Trace Rifles")
                     if (db.weaponTypes) {
                         db.weaponTypes.forEach(wt => {
                             const safeWord = wt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -615,10 +629,8 @@
                     return 2;
                 };
                 
-                // 1. Initialize with Armor Keywords
                 addKeywords(armorFullText);
 
-                // Extract strict element requirements from chosen armor to enforce on random weapon
                 let requiredWeaponElements = [];
                 ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
                     if (new RegExp('\\b' + el + '\\b(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(armorFullText)) {
@@ -626,7 +638,6 @@
                     }
                 });
 
-                // Pre-calculate target element from subclass if user selected one
                 let targetElement = null;
                 if (selSubclass) {
                     const preSub = db.subclasses.find(s => s.hash === selSubclass);
@@ -639,7 +650,6 @@
                     chosenWeapon = db.weapons.find(w => w.hash === selWeapon);
                 } else {
                     let weaponPool = db.weapons;
-                    // Apply strict elemental filter if the chosen armor demands it
                     if (requiredWeaponElements.length > 0) {
                         const filteredPool = weaponPool.filter(w => requiredWeaponElements.includes(w.damageType));
                         if (filteredPool.length > 0) weaponPool = filteredPool;
@@ -652,13 +662,11 @@
                         const wText = (weapon.name + " " + (weapon.weaponType || "") + " " + weapon.desc + " " + (weapon.perkName || "")).replace(/[-]/g, ' ').toLowerCase();
                         let score = 0;
                         
-                        // Keyword Synergy
                         activeKeywords.forEach(kw => {
                             const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                             if (new RegExp('\\b' + safeKw + '\\b', 'i').test(wText)) score += getKeywordWeight(kw);
                         });
                         
-                        // Elemental Synergy Fallback (Closely Related)
                         if (requiredWeaponElements.includes(weapon.damageType)) {
                             score += 3;
                         } else if (targetElement && weapon.damageType === targetElement) {
@@ -689,7 +697,6 @@
                 
                 if (selSubclass) {
                     chosenSubclass = db.subclasses.find(s => s.hash === selSubclass);
-                    // Override user selection if they forced an Exotic Class Item but picked a non-Prismatic subclass
                     if (isExoticClassItem && chosenSubclass && chosenSubclass.element !== 'prismatic') {
                         chosenSubclass = null; 
                     }
@@ -699,43 +706,35 @@
                     let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
                     
                     if (isExoticClassItem) {
-                        // Strictly force Prismatic if an Exotic Class Item is equipped
                         subclassPool = subclassPool.filter(s => s.element === 'prismatic');
                         chosenSubclass = subclassPool[Math.floor(Math.random() * subclassPool.length)];
                     } else {
-                        // NEW: Subclass Synergy Engine
                         let bestScore = -1;
                         let candidates = [];
                         
                         subclassPool.forEach(sub => {
                             let score = 0;
                             
-                            // 1. Strict Element Requirements from Armor (e.g. "Arc final blows")
                             if (requiredWeaponElements.length > 0 && requiredWeaponElements.includes(sub.element)) {
                                 score += 50;
                             }
                             
-                            // 2. Element matching the chosen weapon
                             if (chosenWeapon && chosenWeapon.damageType !== 'kinetic' && chosenWeapon.damageType === sub.element) {
                                 score += 20;
                             }
                             
-                            // 3. Elemental Identity directly requested by active keywords
                             if (activeKeywords.has(sub.element)) {
                                 score += 30;
                             }
                             
-                            // 4. Keyword Synergy Check (Match subclass element to collected keywords)
                             activeKeywords.forEach(kw => {
                                 const weight = getKeywordWeight(kw);
                                 if (weight === 10) {
-                                    // Tier 1 Absolute Precedence: If the build requires a specific ability, strictly check if this subclass can equip it!
                                     let canEquip = false;
                                     ['super', 'melee', 'grenade', 'classAbility', 'jump', 'aspects'].forEach(cat => {
                                         if (db.abilities[cat]) {
                                             db.abilities[cat].forEach(a => {
                                                 if (a.name.toLowerCase() === kw && (a.classConstraint === "shared" || a.classConstraint === sub.classType)) {
-                                                    // Trust validPlugs first (guarantees accuracy for Prismatic and standard elements)
                                                     if (sub.validPlugs && sub.validPlugs.has(String(a.hash))) {
                                                         canEquip = true;
                                                     } else if (sub.element !== 'prismatic' && (a.elementConstraint === sub.element || a.elementConstraint === 'neutral')) {
@@ -747,20 +746,19 @@
                                     });
                                     
                                     if (canEquip) {
-                                        score += 1000; // Massive score injection guarantees this subclass wins
+                                        score += 1000; 
                                     }
                                 } else if (KEYWORDS[sub.element] && KEYWORDS[sub.element].includes(kw)) {
-                                    score += weight * 2; // Standard priority multiplier for elemental alignment
+                                    score += weight * 2; 
                                 }
                             });
                             
-                            // 5. Prismatic flexibility (Good fallback if multiple elemental verbs are active)
                             if (sub.element === 'prismatic') {
                                 let activeElements = ['solar', 'void', 'arc', 'stasis', 'strand'].filter(el => activeKeywords.has(el));
                                 if (activeElements.length > 0) score += 15;
                             }
                             
-                            score += Math.random() * 0.5; // Tiebreaker
+                            score += Math.random() * 0.5;
                             
                             if (score > bestScore) {
                                 bestScore = score;
@@ -776,37 +774,28 @@
 
                 if (chosenSubclass && chosenSubclass.element !== 'neutral') {
                     dominantElement = chosenSubclass.element;
-                    activeKeywords.add(dominantElement); // Inject subclass element natively as a valid keyword
+                    activeKeywords.add(dominantElement);
                 }
 
                 // 4. Ability Selection using Global PCI Pools
                 const getValidAbilities = (category, sub) => {
                     if (!sub || !db.abilities[category]) return [];
                     return db.abilities[category].filter(a => {
-                        // BUNGIE API TRUTH: If the subclass explicitly maps this exact ability hash in its socket definitions, it is valid!
                         if (sub.validPlugs && sub.validPlugs.has(String(a.hash))) {
                             return true;
                         }
-                        
-                        // STRICT OVERRIDE: Prismatic subclasses share abilities from other elements.
-                        // Relying on manual name/element checks is flawed. We MUST trust Bungie's PlugSets 100%.
-                        // If it is Prismatic, and it wasn't in the validPlugs set above, it is strictly banned.
                         if (sub.element === 'prismatic') {
                             return false;
                         }
 
-                        // Fallback for standard Light/Dark subclasses in case their API PlugSets are incomplete
                         const classMatch = a.classConstraint === "shared" || a.classConstraint === sub.classType;
                         let elementMatch = false;
                         
-                        // Critical Safety: Aspects, Fragments, Supers, Melees, and Grenades are NEVER neutral in Destiny 2. 
-                        // If they mapped as neutral, they must not leak into elemental pools.
                         if (a.elementConstraint === 'neutral' && ['aspects', 'fragments', 'super', 'grenade', 'melee'].includes(category)) {
                             return false; 
                         }
                         
                         elementMatch = a.elementConstraint === 'neutral' || a.elementConstraint === sub.element;
-                        
                         return classMatch && elementMatch;
                     });
                 };
@@ -824,7 +813,7 @@
                             if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += getKeywordWeight(kw); 
                         });
                         
-                        score += Math.random() * 0.5; // Tiebreaker
+                        score += Math.random() * 0.5;
                         
                         if (score > bestScore) {
                             bestScore = score;
@@ -859,11 +848,9 @@
                     /final blows? .*? with .*? grenade/i
                 ];
 
-                // Check if the current build strictly requires the grenade to deal damage or get kills
                 const combinedText = (armorFullText + " " + weaponText).toLowerCase();
                 const needsGrenadeDamage = damageGrenadeRegexes.some(regex => regex.test(combinedText));
 
-                // If damage is required, explicitly ban the Healing Grenade
                 if (needsGrenadeDamage) {
                     grenadePool = grenadePool.filter(g => g.name.toLowerCase() !== "healing grenade");
                 }
@@ -910,7 +897,6 @@
                     fragPool.forEach(abil => {
                         const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
                         
-                        // NEW: Exclude grenade-damage dependent fragments if using Healing Grenade
                         if (isHealingGrenade && damageGrenadeRegexes.some(r => r.test(text))) return;
 
                         let score = 0;
@@ -949,40 +935,38 @@
                 }).sort((a, b) => b.score - a.score);
 
                 let finalSets = [];
-                const prefers4Piece = Math.random() > 0.5;
-                const setsWith4 = scoredSets.filter(s => s.has4);
-                const setsWith2 = scoredSets.filter(s => s.has2);
-
-                if (prefers4Piece && setsWith4.length > 0) {
-                    const chosen4Piece = setsWith4[0];
-                    const perk2 = chosen4Piece.perks.find(p => p.count === 2);
-                    const perk4 = chosen4Piece.perks.find(p => p.count === 4);
-                    // Include both the 2-piece and 4-piece bonuses for full context
-                    if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2, setDef: chosen4Piece });
-                    if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4, setDef: chosen4Piece });
-                } else if (setsWith2.length >= 2) {
-                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
-                    finalSets.push({ setName: setsWith2[1].name, perk: setsWith2[1].perks.find(p => p.count === 2), setDef: setsWith2[1] });
-                } else if (setsWith2.length === 1) {
-                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
+                if (scoredSets.length > 0) {
+                    const primarySet = scoredSets[0];
+                    primarySet.perks.forEach(perk => {
+                        if (perk.count <= 4) {
+                            finalSets.push({ setName: primarySet.name, perk: perk, setDef: primarySet });
+                        }
+                    });
+                    
+                    const maxCount = Math.max(...primarySet.perks.map(p => p.count));
+                    if (maxCount <= 2 && scoredSets.length > 1) {
+                        const secondarySet = scoredSets[1];
+                        secondarySet.perks.forEach(perk => {
+                            if (perk.count <= 2) {
+                                finalSets.push({ setName: secondarySet.name, perk: perk, setDef: secondarySet });
+                            }
+                        });
+                    }
                 }
 
                 let selectedSetArmor = [];
                 let occupiedBuckets = new Set();
                 
-                // Do not put a set piece in the slot occupied by the Exotic Armor
                 if (chosenArmor && chosenArmor.bucket) {
                     occupiedBuckets.add(chosenArmor.bucket);
                 }
 
-                // Determine max required pieces per set (e.g. if 2 and 4 piece are active for same set, max is 4)
                 const requiredCounts = new Map();
                 finalSets.forEach(fs => {
                     const currentReq = requiredCounts.get(fs.setDef.hash) || 0;
                     requiredCounts.set(fs.setDef.hash, Math.max(currentReq, fs.perk.count));
                 });
 
-                // Pick the available armor pieces for the final class
                 requiredCounts.forEach((requiredCount, setHash) => {
                     const setDef = finalSets.find(fs => fs.setDef.hash === setHash).setDef;
                     const armorForClass = setDef.setArmor[finalClass] || [];
@@ -1023,22 +1007,18 @@
                 if (!build) return;
                 
                 const equippedItems = [];
-                // Use 'hash' and cast to Number as required by DIM schema
                 if (build.weapon) equippedItems.push({ hash: Number(build.weapon.hash) });
                 if (build.armor) equippedItems.push({ hash: Number(build.armor.hash) });
                 
-                // Add the hidden legendary set armor pieces required for bonuses
                 if (build.setArmorPieces) {
                     build.setArmorPieces.forEach(piece => {
                         equippedItems.push({ hash: Number(piece.hash) });
                     });
                 }
                 
-                // Abilities are not separate items; they are socket overrides on the Subclass
                 if (build.subclass) {
                     const socketOverrides = {};
                     
-                    // Standard Subclass 3.0 socket indexes
                     if (build.abilities.superAbil) socketOverrides["0"] = Number(build.abilities.superAbil.hash);
                     if (build.abilities.classAbil) socketOverrides["1"] = Number(build.abilities.classAbil.hash);
                     if (build.abilities.jump) socketOverrides["2"] = Number(build.abilities.jump.hash);
@@ -1093,7 +1073,6 @@
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
-                        {/* Seed Parameters Panel */}
                         <div className="d2-card rounded-lg p-6 md:col-span-4 self-start md:sticky md:top-4">
                             <h3 className="text-lg font-bold mb-4 uppercase tracking-wider text-slate-300">Seed Parameters</h3>
                             
@@ -1146,7 +1125,6 @@
                             </button>
                         </div>
 
-                        {/* Result Panel */}
                         <div className={`d2-card rounded-lg flex flex-col md:col-span-8 ${build ? 'element-bg-' + build.element : ''}`}>
                             {!build ? (
                                 <div className="flex-1 flex items-center justify-center text-slate-500 p-6 text-center min-h-[400px]">
@@ -1164,7 +1142,6 @@
                                         </button>
                                     </div>
 
-                                    {/* Main Exotics */}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                                         <div className="bg-slate-800/50 rounded p-4 flex gap-4 items-start">
                                             {build.weapon?.icon && <img src={build.weapon.icon} className="w-16 h-16 rounded border-2 border-[#ceae33] shrink-0 mt-1" alt="Weapon" />}
@@ -1186,7 +1163,6 @@
                                         </div>
                                     </div>
 
-                                    {/* Subclass Core Abilities */}
                                     <div className="bg-slate-800/50 rounded p-5 mb-4">
                                         <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300">Subclass & Core Abilities</h3>
                                         
@@ -1198,7 +1174,6 @@
                                         </div>
 
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                                            {/* Helper to render abilities identically */}
                                             {[
                                                 { label: 'Super', data: build.abilities.superAbil },
                                                 { label: 'Class Ability', data: build.abilities.classAbil },
@@ -1218,7 +1193,6 @@
                                         </div>
                                     </div>
                                     
-                                    {/* Aspects */}
                                     {build.abilities.aspects && build.abilities.aspects.length > 0 && (
                                         <div className="bg-slate-800/50 rounded p-5 mb-4">
                                             <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300">Aspects</h3>
@@ -1239,7 +1213,6 @@
                                         </div>
                                     )}
 
-                                    {/* Fragments */}
                                     {build.abilities.fragments && build.abilities.fragments.length > 0 && (
                                         <div className="bg-slate-800/50 rounded p-5 mb-4">
                                             <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300 flex justify-between items-center">
@@ -1269,7 +1242,6 @@
                                         </div>
                                     )}
 
-                                    {/* Set Bonuses */}
                                     {build.actualSetBonuses && build.actualSetBonuses.length > 0 && (
                                         <div className="bg-slate-800/50 rounded p-5 mt-auto">
                                             <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300">Armor Set Bonuses</h3>
