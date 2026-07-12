@@ -282,12 +282,19 @@
                                 const hasPerk = !!actualPerkName || perkColumns.length > 0;
 
                                 let damageType = "kinetic";
+                                let ammoType = "";
                                 if (isExoticWeapon) {
                                     if (item.defaultDamageType === 2) damageType = "arc";
                                     else if (item.defaultDamageType === 3) damageType = "solar";
                                     else if (item.defaultDamageType === 4) damageType = "void";
                                     else if (item.defaultDamageType === 6) damageType = "stasis";
                                     else if (item.defaultDamageType === 7) damageType = "strand";
+                                    
+                                    if (item.equippingBlock) {
+                                        if (item.equippingBlock.ammoType === 1) ammoType = "primary";
+                                        else if (item.equippingBlock.ammoType === 2) ammoType = "special";
+                                        else if (item.equippingBlock.ammoType === 3) ammoType = "heavy";
+                                    }
                                 }
 
                                 let weaponType = dNameLower.replace('combat ', '');
@@ -298,7 +305,7 @@
                                     desc: finalDesc, perkName: finalPerkName, classType: item.classType, 
                                     itemType: item.itemType, index: itemIndex, hasPerk,
                                     bucket: item.inventory?.bucketTypeHash,
-                                    damageType, weaponType, perkColumns
+                                    damageType, weaponType, ammoType, perkColumns
                                 };
 
                                 const targetMap = isExoticWeapon ? weaponsMap : armorMap;
@@ -840,7 +847,7 @@
                 const getKeywordWeight = (kw) => {
                     if (db.abilityNames && db.abilityNames.has(kw)) return 10;
                     if (db.weaponTypes && db.weaponTypes.has(kw)) return 5;
-                    if (['solar', 'void', 'arc', 'stasis', 'strand', 'prismatic', 'kinetic', 'neutral'].includes(kw)) return 5;
+                    if (['solar', 'void', 'arc', 'stasis', 'strand', 'prismatic', 'kinetic', 'neutral', 'primary', 'special', 'heavy'].includes(kw)) return 5;
                     return 2;
                 };
                 
@@ -909,6 +916,10 @@
 
                 const weaponText = (chosenWeapon.name + " " + (chosenWeapon.weaponType || "") + " " + chosenWeapon.desc + " " + (chosenWeapon.perkName || "")).toLowerCase();
                 addKeywords(weaponText, false);
+                
+                if (chosenWeapon.ammoType) {
+                    activeKeywords.add(chosenWeapon.ammoType);
+                }
                 
                 // 3. Select Subclass
                 let chosenSubclass;
@@ -1575,6 +1586,16 @@
                                                             'bg-slate-700/30 text-slate-300 border-slate-600'
                                                         }`}>
                                                             {build.weapon.damageType}
+                                                        </span>
+                                                    )}
+                                                    {build.weapon?.ammoType && (
+                                                        <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-bold tracking-wider border ${
+                                                            build.weapon.ammoType === 'primary' ? 'bg-slate-100/10 text-slate-100 border-slate-300' :
+                                                            build.weapon.ammoType === 'special' ? 'bg-green-500/20 text-green-400 border-green-500' :
+                                                            build.weapon.ammoType === 'heavy' ? 'bg-purple-500/20 text-purple-400 border-purple-500' :
+                                                            'bg-slate-700/30 text-slate-300 border-slate-600'
+                                                        }`}>
+                                                            {build.weapon.ammoType}
                                                         </span>
                                                     )}
                                                 </div>
