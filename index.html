@@ -1275,7 +1275,21 @@
                                         <div className="bg-slate-800/50 rounded p-4 flex gap-4 items-start">
                                             {build.weapon?.icon && <img src={build.weapon.icon} className="w-16 h-16 rounded border-2 border-[#ceae33] shrink-0 mt-1" alt="Weapon" />}
                                             <div>
-                                                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Exotic Weapon</div>
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Exotic Weapon</div>
+                                                    {build.weapon?.damageType && (
+                                                        <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-bold tracking-wider border ${
+                                                            build.weapon.damageType === 'solar' ? 'bg-orange-900/30 text-orange-400 border-orange-800' :
+                                                            build.weapon.damageType === 'void' ? 'bg-purple-900/30 text-purple-400 border-purple-800' :
+                                                            build.weapon.damageType === 'arc' ? 'bg-cyan-900/30 text-cyan-400 border-cyan-800' :
+                                                            build.weapon.damageType === 'stasis' ? 'bg-blue-900/30 text-blue-400 border-blue-800' :
+                                                            build.weapon.damageType === 'strand' ? 'bg-green-900/30 text-green-400 border-green-800' :
+                                                            'bg-slate-700/30 text-slate-300 border-slate-600'
+                                                        }`}>
+                                                            {build.weapon.damageType}
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 <div className="font-bold text-[#ceae33] text-lg leading-none mb-1.5">{build.weapon?.name}</div>
                                                 {build.weapon?.perkName && <div className="text-xs font-semibold text-slate-300 mb-0.5">{build.weapon.perkName}</div>}
                                                 <div className="text-[11px] text-slate-400 leading-tight">{build.weapon?.desc}</div>
