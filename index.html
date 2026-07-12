@@ -102,7 +102,7 @@
                         let plugSetDefUrl = "https://destiny.plumbing/en/raw/DestinyPlugSetDefinition.json";
                         
                         try {
-                            const res = await fetch("https://www.bungie.net/Platform/Destiny2/Manifest/");
+                            const res = await fetch("https://www.bungie.net/Platform/Destiny2/Manifest/", { mode: 'cors' });
                             if (res.ok) {
                                 const data = await res.json();
                                 itemDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinyInventoryItemDefinition;
@@ -116,10 +116,10 @@
 
                         setStatus("Downloading Databases (this may take a moment)...");
                         const [itemsRes, setsRes, perksRes, plugSetsRes] = await Promise.all([
-                            fetch(itemDefUrl),
-                            fetch(setDefUrl),
-                            fetch(perkDefUrl),
-                            fetch(plugSetDefUrl)
+                            fetch(itemDefUrl, { mode: 'cors' }),
+                            fetch(setDefUrl, { mode: 'cors' }),
+                            fetch(perkDefUrl, { mode: 'cors' }),
+                            fetch(plugSetDefUrl, { mode: 'cors' })
                         ]);
                         
                         const itemsData = await itemsRes.json();
@@ -478,7 +478,8 @@
                                                     const pItem = itemsData[pHash];
                                                     
                                                     if (pItem.displayProperties && pItem.displayProperties.name) {
-                                                        if (pItem.displayProperties.name.toLowerCase().includes("reset")) return; // Filter out dummy "Reset Artifact" nodes
+                                                        const pNameLower = pItem.displayProperties.name.toLowerCase();
+                                                        if (pNameLower.includes("reset") || pNameLower.includes("empty") || pNameLower.includes("deprecated")) return; // Filter out dummy, empty, and deprecated nodes
                                                         
                                                         let pDesc = pItem.displayProperties.description || "";
                                                         if (pItem.perks && pItem.perks.length > 0) {
@@ -510,7 +511,7 @@
                             }
                         });
 
-                        const parsedSets = [];
+                        const parsedSetsList = [];
                         for (const hash in setsData) {
                             const setDef = setsData[hash];
                             const setPerksList = setDef.setPerks || setDef.setBlock?.setPerks || [];
@@ -577,7 +578,7 @@
                                 const totalArmorPieces = setArmor[0].length + setArmor[1].length + setArmor[2].length;
 
                                 if (parsedSetPerks.length > 0 && totalArmorPieces > 0) {
-                                    parsedSets.push({
+                                    parsedSetsList.push({
                                         hash: hash,
                                         name: setDef.displayProperties?.name || "Unknown Set",
                                         perks: parsedSetPerks,
@@ -590,7 +591,7 @@
                             }
                         }
 
-                        setDb({ weapons, armor, subclasses, abilities: allAbilities, sets: parsedSets, abilityNames: globalAbilityNames, weaponTypes: globalWeaponTypes, artifacts: parsedArtifacts });
+                        setDb({ weapons, armor, subclasses, abilities: allAbilities, sets: parsedSetsList, abilityNames: globalAbilityNames, weaponTypes: globalWeaponTypes, artifacts: parsedArtifacts });
                         setIsReady(true);
                     } catch (err) {
                         setStatus("Error loading manifest. " + err.message);
@@ -982,13 +983,40 @@
                         const scoredCols = artifact.columns.map(column => {
                             return column.map(perk => {
                                 let score = 0;
-                                const text = perk.desc.replace(/[-]/g, ' ').toLowerCase(); // Strictly score based on description
+                                // Strictly score based on description, ignoring perk names
+                                const text = perk.desc.replace(/[-]/g, ' ').toLowerCase(); 
+                                
+                                let mentionsOtherWeapons = false;
+                                let mentionsChosenWeapon = false;
+
+                                // Prevent selecting perks that buff weapon types we aren't using
+                                if (chosenWeapon && chosenWeapon.weaponType && db.weaponTypes) {
+                                    db.weaponTypes.forEach(wt => {
+                                        if (!wt) return;
+                                        const safeWt = wt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                        if (new RegExp('\\b' + safeWt + 's?\\b', 'i').test(text)) {
+                                            if (wt === chosenWeapon.weaponType) {
+                                                mentionsChosenWeapon = true;
+                                            } else {
+                                                mentionsOtherWeapons = true;
+                                            }
+                                        }
+                                    });
+                                }
+
                                 activeKeywords.forEach(kw => {
                                     const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                                     if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) {
                                         score += getKeywordWeight(kw) * 1.5;
                                     }
                                 });
+
+                                if (mentionsChosenWeapon) {
+                                    score += 25; // Massive boost for matching our exotic
+                                } else if (mentionsOtherWeapons) {
+                                    score -= 1000; // Ban perks that strictly buff unequipped weapon types
+                                }
+
                                 score += Math.random() * 0.5; // Tiebreaker
                                 return { ...perk, score };
                             });
@@ -1006,7 +1034,7 @@
                                 .sort((a, b) => b.score - a.score);
                         };
 
-                        // Selection logic as specified:
+                        // Selection logic:
                         // 2 perks from Tier 1 (Column 0)
                         let t1Pool = getPool(0);
                         for (let i = 0; i < 2; i++) {
@@ -1038,7 +1066,7 @@
                     });
                 }
 
-                // 7. Armor Sets (Version 8 Parser Synergy Output)
+                // 7. Armor Sets
                 const scoredSets = db.sets.map(set => {
                     let score = 0;
                     activeKeywords.forEach(kw => {
@@ -1069,34 +1097,6 @@
                     finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
                 }
 
-                let selectedSetArmor = [];
-                let occupiedBuckets = new Set();
-                
-                if (chosenArmor && chosenArmor.bucket) {
-                    occupiedBuckets.add(chosenArmor.bucket);
-                }
-
-                const requiredCounts = new Map();
-                finalSets.forEach(fs => {
-                    const currentReq = requiredCounts.get(fs.setDef.hash) || 0;
-                    requiredCounts.set(fs.setDef.hash, Math.max(currentReq, fs.perk.count));
-                });
-
-                requiredCounts.forEach((requiredCount, setHash) => {
-                    const setDef = finalSets.find(fs => fs.setDef.hash === setHash).setDef;
-                    const armorForClass = setDef.setArmor[finalClass] || [];
-                    
-                    let piecesEquipped = 0;
-                    for (const piece of armorForClass) {
-                        if (piecesEquipped >= requiredCount) break;
-                        if (!occupiedBuckets.has(piece.bucket)) {
-                            selectedSetArmor.push(piece);
-                            occupiedBuckets.add(piece.bucket);
-                            piecesEquipped++;
-                        }
-                    }
-                });
-
                 setBuild({
                     class: CLASS_TYPES[finalClass],
                     element: dominantElement,
@@ -1104,7 +1104,6 @@
                     weapon: chosenWeapon,
                     subclass: chosenSubclass,
                     actualSetBonuses: finalSets,
-                    setArmorPieces: selectedSetArmor,
                     artifact: bestArtifact,
                     artifactPerks: bestArtifactPerks,
                     abilities: {
@@ -1124,11 +1123,8 @@
                 if (!build) return;
                 
                 const equippedItems = [];
+                // Only pass the exotic weapon. The exotic armor goes in parameters.
                 if (build.weapon) equippedItems.push({ hash: Number(build.weapon.hash) });
-                
-                if (build.artifact) {
-                    equippedItems.push({ hash: Number(build.artifact.hash) });
-                }
                 
                 if (build.subclass) {
                     const socketOverrides = {};
