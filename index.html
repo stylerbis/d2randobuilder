@@ -723,6 +723,11 @@
                     if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic') targetElement = preSub.element;
                 }
 
+                // NEW: Precision Requirements Tracking
+                const precisionRegex = /\bprecision\b\s+(?:hits?|kills?|final blows?|damage)\b/i;
+                const nonPrecisionTypes = ['grenade launcher', 'rocket launcher', 'sword', 'glaive', 'fusion rifle'];
+                const armorNeedsPrecision = precisionRegex.test(armorFullText);
+
                 // 2. Select Weapon based on synergy (Using Top-N Pool)
                 let chosenWeapon;
                 if (selWeapon) {
@@ -750,6 +755,12 @@
                             score += 20; 
                         } else if (armorElements.has(weapon.damageType)) {
                             score += 15; // Strongly favor weapons matching the implicit element of the armor
+                        }
+                        
+                        // NEW: Precision Ban
+                        // If the armor requires precision hits, ban weapons that can't crit
+                        if (armorNeedsPrecision && nonPrecisionTypes.includes(weapon.weaponType)) {
+                            score -= 2000;
                         }
 
                         return { item: weapon, score };
@@ -1042,6 +1053,7 @@
                                 let mentionsOtherWeapons = false;
                                 let mentionsChosenWeapon = false;
                                 let abilityElementMismatch = false;
+                                let precisionMismatch = false;
 
                                 if (chosenWeapon && chosenWeapon.weaponType && db.weaponTypes) {
                                     db.weaponTypes.forEach(wt => {
@@ -1113,6 +1125,14 @@
                                     }
                                 }
 
+                                // NEW: Strict Precision Check
+                                // If the perk requires precision hits, but we are holding a non-precision weapon, ban it.
+                                if (precisionRegex.test(text)) {
+                                    if (chosenWeapon && nonPrecisionTypes.includes(chosenWeapon.weaponType)) {
+                                        precisionMismatch = true;
+                                    }
+                                }
+
                                 activeKeywords.forEach(kw => {
                                     const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                                     if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) {
@@ -1124,6 +1144,7 @@
                                 else if (mentionsOtherWeapons) score -= 1000; 
                                 
                                 if (abilityElementMismatch) score -= 1000;
+                                if (precisionMismatch) score -= 1000;
 
                                 return { ...perk, score };
                             });
