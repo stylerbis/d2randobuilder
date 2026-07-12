@@ -83,7 +83,7 @@
         function App() {
             const [status, setStatus] = React.useState("Initializing...");
             const [isReady, setIsReady] = React.useState(false);
-            const [db, setDb] = React.useState({ weapons: [], armor: [], subclasses: [], abilities: {}, sets: [], abilityNames: new Set(), weaponTypes: new Set(), artifact: null, artifactPerks: [] });
+            const [db, setDb] = React.useState({ weapons: [], armor: [], subclasses: [], abilities: {}, sets: [], abilityNames: new Set(), weaponTypes: new Set(), artifacts: [] });
             
             const [selClass, setSelClass] = React.useState("");
             const [selArmor, setSelArmor] = React.useState("");
@@ -141,7 +141,6 @@
                         const globalWeaponTypes = new Set();
 
                         const rawArtifacts = [];
-                        const rawArtifactPerks = [];
 
                         for (const hash in itemsData) {
                             const item = itemsData[hash];
@@ -234,10 +233,8 @@
                             }
 
                             // 1.5 Artifacts
-                            if (item.itemType === 11) {
-                                rawArtifacts.push({ hash, name, icon: `https://www.bungie.net${item.displayProperties.icon}`, index: item.index || 0, desc: desc });
-                            } else if (item.plug && item.plug.plugCategoryIdentifier && item.plug.plugCategoryIdentifier.toLowerCase().includes('artifact')) {
-                                rawArtifactPerks.push({ hash, name, icon: `https://www.bungie.net${item.displayProperties.icon}`, index: item.index || 0, desc: desc });
+                            if (item.inventory && item.inventory.bucketTypeHash === 1506418338) {
+                                rawArtifacts.push(item);
                             }
 
                             // 2. Subclasses (Prismatic Override logic mapped)
@@ -358,6 +355,12 @@
                                         }
                                     }
 
+                                    // Special override for Blink, as it is the only element-locked Jump ability
+                                    if (nameLower === "blink") {
+                                        if (classConstraint === 2) elementConstraint = "void"; // Warlock
+                                        else if (classConstraint === 1) elementConstraint = "arc"; // Hunter
+                                    }
+
                                     if (['super', 'melee', 'grenade', 'classAbility', 'jump'].includes(category)) {
                                         if (KEYWORDS[elementConstraint] && !KEYWORDS[elementConstraint].includes(nameLower)) {
                                             KEYWORDS[elementConstraint].push(nameLower);
@@ -448,19 +451,64 @@
                             fragments: Array.from(abilitiesMaps.fragments.values())
                         };
 
-                        rawArtifacts.sort((a, b) => b.index - a.index);
-                        const currentArtifact = rawArtifacts.length > 0 ? rawArtifacts[0] : null;
+                        const parsedArtifacts = [];
+                        
+                        rawArtifacts.forEach(art => {
+                            if (art.sockets && art.sockets.socketEntries && art.sockets.socketEntries.length > 0) {
+                                const artifactData = {
+                                    hash: art.hash,
+                                    name: art.displayProperties.name,
+                                    icon: `https://www.bungie.net${art.displayProperties.icon}`,
+                                    desc: art.displayProperties.description || "",
+                                    columns: []
+                                };
+                                
+                                const seenPerkHashes = new Set();
 
-                        rawArtifactPerks.sort((a, b) => b.index - a.index);
-                        const uniqueArtifactPerks = [];
-                        const seenPerkNames = new Set();
-                        for (const p of rawArtifactPerks) {
-                            if (!seenPerkNames.has(p.name)) {
-                                seenPerkNames.add(p.name);
-                                uniqueArtifactPerks.push(p);
-                                if (uniqueArtifactPerks.length >= 25) break; 
+                                art.sockets.socketEntries.forEach(socket => {
+                                    if (socket.reusablePlugSetHash && plugSetsData[socket.reusablePlugSetHash]) {
+                                        const plugSet = plugSetsData[socket.reusablePlugSetHash];
+                                        const columnPerks = [];
+                                        
+                                        if (plugSet.reusablePlugItems) {
+                                            plugSet.reusablePlugItems.forEach(plugItem => {
+                                                const pHash = plugItem.plugItemHash;
+                                                if (!seenPerkHashes.has(pHash) && itemsData[pHash]) {
+                                                    seenPerkHashes.add(pHash);
+                                                    const pItem = itemsData[pHash];
+                                                    
+                                                    if (pItem.displayProperties && pItem.displayProperties.name) {
+                                                        if (pItem.displayProperties.name.toLowerCase().includes("reset")) return; // Filter out dummy "Reset Artifact" nodes
+                                                        
+                                                        let pDesc = pItem.displayProperties.description || "";
+                                                        if (pItem.perks && pItem.perks.length > 0) {
+                                                            const sandboxHash = pItem.perks[0].perkHash;
+                                                            if (sandboxHash && perksData[sandboxHash] && perksData[sandboxHash].displayProperties) {
+                                                                pDesc = perksData[sandboxHash].displayProperties.description || pDesc;
+                                                            }
+                                                        }
+                                                        columnPerks.push({
+                                                            hash: String(pHash),
+                                                            name: pItem.displayProperties.name,
+                                                            icon: `https://www.bungie.net${pItem.displayProperties.icon}`,
+                                                            desc: pDesc
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        
+                                        if (columnPerks.length > 0) {
+                                            artifactData.columns.push(columnPerks);
+                                        }
+                                    }
+                                });
+
+                                if (artifactData.columns.length > 0) {
+                                    parsedArtifacts.push(artifactData);
+                                }
                             }
-                        }
+                        });
 
                         const parsedSets = [];
                         for (const hash in setsData) {
@@ -542,7 +590,7 @@
                             }
                         }
 
-                        setDb({ weapons, armor, subclasses, abilities: allAbilities, sets: parsedSets, abilityNames: globalAbilityNames, weaponTypes: globalWeaponTypes, artifact: currentArtifact, artifactPerks: uniqueArtifactPerks });
+                        setDb({ weapons, armor, subclasses, abilities: allAbilities, sets: parsedSets, abilityNames: globalAbilityNames, weaponTypes: globalWeaponTypes, artifacts: parsedArtifacts });
                         setIsReady(true);
                     } catch (err) {
                         setStatus("Error loading manifest. " + err.message);
@@ -920,22 +968,74 @@
                     }
                 }
 
-                // 6. Artifact Perks
-                let selectedArtifactPerks = [];
-                if (db.artifactPerks && db.artifactPerks.length > 0) {
-                    const scoredPerks = db.artifactPerks.map(perk => {
-                        let score = 0;
-                        const text = (perk.name + " " + perk.desc).replace(/[-]/g, ' ').toLowerCase();
-                        activeKeywords.forEach(kw => {
-                            const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                            if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += getKeywordWeight(kw) * 1.5;
+                // 6. Artifact & Perks - Multi-Artifact Synergy Evaluation
+                let bestArtifact = null;
+                let bestArtifactPerks = [];
+                let bestArtifactScore = -1;
+
+                if (db.artifacts && db.artifacts.length > 0) {
+                    db.artifacts.forEach(artifact => {
+                        let currentArtifactScore = 0;
+                        let currentSelectedPerks = [];
+
+                        // Score all perks in the artifact
+                        const scoredCols = artifact.columns.map(column => {
+                            return column.map(perk => {
+                                let score = 0;
+                                const text = (perk.name + " " + perk.desc).replace(/[-]/g, ' ').toLowerCase();
+                                activeKeywords.forEach(kw => {
+                                    const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                    if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) {
+                                        score += getKeywordWeight(kw) * 1.5;
+                                    }
+                                });
+                                score += Math.random() * 0.5; // Tiebreaker
+                                return { ...perk, score };
+                            });
                         });
-                        score += Math.random() * 0.5;
-                        return { score, perk };
+
+                        // Helper to get available perks up to a specific column index
+                        const getPool = (maxColIndex) => {
+                            let pool = [];
+                            for (let i = 0; i <= Math.min(maxColIndex, scoredCols.length - 1); i++) {
+                                pool.push(...scoredCols[i]);
+                            }
+                            // Filter out already selected perks and sort by score descending
+                            return pool
+                                .filter(p => !currentSelectedPerks.some(sel => sel.hash === p.hash))
+                                .sort((a, b) => b.score - a.score);
+                        };
+
+                        // Selection logic as specified:
+                        // 2 perks from Tier 1 (Column 0)
+                        let t1Pool = getPool(0);
+                        for (let i = 0; i < 2; i++) {
+                            if (t1Pool.length > 0) currentSelectedPerks.push(t1Pool.shift());
+                        }
+
+                        // 3 perks from Tier 2 (Columns 0, 1)
+                        let t2Pool = getPool(1);
+                        for (let i = 0; i < 3; i++) {
+                            if (t2Pool.length > 0) currentSelectedPerks.push(t2Pool.shift());
+                        }
+
+                        // 2 perks from Tier 3 (Columns 0, 1, 2)
+                        let t3Pool = getPool(2);
+                        for (let i = 0; i < 2; i++) {
+                            if (t3Pool.length > 0) currentSelectedPerks.push(t3Pool.shift());
+                        }
+
+                        // Tally score for this artifact configuration
+                        currentSelectedPerks.forEach(perk => {
+                            currentArtifactScore += perk.score;
+                        });
+
+                        if (currentArtifactScore > bestArtifactScore) {
+                            bestArtifactScore = currentArtifactScore;
+                            bestArtifact = artifact;
+                            bestArtifactPerks = currentSelectedPerks;
+                        }
                     });
-                    
-                    scoredPerks.sort((a, b) => b.score - a.score);
-                    selectedArtifactPerks = scoredPerks.slice(0, 5).map(sp => sp.perk);
                 }
 
                 // 7. Armor Sets (Version 8 Parser Synergy Output)
@@ -1005,8 +1105,8 @@
                     subclass: chosenSubclass,
                     actualSetBonuses: finalSets,
                     setArmorPieces: selectedSetArmor,
-                    artifact: db.artifact,
-                    artifactPerks: selectedArtifactPerks,
+                    artifact: bestArtifact,
+                    artifactPerks: bestArtifactPerks,
                     abilities: {
                         superAbil,
                         grenade,
@@ -1025,12 +1125,9 @@
                 
                 const equippedItems = [];
                 if (build.weapon) equippedItems.push({ hash: Number(build.weapon.hash) });
-                if (build.armor) equippedItems.push({ hash: Number(build.armor.hash) });
                 
-                if (build.setArmorPieces) {
-                    build.setArmorPieces.forEach(piece => {
-                        equippedItems.push({ hash: Number(piece.hash) });
-                    });
+                if (build.artifact) {
+                    equippedItems.push({ hash: Number(build.artifact.hash) });
                 }
                 
                 if (build.subclass) {
@@ -1063,8 +1160,27 @@
                     notes: `Generated using Random Build tool. Focuses on ${build.weapon?.name} and ${build.armor?.name}.`,
                     classType: classTypeNum,
                     equipped: equippedItems,
-                    unequipped: []
+                    unequipped: [],
+                    parameters: {}
                 };
+                
+                if (build.artifactPerks && build.artifactPerks.length > 0) {
+                    loadout.parameters.artifactUnlocks = {
+                        unlockedItemHashes: build.artifactPerks.map(p => Number(p.hash))
+                    };
+                }
+
+                if (build.actualSetBonuses && build.actualSetBonuses.length > 0) {
+                    loadout.parameters.setBonuses = {};
+                    build.actualSetBonuses.forEach(sb => {
+                        const current = loadout.parameters.setBonuses[sb.setDef.hash] || 0;
+                        loadout.parameters.setBonuses[sb.setDef.hash] = Math.max(current, sb.perk.count);
+                    });
+                }
+
+                if (build.armor) {
+                    loadout.parameters.exoticArmorHash = Number(build.armor.hash);
+                }
 
                 const jsonStr = JSON.stringify(loadout);
                 const dimUrl = `https://app.destinyitemmanager.com/loadouts?loadout=${encodeURIComponent(jsonStr)}`;
