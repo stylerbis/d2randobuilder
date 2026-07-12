@@ -74,7 +74,6 @@
             2: "Warlock"
         };
         
-        // Strict mapping of subclass strings to guaranteed elements
         const SUBCLASS_MAPPING = {
             "striker": "arc", "sentinel": "void", "sunbreaker": "solar", "behemoth": "stasis", "berserker": "strand", "prismatic titan": "prismatic",
             "arcstrider": "arc", "nightstalker": "void", "gunslinger": "solar", "revenant": "stasis", "threadrunner": "strand", "prismatic hunter": "prismatic",
@@ -84,7 +83,7 @@
         function App() {
             const [status, setStatus] = React.useState("Initializing...");
             const [isReady, setIsReady] = React.useState(false);
-            const [db, setDb] = React.useState({ weapons: [], armor: [], subclasses: [], abilities: {}, sets: [], abilityNames: new Set(), weaponTypes: new Set() });
+            const [db, setDb] = React.useState({ weapons: [], armor: [], subclasses: [], abilities: {}, sets: [], abilityNames: new Set(), weaponTypes: new Set(), artifact: null, artifactPerks: [] });
             
             const [selClass, setSelClass] = React.useState("");
             const [selArmor, setSelArmor] = React.useState("");
@@ -140,6 +139,9 @@
                         const legendaryArmor = [];
                         const globalAbilityNames = new Set();
                         const globalWeaponTypes = new Set();
+
+                        const rawArtifacts = [];
+                        const rawArtifactPerks = [];
 
                         for (const hash in itemsData) {
                             const item = itemsData[hash];
@@ -200,7 +202,6 @@
                                 const itemIndex = item.index || 0;
                                 const hasPerk = !!actualPerkName;
 
-                                // Extract strict damage types for Exotic Weapons
                                 let damageType = "kinetic";
                                 if (isExoticWeapon) {
                                     if (item.defaultDamageType === 2) damageType = "arc";
@@ -210,7 +211,6 @@
                                     else if (item.defaultDamageType === 7) damageType = "strand";
                                 }
 
-                                // Normalize weapon types
                                 let weaponType = dNameLower.replace('combat ', '');
                                 if (isExoticWeapon && weaponType) globalWeaponTypes.add(weaponType);
 
@@ -219,8 +219,7 @@
                                     desc: finalDesc, perkName: finalPerkName, classType: item.classType, 
                                     itemType: item.itemType, index: itemIndex, hasPerk,
                                     bucket: item.inventory?.bucketTypeHash,
-                                    damageType,
-                                    weaponType
+                                    damageType, weaponType
                                 };
 
                                 const targetMap = isExoticWeapon ? weaponsMap : armorMap;
@@ -234,7 +233,14 @@
                                 continue;
                             }
 
-                            // 2. Subclasses
+                            // 1.5 Artifacts
+                            if (item.itemType === 11) {
+                                rawArtifacts.push({ hash, name, icon: `https://www.bungie.net${item.displayProperties.icon}`, index: item.index || 0, desc: desc });
+                            } else if (item.plug && item.plug.plugCategoryIdentifier && item.plug.plugCategoryIdentifier.toLowerCase().includes('artifact')) {
+                                rawArtifactPerks.push({ hash, name, icon: `https://www.bungie.net${item.displayProperties.icon}`, index: item.index || 0, desc: desc });
+                            }
+
+                            // 2. Subclasses (Prismatic Override logic mapped)
                             if (item.itemType === 16 && item.classType !== 3 && dName.includes("Subclass")) {
                                 let subName = name.toLowerCase();
                                 let determinedElement = "neutral";
@@ -254,18 +260,15 @@
                                     if (item.sockets && item.sockets.socketEntries) {
                                         for (const socket of item.sockets.socketEntries) {
                                             if (socket.singleInitialItemHash) validPlugs.add(String(socket.singleInitialItemHash));
-                                            
                                             if (socket.reusablePlugItems) {
                                                 socket.reusablePlugItems.forEach(p => validPlugs.add(String(p.plugItemHash)));
                                             }
-                                            
                                             if (socket.reusablePlugSetHash && plugSetsData[socket.reusablePlugSetHash]) {
                                                 const plugSet = plugSetsData[socket.reusablePlugSetHash];
                                                 if (plugSet.reusablePlugItems) {
                                                     plugSet.reusablePlugItems.forEach(p => validPlugs.add(String(p.plugItemHash)));
                                                 }
                                             }
-                                            
                                             if (socket.randomizedPlugSetHash && plugSetsData[socket.randomizedPlugSetHash]) {
                                                 const plugSet = plugSetsData[socket.randomizedPlugSetHash];
                                                 if (plugSet.reusablePlugItems) {
@@ -297,7 +300,6 @@
                                 const dNameBans = ['launcher', 'ornament', 'mod', 'catalyst', 'masterwork', 'upgrade', 'shader', 'emote', 'ghost', 'sparrow', 'ship', 'dummy', 'finisher', 'weapon', 'armor'];
                                 if (dNameBans.some(term => dNameLower.includes(term))) continue;
 
-                                // Transcendence Grenade Ban
                                 const transcendentGrenades = ['freezing singularity', 'hailfire spike', 'electrified snare'];
                                 if (transcendentGrenades.some(term => nameLower.includes(term))) continue;
 
@@ -316,7 +318,6 @@
                                 else if (pci.includes('fragment') || dNameLower.includes('fragment')) category = 'fragments';
 
                                 if (category && name.length > 1) {
-                                    // Inject Ability Name into global dictionary for Tier 1 Synergy
                                     globalAbilityNames.add(nameLower);
                                     
                                     let classConstraint = item.classType !== 3 ? item.classType : "shared";
@@ -447,107 +448,101 @@
                             fragments: Array.from(abilitiesMaps.fragments.values())
                         };
 
+                        rawArtifacts.sort((a, b) => b.index - a.index);
+                        const currentArtifact = rawArtifacts.length > 0 ? rawArtifacts[0] : null;
+
+                        rawArtifactPerks.sort((a, b) => b.index - a.index);
+                        const uniqueArtifactPerks = [];
+                        const seenPerkNames = new Set();
+                        for (const p of rawArtifactPerks) {
+                            if (!seenPerkNames.has(p.name)) {
+                                seenPerkNames.add(p.name);
+                                uniqueArtifactPerks.push(p);
+                                if (uniqueArtifactPerks.length >= 25) break; 
+                            }
+                        }
+
                         const parsedSets = [];
                         for (const hash in setsData) {
                             const setDef = setsData[hash];
-                            if (setDef.trackingValueMax > 0 && setDef.displayProperties && setDef.displayProperties.name) {
-                                const setName = setDef.displayProperties.name;
-                                let synergyText = "";
-                                const validPerks = [];
-                                
-                                if (setDef.setBlocks) {
-                                    setDef.setBlocks.forEach(block => {
-                                        if (block.trackingValue > 0) {
-                                            let perkName = block.displayProperties?.name || "";
-                                            let perkDesc = block.displayProperties?.description || "";
-                                            if (perkDesc && !validPerks.some(p => p.count === block.trackingValue)) {
-                                                synergyText += " " + perkDesc;
-                                                validPerks.push({ count: block.trackingValue, name: perkName, description: perkDesc });
+                            const setPerksList = setDef.setPerks || setDef.setBlock?.setPerks || [];
+                            
+                            if (setPerksList.length > 0) {
+                                const parsedSetPerks = [];
+                                let has2 = false, has4 = false;
+
+                                setPerksList.forEach(sp => {
+                                    const count = sp.requiredSetCount || sp.requiredEquippedItemCount || sp.itemCount || sp.count || sp.equipCount;
+                                    if (count === 2 || count === 4) {
+                                        const perkHash = sp.sandboxPerkHash || sp.perkHash;
+                                        const perk = perksData[perkHash];
+                                        if (perk && perk.displayProperties && perk.displayProperties.description) {
+                                            parsedSetPerks.push({
+                                                count: count,
+                                                name: perk.displayProperties.name,
+                                                description: perk.displayProperties.description
+                                            });
+                                            if (count === 2) has2 = true;
+                                            if (count === 4) has4 = true;
+                                        }
+                                    }
+                                });
+
+                                const setArmor = { 0: [], 1: [], 2: [] };
+                                if (setDef.itemList) {
+                                    setDef.itemList.forEach(entry => {
+                                        const itemHash = entry.itemHash || entry; 
+                                        const item = itemsData[itemHash];
+                                        if (item && item.itemType === 2 && item.inventory) {
+                                            const cType = item.classType;
+                                            if (cType >= 0 && cType <= 2) {
+                                                setArmor[cType].push({
+                                                    hash: itemHash,
+                                                    bucket: item.inventory.bucketTypeHash
+                                                });
                                             }
                                         }
                                     });
                                 }
 
-                                if (validPerks.length > 0) {
-                                    const setArmor = { 0: [], 1: [], 2: [] };
-                                    
-                                    if (setDef.itemList) {
-                                        setDef.itemList.forEach(itemHash => {
-                                            const item = itemsData[itemHash];
-                                            if (item && item.itemType === 2 && item.classType !== 3 && item.inventory) {
-                                                setArmor[item.classType].push({
-                                                    hash: itemHash,
-                                                    bucket: item.inventory.bucketTypeHash
-                                                });
-                                            }
-                                        });
-                                    }
-                                    
-                                    const requiredPieces = Math.max(...validPerks.map(p => p.count));
-                                    for (let classType = 0; classType < 3; classType++) {
-                                        if (setArmor[classType].length < requiredPieces) {
-                                            let prefix = setName.split(' ')[0].toLowerCase();
-                                            const matchingPieces = legendaryArmor.filter(a => a.classType === classType && a.nameLower.includes(prefix));
+                                // FALLBACK: If Bungie forgot to populate itemList (frequent bug in modern seasons), use a heuristic based on cached legendary armor
+                                const setNamePrefix = (setDef.displayProperties?.name || "").toLowerCase()
+                                    .replace(/\b(set|armor|suit|gear|vestments|plate)\b/gi, "")
+                                    .trim();
+                                
+                                if (setNamePrefix.length > 3) {
+                                    for (let i = 0; i < 3; i++) {
+                                        if (setArmor[i].length < 5) {
+                                            const existingBuckets = new Set(setArmor[i].map(a => a.bucket));
+                                            const matchingLegendaries = legendaryArmor.filter(a => a.classType === i && a.nameLower.includes(setNamePrefix));
                                             
-                                            const bucketsFound = new Set(setArmor[classType].map(p => p.bucket));
-                                            matchingPieces.forEach(p => {
-                                                if (!bucketsFound.has(p.bucket)) {
-                                                    setArmor[classType].push({ hash: p.hash, bucket: p.bucket });
-                                                    bucketsFound.add(p.bucket);
+                                            for (const leg of matchingLegendaries) {
+                                                if (!existingBuckets.has(leg.bucket)) {
+                                                    setArmor[i].push({ hash: leg.hash, bucket: leg.bucket });
+                                                    existingBuckets.add(leg.bucket);
                                                 }
-                                            });
+                                            }
                                         }
                                     }
-                                    
-                                    const isValidSet = setArmor[0].length >= requiredPieces || 
-                                                       setArmor[1].length >= requiredPieces || 
-                                                       setArmor[2].length >= requiredPieces;
+                                }
 
-                                    if (isValidSet) {
-                                        parsedSets.push({ hash, name: setName, perks: validPerks, synergyText, setArmor });
-                                    }
+                                const totalArmorPieces = setArmor[0].length + setArmor[1].length + setArmor[2].length;
+
+                                if (parsedSetPerks.length > 0 && totalArmorPieces > 0) {
+                                    parsedSets.push({
+                                        hash: hash,
+                                        name: setDef.displayProperties?.name || "Unknown Set",
+                                        perks: parsedSetPerks,
+                                        has2,
+                                        has4,
+                                        synergyText: parsedSetPerks.map(p => p.description.toLowerCase()).join(" "),
+                                        setArmor: setArmor
+                                    });
                                 }
                             }
                         }
-                        
-                        const customSets = [
-                            { name: "Crystocrene Mastery", prefix: "crystocrene", perks: [ { count: 2, name: "Europa's Chill", description: "Slightly increased ability regeneration while near stasis crystals." }, { count: 4, name: "Glacial Resonance", description: "Shattering a stasis crystal grants a burst of weapon handling and reload speed." } ] },
-                            { name: "Thunderhead Strider", prefix: "thunderhead", perks: [ { count: 2, name: "Cloudstrider's Grace", description: "Increases sprint speed and slide distance." }, { count: 4, name: "Neomuni Charge", description: "Rapid strand or arc final blows create a tangle or ionic trace." } ] },
-                            { name: "Warmind's Avatar", prefix: "avatar", perks: [ { count: 2, name: "Seraph's Protocol", description: "Solar weapons gain slightly increased target acquisition." }, { count: 4, name: "Rasputin's Wrath", description: "Applying scorch or ignite to targets grants ability energy." } ] },
-                            { name: "Eidolon Hunter", prefix: "eidolon", perks: [ { count: 2, name: "Nightmare's Edge", description: "Increased damage against combatants afflicted by void debuffs." }, { count: 4, name: "Reaper's Harvest", description: "Defeating weakened or volatile targets grants a small overshield or devour." } ] },
-                            { name: "Veritas Enforcer", prefix: "veritas", perks: [ { count: 2, name: "Throne World Insight", description: "Kinetic and stasis weapon stability is enhanced." }, { count: 4, name: "Lucent Bane", description: "Precision final blows have a chance to slow nearby combatants." } ] },
-                            { name: "Ketchkiller's Crew", prefix: "ketchkiller", perks: [ { count: 2, name: "Swashbuckler's Step", description: "Increased melee lunge range and melee ability regeneration." }, { count: 4, name: "Jolting Broadside", description: "Arc weapon final blows have a chance to jolt nearby targets." } ] },
-                            { name: "Techeun's Regalia", prefix: "techeun", perks: [ { count: 2, name: "Awoken Blessing", description: "Strand and Void abilities recharge slightly faster." }, { count: 4, name: "Leyline Mastery", description: "Creating a tangle or defeating a volatile target grants woven mail or an overshield." } ] }
-                        ];
 
-                        customSets.forEach((custom, index) => {
-                            let synergyText = custom.perks.map(p => p.description).join(" ").toLowerCase();
-                            let setArmor = { 0: [], 1: [], 2: [] };
-                            
-                            for (let classType = 0; classType < 3; classType++) {
-                                const matchingPieces = legendaryArmor.filter(a => a.classType === classType && a.nameLower.includes(custom.prefix));
-                                const bucketsFound = new Set();
-                                matchingPieces.forEach(p => {
-                                    if (!bucketsFound.has(p.bucket)) {
-                                        setArmor[classType].push({ hash: p.hash, bucket: p.bucket });
-                                        bucketsFound.add(p.bucket);
-                                    }
-                                });
-                            }
-                            
-                            const isValidSet = setArmor[0].length >= 4 || setArmor[1].length >= 4 || setArmor[2].length >= 4;
-                            if (isValidSet) {
-                                parsedSets.push({ 
-                                    hash: "custom_" + index, 
-                                    name: custom.name, 
-                                    perks: custom.perks, 
-                                    synergyText, 
-                                    setArmor 
-                                });
-                            }
-                        });
-
-                        setDb({ weapons, armor, subclasses, abilities: allAbilities, sets: parsedSets, abilityNames: globalAbilityNames, weaponTypes: globalWeaponTypes });
+                        setDb({ weapons, armor, subclasses, abilities: allAbilities, sets: parsedSets, abilityNames: globalAbilityNames, weaponTypes: globalWeaponTypes, artifact: currentArtifact, artifactPerks: uniqueArtifactPerks });
                         setIsReady(true);
                     } catch (err) {
                         setStatus("Error loading manifest. " + err.message);
@@ -601,7 +596,7 @@
                 const armorText = (chosenArmor.name + " " + chosenArmor.desc + " " + (chosenArmor.perkName || "")).toLowerCase();
                 const armorFullText = armorText.replace(/[-]/g, ' ');
 
-                // CASCADE SYNERGY ENGINE
+                // CASCADE SYNERGY ENGINE - Hierarchical Weights
                 const activeKeywords = new Set();
                 const addKeywords = (text) => {
                     const lowerText = text.replace(/[-]/g, ' ').toLowerCase();
@@ -781,6 +776,7 @@
                 const getValidAbilities = (category, sub) => {
                     if (!sub || !db.abilities[category]) return [];
                     return db.abilities[category].filter(a => {
+                        // Strict Prismatic Check using actual valid plugs API
                         if (sub.validPlugs && sub.validPlugs.has(String(a.hash))) {
                             return true;
                         }
@@ -835,7 +831,7 @@
                 const jump = pickAbilityFromPool(getValidAbilities('jump', chosenSubclass), activeKeywords);
                 const melee = pickAbilityFromPool(getValidAbilities('melee', chosenSubclass), activeKeywords);
                 
-                // 4.5 Grenade Selection with Zero-Damage Exception Protocol
+                // Grenade Selection
                 let grenadePool = getValidAbilities('grenade', chosenSubclass);
                 
                 const damageGrenadeRegexes = [
@@ -858,7 +854,7 @@
                 const grenade = pickAbilityFromPool(grenadePool, activeKeywords);
                 const isHealingGrenade = grenade && grenade.name.toLowerCase() === "healing grenade";
 
-                // Aspects - Must pick up to TWO
+                // Aspects - Pick up to 2
                 let aspects = [];
                 let fragmentCapacity = 0;
                 const aspectPool = getValidAbilities('aspects', chosenSubclass);
@@ -888,7 +884,7 @@
                     }
                 }
 
-                // Fragments - STRICT KEYWORD CONSTRAINT
+                // Fragments
                 let fragments = [];
                 const fragPool = getValidAbilities('fragments', chosenSubclass);
                 if (fragPool.length > 0 && fragmentCapacity > 0) {
@@ -924,34 +920,53 @@
                     }
                 }
 
-                // 5. Armor Sets
+                // 6. Artifact Perks
+                let selectedArtifactPerks = [];
+                if (db.artifactPerks && db.artifactPerks.length > 0) {
+                    const scoredPerks = db.artifactPerks.map(perk => {
+                        let score = 0;
+                        const text = (perk.name + " " + perk.desc).replace(/[-]/g, ' ').toLowerCase();
+                        activeKeywords.forEach(kw => {
+                            const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += getKeywordWeight(kw) * 1.5;
+                        });
+                        score += Math.random() * 0.5;
+                        return { score, perk };
+                    });
+                    
+                    scoredPerks.sort((a, b) => b.score - a.score);
+                    selectedArtifactPerks = scoredPerks.slice(0, 5).map(sp => sp.perk);
+                }
+
+                // 7. Armor Sets (Version 8 Parser Synergy Output)
                 const scoredSets = db.sets.map(set => {
                     let score = 0;
                     activeKeywords.forEach(kw => {
                         const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                        if (new RegExp('\\b' + safeKw + '\\b', 'i').test(set.synergyText.replace(/[-]/g, ' '))) score += getKeywordWeight(kw);
+                        if (new RegExp('\\b' + safeKw + '\\b', 'i').test(set.synergyText.replace(/[-]/g, ' '))) {
+                            score += getKeywordWeight(kw);
+                        }
                     });
                     return { ...set, score: score + Math.random() }; 
                 }).sort((a, b) => b.score - a.score);
 
                 let finalSets = [];
-                if (scoredSets.length > 0) {
-                    const primarySet = scoredSets[0];
-                    primarySet.perks.forEach(perk => {
-                        if (perk.count <= 4) {
-                            finalSets.push({ setName: primarySet.name, perk: perk, setDef: primarySet });
-                        }
-                    });
-                    
-                    const maxCount = Math.max(...primarySet.perks.map(p => p.count));
-                    if (maxCount <= 2 && scoredSets.length > 1) {
-                        const secondarySet = scoredSets[1];
-                        secondarySet.perks.forEach(perk => {
-                            if (perk.count <= 2) {
-                                finalSets.push({ setName: secondarySet.name, perk: perk, setDef: secondarySet });
-                            }
-                        });
-                    }
+                const prefers4Piece = Math.random() > 0.5;
+                const setsWith4 = scoredSets.filter(s => s.has4);
+                const setsWith2 = scoredSets.filter(s => s.has2);
+
+                if (prefers4Piece && setsWith4.length > 0) {
+                    const chosen4Piece = setsWith4[0];
+                    const perk2 = chosen4Piece.perks.find(p => p.count === 2);
+                    const perk4 = chosen4Piece.perks.find(p => p.count === 4);
+                    // Include both the 2-piece and 4-piece bonuses for full context
+                    if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2, setDef: chosen4Piece });
+                    if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4, setDef: chosen4Piece });
+                } else if (setsWith2.length >= 2) {
+                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
+                    finalSets.push({ setName: setsWith2[1].name, perk: setsWith2[1].perks.find(p => p.count === 2), setDef: setsWith2[1] });
+                } else if (setsWith2.length === 1) {
+                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
                 }
 
                 let selectedSetArmor = [];
@@ -990,6 +1005,8 @@
                     subclass: chosenSubclass,
                     actualSetBonuses: finalSets,
                     setArmorPieces: selectedSetArmor,
+                    artifact: db.artifact,
+                    artifactPerks: selectedArtifactPerks,
                     abilities: {
                         superAbil,
                         grenade,
@@ -1235,6 +1252,29 @@
                                                                 ))}
                                                             </div>
                                                             <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{frag.desc}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {build.artifact && build.artifactPerks && build.artifactPerks.length > 0 && (
+                                        <div className="bg-slate-800/50 rounded p-5 mb-4">
+                                            <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300 flex justify-between items-center">
+                                                Seasonal Artifact
+                                                <span className="flex items-center gap-2 bg-slate-900 px-3 py-1 rounded-full">
+                                                    <img src={build.artifact.icon} className="w-4 h-4 rounded-full" alt="Artifact" />
+                                                    <span className="text-[10px] text-slate-300 font-normal">{build.artifact.name}</span>
+                                                </span>
+                                            </h3>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                                {build.artifactPerks.map((perk, i) => (
+                                                    <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
+                                                        {perk.icon && <img src={perk.icon} className="w-10 h-10 rounded border border-slate-700" alt="Artifact Perk" />}
+                                                        <div>
+                                                            <div className="font-semibold text-slate-200 block text-base leading-none mb-1">{perk.name}</div>
+                                                            <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{perk.desc}</p>
                                                         </div>
                                                     </div>
                                                 ))}
