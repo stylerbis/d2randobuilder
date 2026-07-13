@@ -783,8 +783,11 @@
                             Object.entries(lData.parameters.setBonuses).forEach(([sHash, count]) => {
                                 const setDef = db.sets.find(s => s.hash === String(sHash));
                                 if (setDef) {
-                                    const perk = setDef.perks.find(p => p.count === count);
-                                    if (perk) actualSetBonuses.push({ setName: setDef.name, perk, setDef });
+                                    setDef.perks.forEach(p => {
+                                        if (p.count <= count) {
+                                            actualSetBonuses.push({ setName: setDef.name, perk: p, setDef });
+                                        }
+                                    });
                                 }
                             });
                         }
