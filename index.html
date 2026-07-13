@@ -91,6 +91,11 @@
             const [selSubclass, setSelSubclass] = React.useState("");
 
             const [build, setBuild] = React.useState(null);
+            
+            // NEW: State for Share Modal and URL
+            const [showShareModal, setShowShareModal] = React.useState(false);
+            const [shareUrl, setShareUrl] = React.useState("");
+            const [copied, setCopied] = React.useState(false);
 
             React.useEffect(() => {
                 async function loadManifest() {
@@ -701,6 +706,122 @@
 
                 loadManifest();
             }, []);
+
+            // NEW: Hydrate build from URL parameters
+            React.useEffect(() => {
+                if (!isReady || build !== null) return;
+                
+                const params = new URLSearchParams(window.location.search);
+                const loadoutParam = params.get('loadout');
+                
+                if (loadoutParam) {
+                    try {
+                        const lData = JSON.parse(decodeURIComponent(loadoutParam));
+                        const classStr = CLASS_TYPES[lData.classType] || "Titan";
+                        
+                        // Reconstruct Armor
+                        const armorHash = lData.parameters?.exoticArmorHash;
+                        const chosenArmor = armorHash ? db.armor.find(a => String(a.hash) === String(armorHash)) : null;
+                        
+                        // Reconstruct Weapon and Subclass
+                        let chosenWeapon = null;
+                        let chosenSubclass = null;
+                        let socketOverrides = {};
+                        
+                        lData.equipped.forEach(eq => {
+                            const hashStr = String(eq.hash);
+                            if (db.weapons.some(w => w.hash === hashStr)) chosenWeapon = db.weapons.find(w => w.hash === hashStr);
+                            else if (db.subclasses.some(s => s.hash === hashStr)) {
+                                chosenSubclass = db.subclasses.find(s => s.hash === hashStr);
+                                socketOverrides = eq.socketOverrides || {};
+                            }
+                        });
+
+                        // Reconstruct Abilities
+                        const getAbil = (cat, hash) => hash ? db.abilities[cat]?.find(a => a.hash === String(hash)) || null : null;
+                        const superAbil = getAbil('super', socketOverrides["0"]);
+                        const classAbil = getAbil('classAbility', socketOverrides["1"]);
+                        const jump = getAbil('jump', socketOverrides["2"]);
+                        const melee = getAbil('melee', socketOverrides["3"]);
+                        const grenade = getAbil('grenade', socketOverrides["4"]);
+                        
+                        const aspects = [];
+                        if (socketOverrides["5"]) aspects.push(getAbil('aspects', socketOverrides["5"]));
+                        if (socketOverrides["6"]) aspects.push(getAbil('aspects', socketOverrides["6"]));
+                        
+                        const fragments = [];
+                        for(let i = 7; i <= 11; i++) {
+                            if (socketOverrides[String(i)]) fragments.push(getAbil('fragments', socketOverrides[String(i)]));
+                        }
+                        
+                        const fragmentCapacity = aspects.reduce((sum, a) => sum + (a ? (a.fragmentSlots || 0) : 0), 0);
+
+                        // Reconstruct Artifact
+                        const artifactPerks = [];
+                        let bestArtifact = null;
+                        const unlockedHashes = lData.parameters?.artifactUnlocks?.unlockedItemHashes || [];
+                        
+                        if (unlockedHashes.length > 0 && db.artifacts.length > 0) {
+                            db.artifacts.forEach(art => {
+                                let matchCount = 0;
+                                art.columns.forEach(col => col.forEach(p => { if (unlockedHashes.includes(Number(p.hash))) matchCount++; }));
+                                if (matchCount > 0 && (!bestArtifact || matchCount > bestArtifact.matchCount)) {
+                                    bestArtifact = art;
+                                    bestArtifact.matchCount = matchCount;
+                                }
+                            });
+                            if (bestArtifact) {
+                                bestArtifact.columns.forEach(col => col.forEach(p => {
+                                    if (unlockedHashes.includes(Number(p.hash))) artifactPerks.push(p);
+                                }));
+                            }
+                        }
+
+                        // Reconstruct Set Bonuses
+                        const actualSetBonuses = [];
+                        if (lData.parameters?.setBonuses) {
+                            Object.entries(lData.parameters.setBonuses).forEach(([sHash, count]) => {
+                                const setDef = db.sets.find(s => s.hash === String(sHash));
+                                if (setDef) {
+                                    const perk = setDef.perks.find(p => p.count === count);
+                                    if (perk) actualSetBonuses.push({ setName: setDef.name, perk, setDef });
+                                }
+                            });
+                        }
+
+                        // Reconstruct Custom Builder Data (Stats, Elemental lock, Traits)
+                        let stats = { primary: "Health", secondary: "Class" };
+                        let armorPerks = [];
+                        let element = chosenSubclass?.element || "neutral";
+
+                        const bData = lData.parameters?.builderData;
+                        if (bData) {
+                            if (bData.stats) stats = bData.stats;
+                            if (bData.element) element = bData.element;
+                            if (bData.armorPerks && bData.armorPerks.length > 0 && chosenArmor && chosenArmor.perkColumns) {
+                                bData.armorPerks.forEach(pH => {
+                                    chosenArmor.perkColumns.forEach(col => {
+                                        const matched = col.find(p => p.hash === String(pH));
+                                        if (matched && !armorPerks.some(ep => ep.hash === matched.hash)) armorPerks.push(matched);
+                                    });
+                                });
+                            }
+                        }
+
+                        setBuild({
+                            class: classStr, element, armor: chosenArmor, armorPerks, weapon: chosenWeapon,
+                            subclass: chosenSubclass, actualSetBonuses, artifact: bestArtifact, artifactPerks, stats,
+                            abilities: { superAbil, grenade, melee, classAbil, jump, aspects: aspects.filter(Boolean), fragments: fragments.filter(Boolean), fragmentCapacity }
+                        });
+                        
+                        // Clear the URL parameter so refreshing doesn't lock them into the shared build
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        
+                    } catch (e) {
+                        console.error("Error parsing loadout URL", e);
+                    }
+                }
+            }, [isReady, db, build]);
 
             const generateBuild = () => {
                 if (!isReady) return;
@@ -1487,74 +1608,114 @@
                 });
             };
 
-            const openInDim = () => {
-                if (!build) return;
+            // NEW: Centralized JSON Construction Helper
+            const createLoadoutObject = (b) => {
+                if (!b) return null;
                 
                 const equippedItems = [];
-                // Only pass the exotic weapon. The exotic armor goes in parameters.
-                if (build.weapon) equippedItems.push({ hash: Number(build.weapon.hash) });
+                if (b.weapon) equippedItems.push({ hash: Number(b.weapon.hash) });
                 
-                if (build.subclass) {
+                if (b.subclass) {
                     const socketOverrides = {};
                     
-                    if (build.abilities.superAbil) socketOverrides["0"] = Number(build.abilities.superAbil.hash);
-                    if (build.abilities.classAbil) socketOverrides["1"] = Number(build.abilities.classAbil.hash);
-                    if (build.abilities.jump) socketOverrides["2"] = Number(build.abilities.jump.hash);
-                    if (build.abilities.melee) socketOverrides["3"] = Number(build.abilities.melee.hash);
-                    if (build.abilities.grenade) socketOverrides["4"] = Number(build.abilities.grenade.hash);
+                    if (b.abilities.superAbil) socketOverrides["0"] = Number(b.abilities.superAbil.hash);
+                    if (b.abilities.classAbil) socketOverrides["1"] = Number(b.abilities.classAbil.hash);
+                    if (b.abilities.jump) socketOverrides["2"] = Number(b.abilities.jump.hash);
+                    if (b.abilities.melee) socketOverrides["3"] = Number(b.abilities.melee.hash);
+                    if (b.abilities.grenade) socketOverrides["4"] = Number(b.abilities.grenade.hash);
                     
-                    build.abilities.aspects.forEach((a, i) => { 
+                    b.abilities.aspects.forEach((a, i) => { 
                         if (a) socketOverrides[String(5 + i)] = Number(a.hash); 
                     });
                     
-                    build.abilities.fragments.forEach((f, i) => { 
+                    b.abilities.fragments.forEach((f, i) => { 
                         if (f) socketOverrides[String(7 + i)] = Number(f.hash); 
                     });
 
                     equippedItems.push({
-                        hash: Number(build.subclass.hash),
+                        hash: Number(b.subclass.hash),
                         socketOverrides: socketOverrides
                     });
                 }
 
-                const classTypeNum = parseInt(Object.keys(CLASS_TYPES).find(key => CLASS_TYPES[key] === build.class) || "0");
+                const classTypeNum = parseInt(Object.keys(CLASS_TYPES).find(key => CLASS_TYPES[key] === b.class) || "0");
                 
-                let notes = `Generated using Random Build tool. Focuses on ${build.weapon?.name} and ${build.armor?.name}.`;
-                if (build.armorPerks && build.armorPerks.length > 0) {
-                    notes = `Generated using Random Build tool. Focuses on ${build.weapon?.name} and ${build.armor?.name} (${build.armorPerks.map(p => p.name.replace('Spirit of ', '')).join(' / ')}).`;
+                let notes = `Generated using Random Build tool. Focuses on ${b.weapon?.name} and ${b.armor?.name}.`;
+                if (b.armorPerks && b.armorPerks.length > 0) {
+                    notes = `Generated using Random Build tool. Focuses on ${b.weapon?.name} and ${b.armor?.name} (${b.armorPerks.map(p => p.name.replace('Spirit of ', '')).join(' / ')}).`;
                 }
 
                 const loadout = {
-                    name: `Random ${build.class} Build`,
+                    name: `Random ${b.class} Build`,
                     notes: notes,
                     classType: classTypeNum,
                     equipped: equippedItems,
                     unequipped: [],
-                    parameters: {}
+                    parameters: {
+                        // Secret builderData that DIM ignores, but we use for hydration
+                        builderData: {
+                            stats: b.stats,
+                            armorPerks: b.armorPerks?.map(p => p.hash) || [],
+                            element: b.element
+                        }
+                    }
                 };
                 
-                if (build.artifactPerks && build.artifactPerks.length > 0) {
+                if (b.artifactPerks && b.artifactPerks.length > 0) {
                     loadout.parameters.artifactUnlocks = {
-                        unlockedItemHashes: build.artifactPerks.map(p => Number(p.hash))
+                        unlockedItemHashes: b.artifactPerks.map(p => Number(p.hash))
                     };
                 }
 
-                if (build.actualSetBonuses && build.actualSetBonuses.length > 0) {
+                if (b.actualSetBonuses && b.actualSetBonuses.length > 0) {
                     loadout.parameters.setBonuses = {};
-                    build.actualSetBonuses.forEach(sb => {
+                    b.actualSetBonuses.forEach(sb => {
                         const current = loadout.parameters.setBonuses[sb.setDef.hash] || 0;
                         loadout.parameters.setBonuses[sb.setDef.hash] = Math.max(current, sb.perk.count);
                     });
                 }
 
-                if (build.armor) {
-                    loadout.parameters.exoticArmorHash = Number(build.armor.hash);
+                if (b.armor) {
+                    loadout.parameters.exoticArmorHash = Number(b.armor.hash);
                 }
 
-                const jsonStr = JSON.stringify(loadout);
+                return loadout;
+            };
+
+            const openInDim = () => {
+                const loadout = createLoadoutObject(build);
+                if (!loadout) return;
+                
+                // Clone and strip our secret data off before passing to DIM to guarantee compliance
+                const dimLoadout = JSON.parse(JSON.stringify(loadout));
+                delete dimLoadout.parameters.builderData;
+
+                const jsonStr = JSON.stringify(dimLoadout);
                 const dimUrl = `https://app.destinyitemmanager.com/loadouts?loadout=${encodeURIComponent(jsonStr)}`;
                 
                 window.open(dimUrl, '_blank');
+            };
+            
+            const openShare = () => {
+                const loadout = createLoadoutObject(build);
+                if (!loadout) return;
+                
+                const jsonStr = JSON.stringify(loadout);
+                const url = `https://d2builder.algotician.com?loadout=${encodeURIComponent(jsonStr)}`;
+                setShareUrl(url);
+                setShowShareModal(true);
+                setCopied(false);
+            };
+
+            const copyShareUrl = () => {
+                const input = document.createElement('input');
+                input.value = shareUrl;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000); // Reset button text after 2 seconds
             };
 
             if (!isReady) {
@@ -1571,7 +1732,7 @@
                 <div className="max-w-5xl mx-auto p-4 py-12">
                     <div className="text-center mb-10">
                         <h1 className="text-4xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-slate-200 to-slate-500 mb-2">Destiny 2 Build Generator</h1>
-                        <p className="text-slate-400">This builder uses keyword logic for "best guess" build crafting. Set your starting points, or leave them blank for true chaos.</p>
+                        <p className="text-slate-400">Set your starting points, or leave them blank for true chaos.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
@@ -1639,9 +1800,14 @@
                                             <h2 className="text-3xl font-black tracking-wider uppercase">{build.class}</h2>
                                             <p className="text-slate-400 text-sm capitalize font-bold">{build.element} Element Synergy</p>
                                         </div>
-                                        <button onClick={openInDim} className="text-xs bg-slate-800 border border-slate-600 hover:border-slate-400 px-3 py-2 rounded transition-colors flex items-center gap-2 font-bold uppercase">
-                                            Open in DIM
-                                        </button>
+                                        <div className="flex gap-2">
+                                            <button onClick={openShare} className="text-xs bg-slate-700 border border-slate-500 hover:border-slate-400 px-3 py-2 rounded transition-colors flex items-center gap-2 font-bold uppercase text-white shadow-md">
+                                                Share
+                                            </button>
+                                            <button onClick={openInDim} className="text-xs bg-slate-800 border border-slate-600 hover:border-slate-400 px-3 py-2 rounded transition-colors flex items-center gap-2 font-bold uppercase">
+                                                Open in DIM
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -1840,6 +2006,40 @@
                             )}
                         </div>
                     </div>
+                    
+                    {/* Share Modal Popup */}
+                    {showShareModal && (
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                            <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 max-w-lg w-full shadow-2xl relative">
+                                <button 
+                                    onClick={() => setShowShareModal(false)}
+                                    className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                <h3 className="text-xl font-black text-white mb-2 uppercase tracking-widest border-b border-slate-700 pb-2">Share Loadout</h3>
+                                <p className="text-slate-400 text-sm mb-6">Copy this link to share your exact build, including generated stats and exotic traits.</p>
+                                
+                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                                    <input 
+                                        type="text" 
+                                        readOnly 
+                                        value={shareUrl}
+                                        className="w-full bg-slate-800 border border-slate-600 rounded p-3 text-slate-300 text-sm focus:outline-none focus:border-blue-400 font-mono"
+                                        onClick={(e) => e.target.select()}
+                                    />
+                                    <button 
+                                        onClick={copyShareUrl}
+                                        className={`px-6 py-3 rounded font-bold uppercase tracking-wider transition-colors shrink-0 shadow-lg ${copied ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-blue-600 hover:bg-blue-500 text-white'}`}
+                                    >
+                                        {copied ? 'Copied!' : 'Copy'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         }
