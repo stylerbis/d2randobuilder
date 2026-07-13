@@ -953,6 +953,29 @@
                             });
                         }
                     });
+
+                    // NEW: Elemental Super Overrides (e.g., "Void Super")
+                    ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
+                        if (new RegExp('\\b' + el + '\\s+super\\b', 'i').test(armorFullText)) {
+                            let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
+                            let nativeSub = subclassPool.find(s => s.element === el);
+                            let prismSub = subclassPool.find(s => s.element === 'prismatic');
+                            
+                            if (nativeSub && !forcedSubclasses.includes(nativeSub)) forcedSubclasses.push(nativeSub);
+                            
+                            // Only add Prismatic if it actually has a super of this element
+                            if (prismSub && db.abilities.super) {
+                                const hasMatchingPrismSuper = db.abilities.super.some(a => 
+                                    a.elementConstraint === el && 
+                                    prismSub.validPlugs && 
+                                    prismSub.validPlugs.has(String(a.hash))
+                                );
+                                if (hasMatchingPrismSuper && !forcedSubclasses.includes(prismSub)) {
+                                    forcedSubclasses.push(prismSub);
+                                }
+                            }
+                        }
+                    });
                     
                     // SPECIAL CASE: Getaway Artist implicitly requires Arc/Prismatic subclasses to have an Arc grenade
                     if (chosenArmor.name.toLowerCase().includes("getaway artist")) {
@@ -1067,7 +1090,7 @@
                     });
                 };
 
-                const pickAbilityFromPool = (pool, kwsSet) => {
+                const pickAbilityFromPool = (pool, kwsSet, category = null) => {
                     if (!pool || pool.length === 0) return null;
                     
                     let scored = pool.map(abil => {
@@ -1082,6 +1105,13 @@
                         if (new RegExp('\\b' + abil.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s)?\\b', 'i').test(armorFullText)) {
                             score += 1000;
                         }
+
+                        // NEW: Elemental Super Override (Equates to exact ability match)
+                        if (category === 'super' && abil.elementConstraint && abil.elementConstraint !== 'neutral' && abil.elementConstraint !== 'prismatic') {
+                            if (new RegExp('\\b' + abil.elementConstraint + '\\s+super\\b', 'i').test(armorFullText)) {
+                                score += 1000;
+                            }
+                        }
                         
                         return { item: abil, score };
                     });
@@ -1094,10 +1124,10 @@
                     return picked;
                 };
 
-                const superAbil = pickAbilityFromPool(getValidAbilities('super', chosenSubclass), activeKeywords);
-                const classAbil = pickAbilityFromPool(getValidAbilities('classAbility', chosenSubclass), activeKeywords);
-                const jump = pickAbilityFromPool(getValidAbilities('jump', chosenSubclass), activeKeywords);
-                const melee = pickAbilityFromPool(getValidAbilities('melee', chosenSubclass), activeKeywords);
+                const superAbil = pickAbilityFromPool(getValidAbilities('super', chosenSubclass), activeKeywords, 'super');
+                const classAbil = pickAbilityFromPool(getValidAbilities('classAbility', chosenSubclass), activeKeywords, 'classAbility');
+                const jump = pickAbilityFromPool(getValidAbilities('jump', chosenSubclass), activeKeywords, 'jump');
+                const melee = pickAbilityFromPool(getValidAbilities('melee', chosenSubclass), activeKeywords, 'melee');
                 
                 // Grenade Selection
                 let grenadePool = getValidAbilities('grenade', chosenSubclass);
@@ -1127,7 +1157,7 @@
                     }
                 }
 
-                const grenade = pickAbilityFromPool(grenadePool, activeKeywords);
+                const grenade = pickAbilityFromPool(grenadePool, activeKeywords, 'grenade');
                 const isHealingGrenade = grenade && grenade.name.toLowerCase() === "healing grenade";
 
                 // Aspects - Pick up to 2
