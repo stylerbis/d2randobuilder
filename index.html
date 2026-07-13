@@ -1,4 +1,3 @@
-<!--AI slop that's hopefully helpful-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,6 +105,7 @@
                         let setDefUrl = "https://destiny.plumbing/en/raw/DestinyEquipableItemSetDefinition.json";
                         let perkDefUrl = "https://destiny.plumbing/en/raw/DestinySandboxPerkDefinition.json";
                         let plugSetDefUrl = "https://destiny.plumbing/en/raw/DestinyPlugSetDefinition.json";
+                        let seasonDefUrl = "https://destiny.plumbing/en/raw/DestinySeasonDefinition.json";
                         
                         try {
                             const res = await fetch("https://www.bungie.net/Platform/Destiny2/Manifest/", { mode: 'cors' });
@@ -115,23 +115,26 @@
                                 setDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinyEquipableItemSetDefinition;
                                 perkDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinySandboxPerkDefinition;
                                 plugSetDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinyPlugSetDefinition;
+                                seasonDefUrl = "https://www.bungie.net" + data.Response.jsonWorldComponentContentPaths.en.DestinySeasonDefinition;
                             }
                         } catch (e) {
                             console.warn("Bungie manifest endpoint failed, falling back to community mirror...");
                         }
 
                         setStatus("Downloading Databases (this may take a moment)...");
-                        const [itemsRes, setsRes, perksRes, plugSetsRes] = await Promise.all([
+                        const [itemsRes, setsRes, perksRes, plugSetsRes, seasonsRes] = await Promise.all([
                             fetch(itemDefUrl, { mode: 'cors' }),
                             fetch(setDefUrl, { mode: 'cors' }),
                             fetch(perkDefUrl, { mode: 'cors' }),
-                            fetch(plugSetDefUrl, { mode: 'cors' })
+                            fetch(plugSetDefUrl, { mode: 'cors' }),
+                            fetch(seasonDefUrl, { mode: 'cors' })
                         ]);
                         
                         const itemsData = await itemsRes.json();
                         const setsData = await setsRes.json();
                         const perksData = await perksRes.json();
                         const plugSetsData = await plugSetsRes.json();
+                        const seasonsData = await seasonsRes.json();
 
                         setStatus("Processing Items & Sockets...");
                         
@@ -562,11 +565,17 @@
                         
                         rawArtifacts.forEach(art => {
                             if (art.sockets && art.sockets.socketEntries && art.sockets.socketEntries.length > 0) {
+                                let sNum = 0;
+                                if (art.seasonHash && seasonsData[art.seasonHash]) {
+                                    sNum = seasonsData[art.seasonHash].seasonNumber;
+                                }
+
                                 const artifactData = {
                                     hash: art.hash,
                                     name: art.displayProperties.name,
                                     icon: `https://www.bungie.net${art.displayProperties.icon}`,
                                     desc: art.displayProperties.description || "",
+                                    seasonNumber: sNum,
                                     columns: []
                                 };
                                 
@@ -1677,6 +1686,9 @@
                     loadout.parameters.artifactUnlocks = {
                         unlockedItemHashes: b.artifactPerks.map(p => Number(p.hash))
                     };
+                    if (b.artifact && b.artifact.seasonNumber) {
+                        loadout.parameters.artifactUnlocks.seasonNumber = b.artifact.seasonNumber;
+                    }
                 }
 
                 if (b.actualSetBonuses && b.actualSetBonuses.length > 0) {
