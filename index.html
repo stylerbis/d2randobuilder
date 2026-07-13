@@ -716,7 +716,15 @@
                 
                 if (loadoutParam) {
                     try {
-                        const lData = JSON.parse(decodeURIComponent(loadoutParam));
+                        let lData;
+                        try {
+                            // Try decoding as Base64 first (New compressed share link format)
+                            // (escape/unescape handles safe UTF-8 decoding)
+                            lData = JSON.parse(decodeURIComponent(escape(atob(loadoutParam))));
+                        } catch (e) {
+                            // Fallback to plain URL decode for backward compatibility with older links
+                            lData = JSON.parse(decodeURIComponent(loadoutParam));
+                        }
                         const classStr = CLASS_TYPES[lData.classType] || "Titan";
                         
                         // Reconstruct Armor
@@ -1699,12 +1707,36 @@
                 window.open(dimUrl, '_blank');
             };
             
-            const openShare = () => {
+            const openShare = async () => {
                 const loadout = createLoadoutObject(build);
                 if (!loadout) return;
                 
                 const jsonStr = JSON.stringify(loadout);
-                const url = `https://d2builder.algotician.com?loadout=${encodeURIComponent(jsonStr)}`;
+                
+                // Safe UTF-8 to Base64 encoding
+                const base64Str = btoa(unescape(encodeURIComponent(jsonStr)));
+                
+                // We still encodeURIComponent the base64 string to protect '+' and '=' characters in the URL
+                const url = `https://d2builder.algotician.com?loadout=${encodeURIComponent(base64Str)}`;
+                
+                // NEW: Web Share API Integration for Mobile & Supported Desktops
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'Destiny 2 Build Generator',
+                            url: url
+                        });
+                        return; // Successfully shared natively, bypass the modal
+                    } catch (err) {
+                        if (err.name === 'AbortError') {
+                            // User intentionally dismissed the native share sheet. Do nothing.
+                            return; 
+                        }
+                        console.log("Native share failed, falling back to modal.", err);
+                    }
+                }
+                
+                // Fallback: If Web Share API is unsupported or failed for unexpected reasons, open the modal
                 setShareUrl(url);
                 setShowShareModal(true);
                 setCopied(false);
