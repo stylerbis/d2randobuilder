@@ -89,10 +89,10 @@
             const [selArmor, setSelArmor] = React.useState("");
             const [selWeapon, setSelWeapon] = React.useState("");
             const [selSubclass, setSelSubclass] = React.useState("");
+            const [selArtifact, setSelArtifact] = React.useState("");
 
             const [build, setBuild] = React.useState(null);
             
-            // NEW: State for Share Modal and URL
             const [showShareModal, setShowShareModal] = React.useState(false);
             const [shareUrl, setShareUrl] = React.useState("");
             const [copied, setCopied] = React.useState(false);
@@ -150,19 +150,15 @@
                         const globalWeaponTypes = new Set();
                         
                         const exoticClassItems = ["stoicism", "relativism", "solipsism"];
-
-                        const rawArtifacts = [];
-
+                        const parsedArtifacts = [];
                         const perfectClassItemPools = { 0: [[],[]], 1: [[],[]], 2: [[],[]] };
                         
-                        // Exact mapping of the Destiny 2 Meta. This guarantees 100% correct class & column separation.
                         const TRAIT_MAP = {
                             0: { 0: ["assassin", "inmost light", "ophidian", "severance", "hoarfrost", "bear", "abeyant"], 1: ["star-eater", "synthoceps", "verity", "contact", "scars", "horn", "armamentarium", "lupi"] },
                             1: { 0: ["assassin", "inmost light", "ophidian", "galanor", "renewal", "foetracer", "caliban", "dragon"], 1: ["star-eater", "synthoceps", "verity", "cyrtarachne", "gyrfalcon", "liar", "coyote", "wormhusk"] },
                             2: { 0: ["assassin", "inmost light", "ophidian", "apotheosis", "osmiomancy", "necrotic", "filaments"], 1: ["star-eater", "synthoceps", "verity", "swarm", "vesper", "harmony", "starfire", "claw"] }
                         };
 
-                        // Pass 1: Scrape Plugs globally (Preferred so DIM export hashes work)
                         for (const hash in itemsData) {
                             const item = itemsData[hash];
                             if (!item.displayProperties) continue;
@@ -192,7 +188,7 @@
                                             if (existing === -1) {
                                                 perfectClassItemPools[cId][colIdx].push(perkObj);
                                             } else if (desc.length > perfectClassItemPools[cId][colIdx][existing].desc.length) {
-                                                perfectClassItemPools[cId][colIdx][existing] = perkObj; // Keep the version with the best description
+                                                perfectClassItemPools[cId][colIdx][existing] = perkObj;
                                             }
                                         }
                                     });
@@ -200,7 +196,6 @@
                             }
                         }
 
-                        // Pass 2: Scrape Sandbox Perks directly as a fallback to guarantee pools are full
                         for (const hash in perksData) {
                             const perk = perksData[hash];
                             let name = perk.displayProperties?.name || "";
@@ -234,12 +229,10 @@
                             const dNameLower = dName.toLowerCase();
                             const descLower = desc.toLowerCase();
 
-                            // GLOBAL DEPRECATION & DUMMY CHECK
                             if (nameLower.includes("empty") || nameLower.includes("deprecated") || nameLower.includes("dummy")) continue;
                             if (descLower.includes("deprecated")) continue;
                             if (!item.displayProperties.icon) continue; 
                             
-                            // Cache Valid Legendary Armor for Set Extraction Fallbacks
                             if (item.itemType === 2 && item.inventory?.tierType === 5) {
                                 legendaryArmor.push({
                                     hash: hash,
@@ -249,7 +242,96 @@
                                 });
                             }
 
-                            // 1. Exotics
+                            // 1. Equippable Multi-Artifact Identification via specific socketCategoryHash!
+                            let isArtifact = false;
+                            if (item.sockets && item.sockets.socketCategories) {
+                                // 2631166533 is the literal mapping for the Multi-Artifact choice grid in the new D2 system
+                                const hasArtifactCategory = item.sockets.socketCategories.some(c => String(c.socketCategoryHash) === "2631166533");
+                                if (hasArtifactCategory) isArtifact = true;
+                            }
+
+                            if (isArtifact) {
+                                let sNum = 0;
+                                if (item.seasonHash && seasonsData[item.seasonHash]) {
+                                    sNum = seasonsData[item.seasonHash].seasonNumber;
+                                }
+
+                                const artifactData = {
+                                    hash: String(item.hash),
+                                    name: item.displayProperties.name,
+                                    icon: item.displayProperties.icon ? `https://www.bungie.net${item.displayProperties.icon}` : "",
+                                    desc: item.displayProperties.description || "",
+                                    seasonNumber: sNum,
+                                    intrinsics: [],
+                                    sockets: []
+                                };
+
+                                // Scan sockets sequentially to find the exactly 7 valid perk sockets
+                                let logicalIndex = 0;
+                                item.sockets.socketEntries.forEach((socketEntry, sIdx) => {
+                                    const plugSetHash = socketEntry.reusablePlugSetHash;
+                                    if (!plugSetHash || !plugSetsData[plugSetHash]) return;
+
+                                    const plugSet = plugSetsData[plugSetHash];
+                                    const pool = [];
+                                    let isTrueArtifactPerkSocket = false;
+
+                                    if (plugSet.reusablePlugItems) {
+                                        plugSet.reusablePlugItems.forEach(plugItem => {
+                                            const pHash = plugItem.plugItemHash;
+                                            const pItem = itemsData[pHash];
+                                            
+                                            if (pItem && pItem.displayProperties && pItem.displayProperties.name) {
+                                                const pNameLower = pItem.displayProperties.name.toLowerCase();
+                                                
+                                                // Verify the socket physically holds artifact perks
+                                                const pci = (pItem.plug?.plugCategoryIdentifier || "").toLowerCase();
+                                                if (pci.includes("artifact_perk") || pci.includes("artifact_tier") || pNameLower.includes("overload") || pNameLower.includes("barrier") || pNameLower.includes("unstoppable")) {
+                                                    isTrueArtifactPerkSocket = true;
+                                                }
+
+                                                // Stripping out dummy/empty/reset plugs inherently built into the manifest array
+                                                if (pNameLower.includes("empty") || pNameLower.includes("deprecated") || pNameLower.includes("no mod currently selected") || pNameLower.includes("reset")) return;
+                                                
+                                                let pDesc = pItem.displayProperties.description || "";
+                                                if (pItem.perks && pItem.perks.length > 0) {
+                                                    const sandboxHash = pItem.perks[0].perkHash;
+                                                    if (sandboxHash && perksData[sandboxHash] && perksData[sandboxHash].displayProperties) {
+                                                        pDesc = perksData[sandboxHash].displayProperties.description || pDesc;
+                                                    }
+                                                }
+
+                                                pool.push({
+                                                    hash: String(pHash),
+                                                    name: pItem.displayProperties.name,
+                                                    icon: pItem.displayProperties.icon ? `https://www.bungie.net${pItem.displayProperties.icon}` : "",
+                                                    desc: pDesc
+                                                });
+                                            }
+                                        });
+                                    }
+                                    
+                                    if (isTrueArtifactPerkSocket) {
+                                        if (pool.length === 1) {
+                                            artifactData.intrinsics.push(pool[0]);
+                                        } else if (pool.length > 1 && logicalIndex < 7) {
+                                            artifactData.sockets.push({
+                                                socketIndex: sIdx,
+                                                logicalIndex: logicalIndex, // 0 through 6 (maps exactly to tier unlock paths)
+                                                pool: pool
+                                            });
+                                            logicalIndex++;
+                                        }
+                                    }
+                                });
+
+                                // Only add it if we successfully parsed exactly the 7 expected valid sockets
+                                if (artifactData.sockets.length === 7) {
+                                    parsedArtifacts.push(artifactData);
+                                }
+                            }
+
+                            // 2. Exotics
                             const isExoticWeapon = item.itemType === 3 && item.inventory?.tierType === 6;
                             const isExoticArmor = item.itemType === 2 && item.inventory?.tierType === 6;
                             const isExoticClassItem = isExoticArmor && exoticClassItems.some(n => nameLower.includes(n));
@@ -260,12 +342,10 @@
                                 let perkColumns = [];
                                 
                                 if (isExoticClassItem) {
-                                    // SPECIAL CASE: Force inject the perfectly mapped arrays!
                                     perkColumns = perfectClassItemPools[item.classType] || [[], []];
                                     actualPerkName = "Exotic Class Item";
                                     actualPerkDesc = "Rolls with two random Exotic perks.";
                                 } else {
-                                    // Standard Exotics: Bypass broken trait pools and grab the static intrinsic perk
                                     if (item.sockets && item.sockets.socketEntries) {
                                         for (let socket of item.sockets.socketEntries) {
                                             let plugHash = socket.singleInitialItemHash;
@@ -323,7 +403,6 @@
                                 const totalPerks = perkColumns.reduce((acc, col) => acc + col.length, 0);
                                 const existingTotalPerks = existing?.perkColumns?.reduce((acc, col) => acc + col.length, 0) || 0;
                                 
-                                // Strict deduplication: ALWAYS protect versions with full randomized perk pools from static dummy items
                                 let shouldSave = false;
                                 if (!existing) {
                                     shouldSave = true;
@@ -342,12 +421,7 @@
                                 continue;
                             }
 
-                            // 1.5 Artifacts
-                            if (item.inventory && item.inventory.bucketTypeHash === 1506418338) {
-                                rawArtifacts.push(item);
-                            }
-
-                            // 2. Subclasses (Prismatic Override logic mapped)
+                            // 3. Subclasses
                             if (item.itemType === 16 && item.classType !== 3 && dName.includes("Subclass")) {
                                 let subName = name.toLowerCase();
                                 let determinedElement = "neutral";
@@ -364,32 +438,50 @@
                                     const existing = subclassesMap.get(subKey);
                                     
                                     const validPlugs = new Set();
+                                    const socketCategoryMap = { super: [], classAbility: [], jump: [], melee: [], grenade: [], aspects: [], fragments: [] };
+
                                     if (item.sockets && item.sockets.socketEntries) {
-                                        for (const socket of item.sockets.socketEntries) {
-                                            if (socket.singleInitialItemHash) validPlugs.add(String(socket.singleInitialItemHash));
-                                            if (socket.reusablePlugItems) {
-                                                socket.reusablePlugItems.forEach(p => validPlugs.add(String(p.plugItemHash)));
-                                            }
+                                        item.sockets.socketEntries.forEach((socket, idx) => {
+                                            let pci = "";
+                                            const testHashes = [];
+                                            if (socket.singleInitialItemHash) testHashes.push(socket.singleInitialItemHash);
+                                            if (socket.reusablePlugItems) socket.reusablePlugItems.forEach(p => testHashes.push(p.plugItemHash));
                                             if (socket.reusablePlugSetHash && plugSetsData[socket.reusablePlugSetHash]) {
-                                                const plugSet = plugSetsData[socket.reusablePlugSetHash];
-                                                if (plugSet.reusablePlugItems) {
-                                                    plugSet.reusablePlugItems.forEach(p => validPlugs.add(String(p.plugItemHash)));
-                                                }
+                                                plugSetsData[socket.reusablePlugSetHash].reusablePlugItems?.forEach(p => testHashes.push(p.plugItemHash));
                                             }
                                             if (socket.randomizedPlugSetHash && plugSetsData[socket.randomizedPlugSetHash]) {
-                                                const plugSet = plugSetsData[socket.randomizedPlugSetHash];
-                                                if (plugSet.reusablePlugItems) {
-                                                    plugSet.reusablePlugItems.forEach(p => validPlugs.add(String(p.plugItemHash)));
+                                                plugSetsData[socket.randomizedPlugSetHash].reusablePlugItems?.forEach(p => testHashes.push(p.plugItemHash));
+                                            }
+                                            
+                                            for (const testHash of testHashes) {
+                                                if (itemsData[testHash] && itemsData[testHash].plug) {
+                                                    const tempPci = itemsData[testHash].plug.plugCategoryIdentifier.toLowerCase();
+                                                    if (tempPci && !tempPci.includes('empty')) {
+                                                        pci = tempPci;
+                                                        break;
+                                                    }
                                                 }
                                             }
-                                        }
+
+                                            if (pci) {
+                                                if (pci.includes('super')) socketCategoryMap.super.push(idx);
+                                                else if (pci.includes('class_ability') || pci.includes('dodge') || pci.includes('rift') || pci.includes('barricade') || pci.includes('thruster')) socketCategoryMap.classAbility.push(idx);
+                                                else if (pci.includes('jump') || pci.includes('movement')) socketCategoryMap.jump.push(idx);
+                                                else if (pci.includes('melee')) socketCategoryMap.melee.push(idx);
+                                                else if (pci.includes('grenade')) socketCategoryMap.grenade.push(idx);
+                                                else if (pci.includes('aspect')) socketCategoryMap.aspects.push(idx);
+                                                else if (pci.includes('fragment')) socketCategoryMap.fragments.push(idx);
+                                            }
+
+                                            testHashes.forEach(h => validPlugs.add(String(h)));
+                                        });
                                     }
 
                                     if (!existing || itemIndex > existing.index) {
                                         subclassesMap.set(subKey, {
                                             hash: hash, name: name, icon: `https://www.bungie.net${item.displayProperties.icon}`,
                                             desc: desc, classType: item.classType, element: determinedElement, index: itemIndex,
-                                            validPlugs: validPlugs
+                                            validPlugs: validPlugs, socketCategoryMap: socketCategoryMap
                                         });
                                     } else if (existing && validPlugs.size > 0) {
                                         validPlugs.forEach(p => existing.validPlugs.add(p));
@@ -397,7 +489,7 @@
                                 }
                             }
 
-                            // 3. Abilities
+                            // 4. Abilities
                             if (item.plug && item.plug.plugCategoryIdentifier) {
                                 const pci = item.plug.plugCategoryIdentifier.toLowerCase();
 
@@ -465,10 +557,9 @@
                                         }
                                     }
 
-                                    // Special override for Blink, as it is the only element-locked Jump ability
                                     if (nameLower === "blink") {
-                                        if (classConstraint === 2) elementConstraint = "void"; // Warlock
-                                        else if (classConstraint === 1) elementConstraint = "arc"; // Hunter
+                                        if (classConstraint === 2) elementConstraint = "void"; 
+                                        else if (classConstraint === 1) elementConstraint = "arc"; 
                                     }
 
                                     if (['super', 'melee', 'grenade', 'classAbility', 'jump'].includes(category)) {
@@ -527,20 +618,29 @@
 
                                     const abilData = { 
                                         hash, name, desc: abilDesc, icon: `https://www.bungie.net${item.displayProperties.icon}`, 
-                                        pci, classConstraint, elementConstraint, fragmentSlots, index: itemIndex, stats: statBonuses 
+                                        pci, classConstraint, elementConstraint, fragmentSlots, index: itemIndex, stats: statBonuses,
+                                        hashes: new Set([String(hash)])
                                     };
 
                                     if (!existingAbil) {
                                         targetMap.set(abilKey, abilData);
                                     } else {
+                                        existingAbil.hashes.add(String(hash)); 
                                         const isBetterDesc = abilDesc.length > (existingAbil.desc?.length || 0);
                                         if (category === 'aspects') {
                                             if (fragmentSlots > existingAbil.fragmentSlots || (fragmentSlots === existingAbil.fragmentSlots && isBetterDesc) || (fragmentSlots === existingAbil.fragmentSlots && !isBetterDesc && itemIndex > existingAbil.index)) {
-                                                targetMap.set(abilKey, abilData);
+                                                existingAbil.desc = abilDesc;
+                                                existingAbil.fragmentSlots = fragmentSlots;
+                                                existingAbil.index = itemIndex;
+                                                existingAbil.hash = hash;
+                                                existingAbil.icon = `https://www.bungie.net${item.displayProperties.icon}`;
                                             }
                                         } else {
                                             if (isBetterDesc || (abilDesc === existingAbil.desc && itemIndex > existingAbil.index)) {
-                                                targetMap.set(abilKey, abilData);
+                                                existingAbil.desc = abilDesc;
+                                                existingAbil.index = itemIndex;
+                                                existingAbil.hash = hash;
+                                                existingAbil.icon = `https://www.bungie.net${item.displayProperties.icon}`;
                                             }
                                         }
                                     }
@@ -560,72 +660,6 @@
                             aspects: Array.from(abilitiesMaps.aspects.values()),
                             fragments: Array.from(abilitiesMaps.fragments.values())
                         };
-
-                        const parsedArtifacts = [];
-                        
-                        rawArtifacts.forEach(art => {
-                            if (art.sockets && art.sockets.socketEntries && art.sockets.socketEntries.length > 0) {
-                                let sNum = 0;
-                                if (art.seasonHash && seasonsData[art.seasonHash]) {
-                                    sNum = seasonsData[art.seasonHash].seasonNumber;
-                                }
-
-                                const artifactData = {
-                                    hash: art.hash,
-                                    name: art.displayProperties.name,
-                                    icon: `https://www.bungie.net${art.displayProperties.icon}`,
-                                    desc: art.displayProperties.description || "",
-                                    seasonNumber: sNum,
-                                    columns: []
-                                };
-                                
-                                const seenPerkHashes = new Set();
-
-                                art.sockets.socketEntries.forEach(socket => {
-                                    if (socket.reusablePlugSetHash && plugSetsData[socket.reusablePlugSetHash]) {
-                                        const plugSet = plugSetsData[socket.reusablePlugSetHash];
-                                        const columnPerks = [];
-                                        
-                                        if (plugSet.reusablePlugItems) {
-                                            plugSet.reusablePlugItems.forEach(plugItem => {
-                                                const pHash = plugItem.plugItemHash;
-                                                if (!seenPerkHashes.has(pHash) && itemsData[pHash]) {
-                                                    seenPerkHashes.add(pHash);
-                                                    const pItem = itemsData[pHash];
-                                                    
-                                                    if (pItem.displayProperties && pItem.displayProperties.name) {
-                                                        const pNameLower = pItem.displayProperties.name.toLowerCase();
-                                                        if (pNameLower.includes("reset") || pNameLower.includes("empty") || pNameLower.includes("deprecated")) return; // Filter out dummy, empty, and deprecated nodes
-                                                        
-                                                        let pDesc = pItem.displayProperties.description || "";
-                                                        if (pItem.perks && pItem.perks.length > 0) {
-                                                            const sandboxHash = pItem.perks[0].perkHash;
-                                                            if (sandboxHash && perksData[sandboxHash] && perksData[sandboxHash].displayProperties) {
-                                                                pDesc = perksData[sandboxHash].displayProperties.description || pDesc;
-                                                            }
-                                                        }
-                                                        columnPerks.push({
-                                                            hash: String(pHash),
-                                                            name: pItem.displayProperties.name,
-                                                            icon: `https://www.bungie.net${pItem.displayProperties.icon}`,
-                                                            desc: pDesc
-                                                        });
-                                                    }
-                                                }
-                                            });
-                                        }
-                                        
-                                        if (columnPerks.length > 0) {
-                                            artifactData.columns.push(columnPerks);
-                                        }
-                                    }
-                                });
-
-                                if (artifactData.columns.length > 0) {
-                                    parsedArtifacts.push(artifactData);
-                                }
-                            }
-                        });
 
                         const parsedSetsList = [];
                         for (const hash in setsData) {
@@ -670,7 +704,6 @@
                                     });
                                 }
 
-                                // FALLBACK: If Bungie forgot to populate itemList (frequent bug in modern seasons), use a heuristic based on cached legendary armor
                                 const setNamePrefix = (setDef.displayProperties?.name || "").toLowerCase()
                                     .replace(/\b(set|armor|suit|gear|vestments|plate)\b/gi, "")
                                     .trim();
@@ -717,7 +750,6 @@
                 loadManifest();
             }, []);
 
-            // NEW: Hydrate build from URL parameters
             React.useEffect(() => {
                 if (!isReady || build !== null) return;
                 
@@ -728,20 +760,15 @@
                     try {
                         let lData;
                         try {
-                            // Try decoding as Base64 first (New compressed share link format)
-                            // (escape/unescape handles safe UTF-8 decoding)
                             lData = JSON.parse(decodeURIComponent(escape(atob(loadoutParam))));
                         } catch (e) {
-                            // Fallback to plain URL decode for backward compatibility with older links
                             lData = JSON.parse(decodeURIComponent(loadoutParam));
                         }
                         const classStr = CLASS_TYPES[lData.classType] || "Titan";
                         
-                        // Reconstruct Armor
-                        const armorHash = lData.parameters?.exoticArmorHash;
+                        const armorHash = lData.exoticArmorHash || lData.parameters?.exoticArmorHash;
                         const chosenArmor = armorHash ? db.armor.find(a => String(a.hash) === String(armorHash)) : null;
                         
-                        // Reconstruct Weapon and Subclass
                         let chosenWeapon = null;
                         let chosenSubclass = null;
                         let socketOverrides = {};
@@ -755,62 +782,85 @@
                             }
                         });
 
-                        // Reconstruct Abilities
-                        const getAbil = (cat, hash) => hash ? db.abilities[cat]?.find(a => a.hash === String(hash)) || null : null;
-                        const superAbil = getAbil('super', socketOverrides["0"]);
-                        const classAbil = getAbil('classAbility', socketOverrides["1"]);
-                        const jump = getAbil('jump', socketOverrides["2"]);
-                        const melee = getAbil('melee', socketOverrides["3"]);
-                        const grenade = getAbil('grenade', socketOverrides["4"]);
+                        const getAbil = (cat, hashStr) => hashStr ? db.abilities[cat]?.find(a => a.hashes.has(String(hashStr))) || null : null;
                         
-                        const aspects = [];
-                        if (socketOverrides["5"]) aspects.push(getAbil('aspects', socketOverrides["5"]));
-                        if (socketOverrides["6"]) aspects.push(getAbil('aspects', socketOverrides["6"]));
-                        
-                        const fragments = [];
-                        for(let i = 7; i <= 11; i++) {
-                            if (socketOverrides[String(i)]) fragments.push(getAbil('fragments', socketOverrides[String(i)]));
-                        }
-                        
-                        const fragmentCapacity = aspects.reduce((sum, a) => sum + (a ? (a.fragmentSlots || 0) : 0), 0);
+                        let superAbil = null, classAbil = null, jump = null, melee = null, grenade = null;
+                        let aspects = [], fragments = [];
 
-                        // Reconstruct Artifact
-                        const artifactPerks = [];
+                        if (chosenSubclass && chosenSubclass.socketCategoryMap) {
+                            const findBySockets = (cat) => {
+                                return (chosenSubclass.socketCategoryMap[cat] || [])
+                                    .map(sIdx => getAbil(cat, String(socketOverrides[String(sIdx)])))
+                                    .filter(Boolean);
+                            };
+                            superAbil = findBySockets('super')[0] || null;
+                            classAbil = findBySockets('classAbility')[0] || null;
+                            jump = findBySockets('jump')[0] || null;
+                            melee = findBySockets('melee')[0] || null;
+                            grenade = findBySockets('grenade')[0] || null;
+                            aspects = findBySockets('aspects');
+                            fragments = findBySockets('fragments');
+                        } else {
+                            superAbil = getAbil('super', socketOverrides["0"]);
+                            classAbil = getAbil('classAbility', socketOverrides["1"]);
+                            jump = getAbil('jump', socketOverrides["2"]);
+                            melee = getAbil('melee', socketOverrides["3"]);
+                            grenade = getAbil('grenade', socketOverrides["4"]);
+                            aspects = [getAbil('aspects', socketOverrides["5"]), getAbil('aspects', socketOverrides["6"])];
+                            fragments = [
+                                getAbil('fragments', socketOverrides["7"]), getAbil('fragments', socketOverrides["8"]),
+                                getAbil('fragments', socketOverrides["9"]), getAbil('fragments', socketOverrides["10"]),
+                                getAbil('fragments', socketOverrides["11"]), getAbil('fragments', socketOverrides["12"])
+                            ];
+                        }
+
+                        let fragmentCapacity = aspects.reduce((acc, a) => acc + (a ? a.fragmentSlots : 0), 0);
+
+                        // Loadout Hydration Support for Equippable Artifacts
                         let bestArtifact = null;
-                        const unlockedHashes = lData.parameters?.artifactUnlocks?.unlockedItemHashes || [];
+                        const artifactPerks = []; // Now stores { socketIndex, perk } map 
+                        const equippedArtifactObj = lData.equipped.find(eq => db.artifacts.some(a => a.hash === String(eq.hash)));
                         
-                        if (unlockedHashes.length > 0 && db.artifacts.length > 0) {
-                            db.artifacts.forEach(art => {
-                                let matchCount = 0;
-                                art.columns.forEach(col => col.forEach(p => { if (unlockedHashes.includes(Number(p.hash))) matchCount++; }));
-                                if (matchCount > 0 && (!bestArtifact || matchCount > bestArtifact.matchCount)) {
-                                    bestArtifact = art;
-                                    bestArtifact.matchCount = matchCount;
-                                }
-                            });
-                            if (bestArtifact) {
-                                bestArtifact.columns.forEach(col => col.forEach(p => {
-                                    if (unlockedHashes.includes(Number(p.hash))) artifactPerks.push(p);
-                                }));
+                        if (equippedArtifactObj) {
+                            bestArtifact = db.artifacts.find(a => a.hash === String(equippedArtifactObj.hash));
+                            const unlocksObj = lData.artifactUnlocks || lData.parameters?.artifactUnlocks;
+
+                            if (bestArtifact && unlocksObj && unlocksObj.unlockedItemHashes) {
+                                unlocksObj.unlockedItemHashes.forEach(pHash => {
+                                    const sData = bestArtifact.sockets.find(s => s.pool.some(p => p.hash === String(pHash)));
+                                    if (sData) {
+                                        const perk = sData.pool.find(p => p.hash === String(pHash));
+                                        if (perk) artifactPerks.push({ socketIndex: sData.socketIndex, perk });
+                                    }
+                                });
+                            } else if (bestArtifact && equippedArtifactObj.socketOverrides) {
+                                Object.entries(equippedArtifactObj.socketOverrides).forEach(([sIdx, pHash]) => {
+                                    const sData = bestArtifact.sockets.find(s => String(s.socketIndex) === sIdx);
+                                    if (sData) {
+                                        const perk = sData.pool.find(p => p.hash === String(pHash));
+                                        if (perk) {
+                                            artifactPerks.push({ socketIndex: sData.socketIndex, perk });
+                                        }
+                                    }
+                                });
                             }
                         }
 
-                        // Reconstruct Set Bonuses
-                        const actualSetBonuses = [];
-                        if (lData.parameters?.setBonuses) {
-                            Object.entries(lData.parameters.setBonuses).forEach(([sHash, count]) => {
-                                const setDef = db.sets.find(s => s.hash === String(sHash));
+                        let actualSetBonuses = [];
+                        const setBonusesObj = lData.setBonuses || lData.parameters?.setBonuses;
+                        if (setBonusesObj) {
+                            Object.entries(setBonusesObj).forEach(([setHash, count]) => {
+                                const setDef = db.sets.find(s => String(s.hash) === setHash);
                                 if (setDef) {
                                     setDef.perks.forEach(p => {
                                         if (p.count <= count) {
-                                            actualSetBonuses.push({ setName: setDef.name, perk: p, setDef });
+                                            actualSetBonuses.push({ setName: setDef.name, perk: p, setDef: setDef });
                                         }
                                     });
                                 }
                             });
                         }
 
-                        // Reconstruct Custom Builder Data (Stats, Elemental lock, Traits)
                         let stats = { primary: "Health", secondary: "Class" };
                         let armorPerks = [];
                         let element = chosenSubclass?.element || "neutral";
@@ -835,7 +885,6 @@
                             abilities: { superAbil, grenade, melee, classAbil, jump, aspects: aspects.filter(Boolean), fragments: fragments.filter(Boolean), fragmentCapacity }
                         });
                         
-                        // Clear the URL parameter so refreshing doesn't lock them into the shared build
                         window.history.replaceState({}, document.title, window.location.pathname);
                         
                     } catch (e) {
@@ -847,39 +896,30 @@
             const generateBuild = () => {
                 if (!isReady) return;
                 
-                // Helper for Top-N weighted variance pool
                 const pickFromScoredList = (scoredList, topN = 3) => {
-                    if (scoredList.length === 0) return null;
-                    
-                    // Add random jitter to shuffle exact ties
+                    if (!scoredList || scoredList.length === 0) return null;
                     scoredList.forEach(i => i._rand = Math.random());
-                    
-                    // Sort descending by score, then randomly if tied
                     scoredList.sort((a, b) => {
                         if (b.score === a.score) return b._rand - a._rand;
                         return b.score - a.score;
                     });
                     
-                    // 1. Hard Override Constraint: If something is fundamentally required (+1000), bypass the pool and pick it
                     if (scoredList[0].score >= 1000) {
                         const required = scoredList.filter(i => i.score >= 1000);
                         return required[Math.floor(Math.random() * required.length)].item;
                     }
 
-                    // 2. Build the Top N Pool
                     const topScore = scoredList[0].score;
-                    // Safety check: Filter out options that score terribly compared to the leader (e.g. less than 40% of the top score)
-                    // This prevents completely dead synergies from sneaking into the random pool
-                    let validList = scoredList.filter(i => i.score >= topScore * 0.4); 
+                    // SAFEGUARD: Prevent empty lists if all scores are zero or negative
+                    let validList = scoredList.filter(i => topScore > 0 ? i.score >= topScore * 0.4 : i.score === topScore); 
+                    if (!validList || validList.length === 0) validList = [scoredList[0]];
                     
                     let poolSize = Math.min(topN, validList.length);
                     const topPool = validList.slice(0, poolSize);
                     
-                    // 3. Randomly select from the elite Top N pool
                     return topPool[Math.floor(Math.random() * topPool.length)].item;
                 };
 
-                // 1. Determine Class & Armor
                 let finalClass = selClass !== "" ? parseInt(selClass) : Math.floor(Math.random() * 3);
                 let chosenArmor;
                 
@@ -891,34 +931,35 @@
                 } else {
                     let availableArmor = db.armor.filter(a => a.classType === finalClass);
                     
-                    if (selWeapon) {
-                        const preSelWep = db.weapons.find(w => w.hash === selWeapon);
-                        if (preSelWep && preSelWep.damageType) {
-                            const filteredArmor = availableArmor.filter(a => {
-                                const aText = (a.name + " " + a.desc + " " + (a.perkName || "")).replace(/[-]/g, ' ').toLowerCase();
-                                let reqElements = [];
-                                ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-                                    if (new RegExp('\\b' + el + '\\b(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(aText)) {
-                                        reqElements.push(el);
-                                    }
-                                });
-                                return reqElements.length === 0 || reqElements.includes(preSelWep.damageType);
-                            });
-                            if (filteredArmor.length > 0) availableArmor = filteredArmor;
-                        }
-                    }
-
-                    if (selSubclass) {
-                        const preSub = db.subclasses.find(s => s.hash === selSubclass);
+                    if (selWeapon || selSubclass) {
+                        const preSelWep = selWeapon ? db.weapons.find(w => w.hash === selWeapon) : null;
+                        const preSub = selSubclass ? db.subclasses.find(s => s.hash === selSubclass) : null;
+                        
+                        let scoredArmor = availableArmor.map(a => {
+                            let score = 0;
+                            const aText = (a.name + " " + a.desc + " " + (a.perkName || "")).replace(/[-]/g, ' ').toLowerCase();
+                            
+                            if (preSelWep && preSelWep.damageType) {
+                                if (new RegExp('\\b' + preSelWep.damageType + '\\b(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(aText)) {
+                                    score += 100;
+                                }
+                            }
+                            if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic') {
+                                if (new RegExp('\\b' + preSub.element + '\\b', 'i').test(aText)) score += 100;
+                            }
+                            return { item: a, score };
+                        });
+                        
                         if (preSub && preSub.element !== 'prismatic') {
-                            availableArmor = availableArmor.filter(a => !exoticClassItems.some(n => a.name.toLowerCase().includes(n)));
+                            scoredArmor = scoredArmor.filter(sa => !exoticClassItems.some(n => sa.item.name.toLowerCase().includes(n)));
                         }
+                        
+                        chosenArmor = pickFromScoredList(scoredArmor, 3) || availableArmor[Math.floor(Math.random() * availableArmor.length)];
+                    } else {
+                        chosenArmor = availableArmor[Math.floor(Math.random() * availableArmor.length)];
                     }
-
-                    chosenArmor = availableArmor[Math.floor(Math.random() * availableArmor.length)];
                 }
                 
-                // NEW: Exotic Class Item Perk Evaluation
                 let chosenArmorPerks = [];
                 if (chosenArmor && exoticClassItems.some(n => chosenArmor.name.toLowerCase().includes(n)) && chosenArmor.perkColumns && chosenArmor.perkColumns.length >= 1) {
                     const scoreCol = (col) => {
@@ -942,23 +983,19 @@
                     let p1 = scoreCol(chosenArmor.perkColumns[0]);
                     let p2 = chosenArmor.perkColumns.length > 1 ? scoreCol(chosenArmor.perkColumns[1]) : null;
                     
-                    // Safety check to ensure we don't pick the exact same perk twice if Bungie combined the pools
                     if (p1 && p2 && p1.hash === p2.hash && chosenArmor.perkColumns[1].length > 1) {
                         const filteredCol2 = chosenArmor.perkColumns[1].filter(p => p.hash !== p1.hash);
                         p2 = scoreCol(filteredCol2);
                     }
 
-                    chosenArmorPerks = [p1, p2].filter(Boolean); // Safely bundle and drop any nulls
+                    chosenArmorPerks = [p1, p2].filter(Boolean); 
                 }
 
-                // Combine the armor's base text with BOTH Exotic Class Item traits (if present)
-                // This ensures the two randomly chosen traits act as the authoritative "seed" for the entire keyword engine.
                 const armorText = (chosenArmor.name + " " + chosenArmor.desc + " " + (chosenArmor.perkName || "") + " " + chosenArmorPerks.map(p => p.name + " " + p.desc).join(" ")).toLowerCase();
                 const armorFullText = armorText.replace(/[-]/g, ' ');
 
-                // CASCADE SYNERGY ENGINE - Armor Authoritative Update
                 const activeKeywords = new Set();
-                const armorElements = new Set(); // Tracks the implicit elements demanded by the Exotic Armor
+                const armorElements = new Set(); 
 
                 const addKeywords = (text, isArmor = false) => {
                     const lowerText = text.replace(/[-]/g, ' ').toLowerCase();
@@ -967,10 +1004,9 @@
                             const safeWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                             if (new RegExp('\\b' + safeWord + '\\b', 'i').test(lowerText)) {
                                 activeKeywords.add(word);
-                                // If this keyword belongs to an element, inject the parent element
                                 if (['solar', 'void', 'arc', 'stasis', 'strand', 'prismatic'].includes(el)) {
                                     activeKeywords.add(el);
-                                    if (isArmor) armorElements.add(el); // Armor dictates the build's core
+                                    if (isArmor) armorElements.add(el); 
                                 }
                             }
                         });
@@ -993,12 +1029,11 @@
                     return 2;
                 };
                 
-                // 1. Initialize with Armor Keywords (Authoritative)
                 addKeywords(armorFullText, true);
 
                 let requiredWeaponElements = [];
                 ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-                    if (new RegExp('\\b' + el + '\\b(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(armorFullText)) {
+                    if (new RegExp('\\b' + el + '\\b(?:\\s+or\\s+\\w+)?(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(armorFullText)) {
                         requiredWeaponElements.push(el);
                     }
                 });
@@ -1009,12 +1044,10 @@
                     if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic') targetElement = preSub.element;
                 }
 
-                // NEW: Precision Requirements Tracking
                 const precisionRegex = /\bprecision\b\s+(?:hits?|kills?|final blows?|damage)\b/i;
                 const nonPrecisionTypes = ['grenade launcher', 'rocket launcher', 'sword', 'glaive', 'fusion rifle'];
                 const armorNeedsPrecision = precisionRegex.test(armorFullText);
 
-                // 2. Select Weapon based on synergy (Using Top-N Pool)
                 let chosenWeapon;
                 if (selWeapon) {
                     chosenWeapon = db.weapons.find(w => w.hash === selWeapon);
@@ -1034,17 +1067,14 @@
                             if (new RegExp('\\b' + safeKw + '\\b', 'i').test(wText)) score += getKeywordWeight(kw);
                         });
                         
-                        // Elemental Weighting
                         if (requiredWeaponElements.includes(weapon.damageType)) {
-                            score += 1000; // Hard override for explicitly required elements
+                            score += 1000; 
                         } else if (targetElement && weapon.damageType === targetElement) {
                             score += 20; 
                         } else if (armorElements.has(weapon.damageType)) {
-                            score += 15; // Strongly favor weapons matching the implicit element of the armor
+                            score += 15; 
                         }
                         
-                        // NEW: Precision Ban
-                        // If the armor requires precision hits, ban weapons that can't crit
                         if (armorNeedsPrecision && nonPrecisionTypes.includes(weapon.weaponType)) {
                             score -= 2000;
                         }
@@ -1052,7 +1082,6 @@
                         return { item: weapon, score };
                     });
                     
-                    // Choose randomly from the top 4 scoring weapons to introduce variance
                     chosenWeapon = pickFromScoredList(scoredWeapons, 4) || weaponPool[Math.floor(Math.random() * weaponPool.length)];
                 }
 
@@ -1063,21 +1092,17 @@
                     activeKeywords.add(chosenWeapon.ammoType);
                 }
                 
-                // 3. Select Subclass
                 let chosenSubclass;
                 let dominantElement = "neutral";
                 
                 const isExoticClassItem = chosenArmor && exoticClassItems.some(n => chosenArmor.name.toLowerCase().includes(n));
                 
-                // Strict Exotic Armor Ability Overrides (50/50 Prismatic Lock)
                 let forcedSubclasses = [];
                 if (chosenArmor && !isExoticClassItem) {
                     ['super', 'melee', 'grenade', 'classAbility', 'jump'].forEach(cat => {
                         if (db.abilities[cat]) {
                             db.abilities[cat].forEach(a => {
                                 const aName = a.name.toLowerCase();
-                                // Ensure ability name is substantial enough to avoid false positive generic words
-                                // We add (?:s)? to handle pluralized abilities in descriptions (e.g. "Coldsnap grenades")
                                 if (aName.length > 4 && new RegExp('\\b' + aName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s)?\\b', 'i').test(armorFullText)) {
                                     let el = a.elementConstraint;
                                     if (el !== 'neutral' && el !== 'prismatic') {
@@ -1086,7 +1111,6 @@
                                         let prismSub = subclassPool.find(s => s.element === 'prismatic');
                                         
                                         if (nativeSub && !forcedSubclasses.includes(nativeSub)) forcedSubclasses.push(nativeSub);
-                                        // If Prismatic actually has this exact ability in its kit, it joins the 50/50 pool
                                         if (prismSub && prismSub.validPlugs && prismSub.validPlugs.has(String(a.hash)) && !forcedSubclasses.includes(prismSub)) {
                                             forcedSubclasses.push(prismSub);
                                         }
@@ -1096,7 +1120,6 @@
                         }
                     });
 
-                    // NEW: Elemental Super Overrides (e.g., "Void Super")
                     ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
                         if (new RegExp('\\b' + el + '\\s+super\\b', 'i').test(armorFullText)) {
                             let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
@@ -1105,7 +1128,6 @@
                             
                             if (nativeSub && !forcedSubclasses.includes(nativeSub)) forcedSubclasses.push(nativeSub);
                             
-                            // Only add Prismatic if it actually has a super of this element
                             if (prismSub && db.abilities.super) {
                                 const hasMatchingPrismSuper = db.abilities.super.some(a => 
                                     a.elementConstraint === el && 
@@ -1119,7 +1141,6 @@
                         }
                     });
                     
-                    // SPECIAL CASE: Getaway Artist implicitly requires Arc/Prismatic subclasses to have an Arc grenade
                     if (chosenArmor.name.toLowerCase().includes("getaway artist")) {
                         let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
                         let arcSub = subclassPool.find(s => s.element === 'arc');
@@ -1139,18 +1160,18 @@
                 if (!chosenSubclass) {
                     let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
                     
-                    if (isExoticClassItem) {
-                        subclassPool = subclassPool.filter(s => s.element === 'prismatic');
-                        chosenSubclass = subclassPool[Math.floor(Math.random() * subclassPool.length)];
-                    } else if (forcedSubclasses.length > 0) {
-                        // Strict 50/50 lock-in dictated by Exotic Armor
-                        chosenSubclass = forcedSubclasses[Math.floor(Math.random() * forcedSubclasses.length)];
-                    } else {
-                        let scoredSubclasses = subclassPool.map(sub => {
-                            let score = 0;
-                            
-                            const evaluateElementSynergy = (el) => {
-                                let elScore = 0;
+                    let scoredSubclasses = subclassPool.map(sub => {
+                        let score = 0;
+                        
+                        if (isExoticClassItem) {
+                            if (sub.element === 'prismatic') score += 5000;
+                            else score -= 5000;
+                        } else if (forcedSubclasses.includes(sub)) {
+                            score += 1000;
+                        }
+                        
+                        const evaluateElementSynergy = (el) => {
+                            let elScore = 0;
                                 if (armorElements.has(el)) elScore += 200;
                                 if (requiredWeaponElements.length > 0 && requiredWeaponElements.includes(el)) elScore += 50;
                                 if (chosenWeapon && chosenWeapon.damageType !== 'kinetic' && chosenWeapon.damageType === el) elScore += 20;
@@ -1173,7 +1194,6 @@
                                     }
                                 }
 
-                                // Apply keyword weights belonging directly to this element
                                 activeKeywords.forEach(kw => {
                                     const weight = getKeywordWeight(kw);
                                     if (weight !== 10 && KEYWORDS[el] && KEYWORDS[el].includes(kw)) {
@@ -1185,22 +1205,19 @@
                             };
 
                             if (sub.element === 'prismatic') {
-                                // PRISMATIC MIMICRY: Prismatic evaluates exactly on par with the best element, preventing double-dipping.
                                 let maxScore = evaluateElementSynergy('prismatic');
                                 ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
                                     maxScore = Math.max(maxScore, evaluateElementSynergy(el));
                                 });
-                                score = maxScore;
+                                score += maxScore;
                             } else {
-                                score = evaluateElementSynergy(sub.element);
+                                score += evaluateElementSynergy(sub.element);
                             }
                             
                             return { item: sub, score };
                         });
                         
-                        // Pick randomly from the top 3 scoring subclasses to allow flexible starting points
                         chosenSubclass = pickFromScoredList(scoredSubclasses, 3) || subclassPool[Math.floor(Math.random() * subclassPool.length)];
-                    }
                 }
 
                 if (chosenSubclass && chosenSubclass.element !== 'neutral') {
@@ -1208,27 +1225,10 @@
                     activeKeywords.add(dominantElement);
                 }
 
-                // 4. Ability Selection using Global PCI Pools
                 const getValidAbilities = (category, sub) => {
                     if (!sub || !db.abilities[category]) return [];
                     return db.abilities[category].filter(a => {
-                        // Strict Prismatic Check using actual valid plugs API
-                        if (sub.validPlugs && sub.validPlugs.has(String(a.hash))) {
-                            return true;
-                        }
-                        if (sub.element === 'prismatic') {
-                            return false;
-                        }
-
-                        const classMatch = a.classConstraint === "shared" || a.classConstraint === sub.classType;
-                        let elementMatch = false;
-                        
-                        if (a.elementConstraint === 'neutral' && ['aspects', 'fragments', 'super', 'grenade', 'melee'].includes(category)) {
-                            return false; 
-                        }
-                        
-                        elementMatch = a.elementConstraint === 'neutral' || a.elementConstraint === sub.element;
-                        return classMatch && elementMatch;
+                        return Array.from(a.hashes).some(h => sub.validPlugs.has(h));
                     });
                 };
 
@@ -1243,12 +1243,10 @@
                             if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += getKeywordWeight(kw); 
                         });
                         
-                        // If this exact ability was demanded by the Exotic Armor, assign it a hard override score
                         if (new RegExp('\\b' + abil.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s)?\\b', 'i').test(armorFullText)) {
                             score += 1000;
                         }
 
-                        // NEW: Elemental Super Override (Equates to exact ability match)
                         if (category === 'super' && abil.elementConstraint && abil.elementConstraint !== 'neutral' && abil.elementConstraint !== 'prismatic') {
                             if (new RegExp('\\b' + abil.elementConstraint + '\\s+super\\b', 'i').test(armorFullText)) {
                                 score += 1000;
@@ -1258,7 +1256,6 @@
                         return { item: abil, score };
                     });
                     
-                    // Pick from the top 3 scoring abilities for this slot
                     const picked = pickFromScoredList(scored, 3);
                     if (picked) {
                         addKeywords((picked.name + " " + picked.desc));
@@ -1271,7 +1268,6 @@
                 const jump = pickAbilityFromPool(getValidAbilities('jump', chosenSubclass), activeKeywords, 'jump');
                 const melee = pickAbilityFromPool(getValidAbilities('melee', chosenSubclass), activeKeywords, 'melee');
                 
-                // Grenade Selection
                 let grenadePool = getValidAbilities('grenade', chosenSubclass);
                 
                 const damageGrenadeRegexes = [
@@ -1291,7 +1287,6 @@
                     grenadePool = grenadePool.filter(g => g.name.toLowerCase() !== "healing grenade");
                 }
                 
-                // SPECIAL CASE: Getaway Artist strictly requires an Arc grenade to consume
                 if (chosenArmor && chosenArmor.name.toLowerCase().includes("getaway artist")) {
                     const arcGrenades = grenadePool.filter(g => g.elementConstraint === 'arc');
                     if (arcGrenades.length > 0) {
@@ -1302,7 +1297,6 @@
                 const grenade = pickAbilityFromPool(grenadePool, activeKeywords, 'grenade');
                 const isHealingGrenade = grenade && grenade.name.toLowerCase() === "healing grenade";
 
-                // Aspects - Pick up to 2
                 let aspects = [];
                 let fragmentCapacity = 0;
                 const aspectPool = getValidAbilities('aspects', chosenSubclass);
@@ -1338,7 +1332,6 @@
                     }
                 }
 
-                // Fragments
                 let fragments = [];
                 const fragPool = getValidAbilities('fragments', chosenSubclass);
                 if (fragPool.length > 0 && fragmentCapacity > 0) {
@@ -1346,7 +1339,6 @@
                     
                     fragPool.forEach(abil => {
                         const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
-                        
                         if (isHealingGrenade && damageGrenadeRegexes.some(r => r.test(text))) return;
 
                         let score = 0;
@@ -1367,22 +1359,28 @@
                     
                     for (let i = 0; i < fragmentCapacity; i++) {
                         let remainingFrags = strictFrags.filter(f => !fragments.some(sel => sel.hash === f.item.hash));
-                        let picked = pickFromScoredList(remainingFrags, 4); // Fragments have deep pools, 4 gives good variance
+                        let picked = pickFromScoredList(remainingFrags, 4); 
                         if (picked) fragments.push(picked);
                     }
                 }
 
-                // 6. Artifact & Perks - Multi-Artifact Synergy Evaluation
-                let scoredArtifacts = [];
+                let bestArtifact = null;
+                let bestArtifactPerks = []; // Format: [{ socketIndex, perk }]
 
                 if (db.artifacts && db.artifacts.length > 0) {
-                    db.artifacts.forEach(artifact => {
+                    let availableArtifacts = db.artifacts;
+                    if (selArtifact) {
+                        availableArtifacts = db.artifacts.filter(a => String(a.hash) === selArtifact);
+                    }
+
+                    // Score each artifact's possible path against the build's active keywords
+                    const scoredArtifacts = availableArtifacts.map(artifact => {
                         let currentArtifactScore = 0;
                         let currentSelectedPerks = [];
 
-                        // Score all perks in the artifact
-                        const scoredCols = artifact.columns.map(column => {
-                            return column.map(perk => {
+                        // 7 valid physical sockets exist on the artifact. Pick 1 for each socket.
+                        artifact.sockets.forEach(sock => {
+                            let scoredPool = sock.pool.map(perk => {
                                 let score = 0;
                                 const text = perk.desc.replace(/[-]/g, ' ').toLowerCase(); 
                                 
@@ -1395,11 +1393,8 @@
                                     db.weaponTypes.forEach(wt => {
                                         if (!wt) return;
                                         const safeWt = wt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                                        
                                         const regex = new RegExp('(?:\\b(\\w+)\\W+)?(?:\\b(\\w+)\\W+)?(?:\\b(\\w+)\\W+)?\\b' + safeWt + 's?\\b', 'gi');
-                                        let match;
-                                        let foundWt = false;
-                                        let fitsOurWeapon = false;
+                                        let match, foundWt = false, fitsOurWeapon = false;
                                         
                                         while ((match = regex.exec(text)) !== null) {
                                             foundWt = true;
@@ -1408,72 +1403,49 @@
                                             const precedingElements = words.filter(w => elements.includes(w));
                                             
                                             if (wt === chosenWeapon.weaponType) {
-                                                if (precedingElements.length === 0 || precedingElements.includes(chosenWeapon.damageType)) {
-                                                    fitsOurWeapon = true;
-                                                }
+                                                if (precedingElements.length === 0 || precedingElements.includes(chosenWeapon.damageType)) fitsOurWeapon = true;
                                             }
                                         }
 
                                         if (foundWt) {
-                                            if (wt === chosenWeapon.weaponType && fitsOurWeapon) {
-                                                mentionsChosenWeapon = true;
-                                            } else {
-                                                mentionsOtherWeapons = true;
-                                            }
+                                            if (wt === chosenWeapon.weaponType && fitsOurWeapon) mentionsChosenWeapon = true;
+                                            else mentionsOtherWeapons = true;
                                         }
                                     });
                                 }
 
-                                // NEW: Strict Elemental Weapon Checks (e.g. "Stasis weapon hits", "Solar damage final blows")
                                 let demandedWeaponElements = [];
                                 ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-                                    const regex = new RegExp('\\b' + el + '\\b(?:\\s+or\\s+\\w+)?(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?|hits?)\\b', 'i');
-                                    if (regex.test(text)) demandedWeaponElements.push(el);
+                                    if (new RegExp('\\b' + el + '\\b(?:\\s+or\\s+\\w+)?(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?|hits?)\\b', 'i').test(text)) demandedWeaponElements.push(el);
                                 });
 
                                 if (demandedWeaponElements.length > 0) {
-                                    if (chosenWeapon && !demandedWeaponElements.includes(chosenWeapon.damageType)) {
-                                        mentionsOtherWeapons = true; // Demands an element our weapon doesn't have
-                                    } else {
-                                        mentionsChosenWeapon = true; // Perfect match
-                                    }
+                                    if (chosenWeapon && !demandedWeaponElements.includes(chosenWeapon.damageType)) mentionsOtherWeapons = true;
+                                    else mentionsChosenWeapon = true;
                                 }
 
-                                // NEW: Strict Elemental Ability Checks (e.g. "Stasis grenade", "Void ability", "Arc super")
                                 let demandedAbilityElements = [];
                                 ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-                                    const regex = new RegExp('\\b' + el + '\\b\\s+(?:damage\\s+)?(?:grenades?|melees?|super|abilities|ability)\\b', 'i');
-                                    if (regex.test(text)) demandedAbilityElements.push(el);
+                                    if (new RegExp('\\b' + el + '\\b\\s+(?:damage\\s+)?(?:grenades?|melees?|super|abilities|ability)\\b', 'i').test(text)) demandedAbilityElements.push(el);
                                 });
 
                                 if (demandedAbilityElements.length > 0) {
-                                    // Gather the elements of all currently selected abilities in this build
                                     const activeElements = new Set([dominantElement]);
                                     if (superAbil && superAbil.elementConstraint && superAbil.elementConstraint !== 'neutral' && superAbil.elementConstraint !== 'prismatic') activeElements.add(superAbil.elementConstraint);
                                     if (grenade && grenade.elementConstraint && grenade.elementConstraint !== 'neutral' && grenade.elementConstraint !== 'prismatic') activeElements.add(grenade.elementConstraint);
                                     if (melee && melee.elementConstraint && melee.elementConstraint !== 'neutral' && melee.elementConstraint !== 'prismatic') activeElements.add(melee.elementConstraint);
                                     if (classAbil && classAbil.elementConstraint && classAbil.elementConstraint !== 'neutral' && classAbil.elementConstraint !== 'prismatic') activeElements.add(classAbil.elementConstraint);
                                     
-                                    if (demandedAbilityElements.some(el => activeElements.has(el))) {
-                                        score += 50; // Build perfectly matches the required ability element!
-                                    } else {
-                                        abilityElementMismatch = true; // Build is entirely missing the required ability element. Ban it.
-                                    }
+                                    if (demandedAbilityElements.some(el => activeElements.has(el))) score += 50;
+                                    else abilityElementMismatch = true;
                                 }
 
-                                // NEW: Strict Precision Check
-                                // If the perk requires precision hits, but we are holding a non-precision weapon, ban it.
                                 if (precisionRegex.test(text)) {
-                                    if (chosenWeapon && nonPrecisionTypes.includes(chosenWeapon.weaponType)) {
-                                        precisionMismatch = true;
-                                    }
+                                    if (chosenWeapon && nonPrecisionTypes.includes(chosenWeapon.weaponType)) precisionMismatch = true;
                                 }
 
                                 activeKeywords.forEach(kw => {
-                                    const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                                    if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) {
-                                        score += getKeywordWeight(kw) * 1.5;
-                                    }
+                                    if (new RegExp('\\b' + kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(text)) score += getKeywordWeight(kw) * 1.5;
                                 });
 
                                 if (mentionsChosenWeapon) score += 25; 
@@ -1482,56 +1454,41 @@
                                 if (abilityElementMismatch) score -= 1000;
                                 if (precisionMismatch) score -= 1000;
 
-                                return { ...perk, score };
+                                return { item: perk, score };
                             });
+
+                            // Ensure we don't pick duplicate perks across different sockets
+                            let validPool = scoredPool.filter(p => !currentSelectedPerks.some(sel => sel.perk.hash === p.item.hash));
+                            
+                            if (validPool.length > 0) {
+                                const picked = pickFromScoredList(validPool, 3);
+                                if (picked) {
+                                    const original = validPool.find(p => p.item.hash === picked.hash);
+                                    if (original) currentArtifactScore += original.score;
+                                    // Save both the perk AND the socketIndex so DIM knows where it goes
+                                    currentSelectedPerks.push({ socketIndex: sock.socketIndex, perk: picked });
+                                }
+                            }
                         });
 
-                        const getPool = (maxColIndex) => {
-                            let pool = [];
-                            for (let i = 0; i <= Math.min(maxColIndex, scoredCols.length - 1); i++) {
-                                pool.push(...scoredCols[i]);
-                            }
-                            return pool
-                                .filter(p => !currentSelectedPerks.some(sel => sel.hash === p.hash))
-                                .map(p => ({...p, rand: Math.random()}))
-                                .sort((a, b) => {
-                                    if (b.score === a.score) return b.rand - a.rand;
-                                    return b.score - a.score;
-                                });
-                        };
-
-                        let t1Pool = getPool(0);
-                        for (let i = 0; i < 2; i++) if (t1Pool.length > 0) currentSelectedPerks.push(t1Pool.shift());
-
-                        let t2Pool = getPool(1);
-                        for (let i = 0; i < 3; i++) if (t2Pool.length > 0) currentSelectedPerks.push(t2Pool.shift());
-
-                        let t3Pool = getPool(2);
-                        for (let i = 0; i < 2; i++) if (t3Pool.length > 0) currentSelectedPerks.push(t3Pool.shift());
-
-                        currentSelectedPerks.forEach(perk => currentArtifactScore += perk.score);
-
-                        scoredArtifacts.push({ 
+                        return { 
                             item: { artifact, perks: currentSelectedPerks }, 
                             score: currentArtifactScore 
-                        });
+                        };
                     });
-                }
 
-                let bestArtifact = null;
-                let bestArtifactPerks = [];
-                if (scoredArtifacts.length > 0) {
-                    // Pick randomly between the top 2 overall artifact paths
-                    const chosenData = pickFromScoredList(scoredArtifacts, 2);
-                    if (chosenData) {
-                        bestArtifact = chosenData.artifact;
-                        bestArtifactPerks = chosenData.perks;
+                    if (scoredArtifacts.length > 0) {
+                        const chosenData = pickFromScoredList(scoredArtifacts, 2);
+                        if (chosenData) {
+                            bestArtifact = chosenData.artifact;
+                            bestArtifactPerks = chosenData.perks;
+                        }
                     }
                 }
 
                 const statScores = {
-                    Health: finalClass === 0 ? 80 : 60, // Titans naturally favor defensive scaling
-                    Class: finalClass === 1 ? 60 : 30, // Hunters naturally want class ability stat
+                    Health: finalClass === 0 ? 80 : 60,
+                    Class: finalClass === 1 ? 60 : 30,
                     Melee: 20,
                     Grenade: 20,
                     Super: 10,
@@ -1548,7 +1505,6 @@
                     ...fragments.map(f => f?.desc)
                 ].filter(Boolean).join(" ").toLowerCase();
 
-                // Weighted Keyword Counting
                 const countOccurrences = (str, word) => {
                     const regex = new RegExp(`\\b${word}\\b`, 'gi');
                     return (str.match(regex) || []).length;
@@ -1572,7 +1528,6 @@
                 const primaryStat = sortedStats[0][0];
                 const secondaryStat = sortedStats[1][0];
 
-                // 7. Armor Sets
                 const scoredSets = db.sets.map(set => {
                     let score = 0;
                     activeKeywords.forEach(kw => {
@@ -1581,28 +1536,34 @@
                             score += getKeywordWeight(kw);
                         }
                     });
-                    return { ...set, score: score, rand: Math.random() }; 
-                }).sort((a, b) => {
-                    if (b.score === a.score) return b.rand - a.rand;
-                    return b.score - a.score;
+                    return { item: set, score: score }; 
                 });
 
                 let finalSets = [];
                 const prefers4Piece = Math.random() > 0.5;
-                const setsWith4 = scoredSets.filter(s => s.has4);
-                const setsWith2 = scoredSets.filter(s => s.has2);
+                const setsWith4 = scoredSets.filter(s => s.item.has4);
+                const setsWith2 = scoredSets.filter(s => s.item.has2);
 
                 if (prefers4Piece && setsWith4.length > 0) {
-                    const chosen4Piece = setsWith4[0];
-                    const perk2 = chosen4Piece.perks.find(p => p.count === 2);
-                    const perk4 = chosen4Piece.perks.find(p => p.count === 4);
-                    if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2, setDef: chosen4Piece });
-                    if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4, setDef: chosen4Piece });
-                } else if (setsWith2.length >= 2) {
-                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
-                    finalSets.push({ setName: setsWith2[1].name, perk: setsWith2[1].perks.find(p => p.count === 2), setDef: setsWith2[1] });
-                } else if (setsWith2.length === 1) {
-                    finalSets.push({ setName: setsWith2[0].name, perk: setsWith2[0].perks.find(p => p.count === 2), setDef: setsWith2[0] });
+                    const chosen4Piece = pickFromScoredList(setsWith4, 4);
+                    if (chosen4Piece) {
+                        const perk2 = chosen4Piece.perks.find(p => p.count === 2);
+                        const perk4 = chosen4Piece.perks.find(p => p.count === 4);
+                        if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2, setDef: chosen4Piece });
+                        if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4, setDef: chosen4Piece });
+                    }
+                } else if (setsWith2.length > 0) {
+                    const chosen1 = pickFromScoredList(setsWith2, 4);
+                    if (chosen1) {
+                        finalSets.push({ setName: chosen1.name, perk: chosen1.perks.find(p => p.count === 2), setDef: chosen1 });
+                        const remainingSets = setsWith2.filter(s => s.item.hash !== chosen1.hash);
+                        if (remainingSets.length > 0) {
+                            const chosen2 = pickFromScoredList(remainingSets, 3);
+                            if (chosen2) {
+                                finalSets.push({ setName: chosen2.name, perk: chosen2.perks.find(p => p.count === 2), setDef: chosen2 });
+                            }
+                        }
+                    }
                 }
 
                 setBuild({
@@ -1629,12 +1590,15 @@
                 });
             };
 
-            // NEW: Centralized JSON Construction Helper
             const createLoadoutObject = (b) => {
                 if (!b) return null;
                 
                 const equippedItems = [];
                 if (b.weapon) equippedItems.push({ hash: Number(b.weapon.hash) });
+                
+                if (b.artifact) {
+                    equippedItems.push({ hash: Number(b.artifact.hash) });
+                }
                 
                 if (b.subclass) {
                     const socketOverrides = {};
@@ -1673,7 +1637,6 @@
                     equipped: equippedItems,
                     unequipped: [],
                     parameters: {
-                        // Secret builderData that DIM ignores, but we use for hydration
                         builderData: {
                             stats: b.stats,
                             armorPerks: b.armorPerks?.map(p => p.hash) || [],
@@ -1681,14 +1644,16 @@
                         }
                     }
                 };
-                
-                if (b.artifactPerks && b.artifactPerks.length > 0) {
+
+                // NEST EVERYTHING INSIDE parameters {} SO DIM PARSES IT
+                if (b.artifact && b.artifactPerks && b.artifactPerks.length > 0) {
+                    const intrinsicHashes = b.artifact.intrinsics ? b.artifact.intrinsics.map(p => Number(p.hash)) : [];
+                    const selectedHashes = b.artifactPerks.map(ap => Number(ap.perk?.hash || ap.hash));
+                    
                     loadout.parameters.artifactUnlocks = {
-                        unlockedItemHashes: b.artifactPerks.map(p => Number(p.hash))
+                        seasonNumber: b.artifact.seasonNumber || 28,
+                        unlockedItemHashes: [...intrinsicHashes, ...selectedHashes]
                     };
-                    if (b.artifact && b.artifact.seasonNumber) {
-                        loadout.parameters.artifactUnlocks.seasonNumber = b.artifact.seasonNumber;
-                    }
                 }
 
                 if (b.actualSetBonuses && b.actualSetBonuses.length > 0) {
@@ -1710,7 +1675,6 @@
                 const loadout = createLoadoutObject(build);
                 if (!loadout) return;
                 
-                // Clone and strip our secret data off before passing to DIM to guarantee compliance
                 const dimLoadout = JSON.parse(JSON.stringify(loadout));
                 delete dimLoadout.parameters.builderData;
 
@@ -1725,31 +1689,22 @@
                 if (!loadout) return;
                 
                 const jsonStr = JSON.stringify(loadout);
-                
-                // Safe UTF-8 to Base64 encoding
                 const base64Str = btoa(unescape(encodeURIComponent(jsonStr)));
-                
-                // We still encodeURIComponent the base64 string to protect '+' and '=' characters in the URL
                 const url = `https://d2builder.algotician.com?loadout=${encodeURIComponent(base64Str)}`;
                 
-                // NEW: Web Share API Integration for Mobile & Supported Desktops
                 if (navigator.share) {
                     try {
                         await navigator.share({
                             title: 'Destiny 2 Build Generator',
                             url: url
                         });
-                        return; // Successfully shared natively, bypass the modal
+                        return; 
                     } catch (err) {
-                        if (err.name === 'AbortError') {
-                            // User intentionally dismissed the native share sheet. Do nothing.
-                            return; 
-                        }
+                        if (err.name === 'AbortError') return; 
                         console.log("Native share failed, falling back to modal.", err);
                     }
                 }
                 
-                // Fallback: If Web Share API is unsupported or failed for unexpected reasons, open the modal
                 setShareUrl(url);
                 setShowShareModal(true);
                 setCopied(false);
@@ -1763,7 +1718,7 @@
                 document.execCommand('copy');
                 document.body.removeChild(input);
                 setCopied(true);
-                setTimeout(() => setCopied(false), 2000); // Reset button text after 2 seconds
+                setTimeout(() => setCopied(false), 2000); 
             };
 
             if (!isReady) {
@@ -1824,6 +1779,16 @@
                                         <option value="">Random Subclass</option>
                                         {db.subclasses.filter(s => selClass === "" || s.classType.toString() === selClass).sort((a,b)=>a.name.localeCompare(b.name)).map(s => (
                                             <option key={s.hash} value={s.hash}>{s.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label className="block text-xs uppercase text-slate-400 mb-1">Artifact</label>
+                                    <select value={selArtifact} onChange={e => setSelArtifact(e.target.value)} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
+                                        <option value="">Random Artifact (Synergy Based)</option>
+                                        {db.artifacts.map(a => (
+                                            <option key={a.hash} value={a.hash}>{a.name}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -1920,7 +1885,6 @@
                                         </div>
                                     </div>
 
-                                    {}
                                     <div className="bg-slate-800/50 rounded p-4 mb-6 flex flex-row items-center justify-around border border-slate-700/50 shadow-inner">
                                         <div className="text-center">
                                             <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Recommended Primary Stat</div>
@@ -2015,19 +1979,19 @@
                                     {build.artifact && build.artifactPerks && build.artifactPerks.length > 0 && (
                                         <div className="bg-slate-800/50 rounded p-5 mb-4">
                                             <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300 flex justify-between items-center">
-                                                Seasonal Artifact
+                                                Equipped Artifact
                                                 <span className="flex items-center gap-2 bg-slate-900 px-3 py-1 rounded-full">
                                                     <img src={build.artifact.icon} className="w-4 h-4 rounded-full" alt="Artifact" />
                                                     <span className="text-[10px] text-slate-300 font-normal">{build.artifact.name}</span>
                                                 </span>
                                             </h3>
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                                                {build.artifactPerks.map((perk, i) => (
+                                                {build.artifactPerks.map((ap, i) => (
                                                     <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
-                                                        {perk.icon && <img src={perk.icon} className="w-10 h-10 rounded border border-slate-700" alt="Artifact Perk" />}
+                                                        {ap.perk.icon && <img src={ap.perk.icon} className="w-10 h-10 rounded border border-slate-700" alt="Artifact Perk" />}
                                                         <div>
-                                                            <div className="font-semibold text-slate-200 block text-base leading-none mb-1">{perk.name}</div>
-                                                            <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{perk.desc}</p>
+                                                            <div className="font-semibold text-slate-200 block text-base leading-none mb-1">{ap.perk.name}</div>
+                                                            <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{ap.perk.desc}</p>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -2055,7 +2019,6 @@
                         </div>
                     </div>
                     
-                    {/* Share Modal Popup */}
                     {showShareModal && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                             <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 max-w-lg w-full shadow-2xl relative">
