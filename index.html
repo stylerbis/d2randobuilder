@@ -412,7 +412,7 @@
                             </button>
                         </div>
 
-                        <div className={`d2-card rounded-lg flex flex-col md:col-span-8 ${build ? 'element-bg-' + build.element : ''}`}>
+                        <div className={`d2-card rounded-lg flex flex-col md:col-span-8 ${build ? 'element-bg-' + build.element.toLowerCase() : ''}`}>
                             {!build ? (
                                 <div className="flex-1 flex items-center justify-center text-slate-500 p-6 text-center min-h-[400px]">
                                     Configure parameters and click "Create Build" to generate your loadout.

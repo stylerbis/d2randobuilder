@@ -218,6 +218,7 @@ let generateBuild = (db, selClass, selArmor, selWeapon, selSubclass, selArtifact
         if (selClass !== "") {
             chosenClass = chosenSubclass.charClass.toLowerCase();
         }
+        chosenElement = chosenSubclass.element.toLowerCase();
     }
 
     if (!selArmor) {
@@ -273,6 +274,8 @@ let generateBuild = (db, selClass, selArmor, selWeapon, selSubclass, selArtifact
         else {
             chosenSubclass =  makeRandomChoice(subclassChoices);
         }
+
+        chosenElement = chosenSubclass.element.toLowerCase();
     }
 
     // Time to choose abilities
@@ -536,6 +539,8 @@ let generateBuild = (db, selClass, selArmor, selWeapon, selSubclass, selArtifact
         }
 
     });
+
+    console.log(chosenElement);
 
     return {
         class: CLASS_TYPES[chosenClass],
