@@ -1,725 +1,563 @@
-const generateBuild = (db, selClass, selArmor, selWeapon, selSubclass, selArtifact) => {
-    const pickFromScoredList = (scoredList, topN = 3) => {
-        if (!scoredList || scoredList.length === 0) return null;
-        scoredList.forEach(i => i._rand = Math.random());
-        scoredList.sort((a, b) => {
-            if (b.score === a.score) return b._rand - a._rand;
-            return b.score - a.score;
-        });
-        
-        if (scoredList[0].score >= 1000) {
-            const required = scoredList.filter(i => i.score >= 1000);
-            return required[Math.floor(Math.random() * required.length)].item;
+// Generate the build. Class, Armor, Weapon, Subclass, and Artifact
+let generateBuild = (db, selClass, selArmor, selWeapon, selSubclass, selArtifact) => {
+    // return array
+    let filterAndSortIndex = (index, topN, indexKind, debug = false) => {
+        if (debug) {
+            console.log("DEBUG: Kind of index:", indexKind);
+            // 1. Check if the object is actually populated AT THIS EXACT MOMENT
+            console.log("DEBUG: Number of keys in index:", Object.keys(index).length);
+            
+            // 2. Check if the data is a string instead of an object
+            console.log("DEBUG: Type of index:", typeof index);
+            
+            // 3. Verify topN is what you think it is
+            console.log("DEBUG: Value of topN:", topN);
+            
+            // 4. Freeze a copy of the object to avoid the console "live reference" trap
+            console.log("DEBUG: Frozen index state:", JSON.stringify(index));
         }
-
-        const topScore = scoredList[0].score;
-        let validList = scoredList.filter(i => topScore > 0 ? i.score >= topScore * 0.4 : i.score === topScore); 
-        if (!validList || validList.length === 0) validList = [scoredList[0]];
-        
-        let poolSize = Math.min(topN, validList.length);
-        const topPool = validList.slice(0, poolSize);
-        
-        return topPool[Math.floor(Math.random() * topPool.length)].item;
-    };
-
-    const getKeywordWeight = (kw) => {
-        if (db.abilityNames && db.abilityNames.has(kw)) return 10;
-        if (db.weaponTypes && db.weaponTypes.has(kw)) return 5;
-        if (['solar', 'void', 'arc', 'stasis', 'strand', 'prismatic', 'kinetic', 'neutral', 'primary', 'special', 'heavy'].includes(kw)) return 5;
-        return 2;
-    };
-
-    const getPerkScore = (perk) => {
-        let score = 0;
-        const text = perk.desc.replace(/[-]/g, ' ').toLowerCase(); 
-        
-        let mentionsOtherWeapons = false;
-        let mentionsChosenWeapon = false;
-        let abilityElementMismatch = false;
-        let precisionMismatch = false;
-
-        if (chosenWeapon && chosenWeapon.weaponType && db.weaponTypes) {
-            db.weaponTypes.forEach(wt => {
-                if (!wt) return;
-                const safeWt = wt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const regex = new RegExp('(?:\\b(\\w+)\\W+)?(?:\\b(\\w+)\\W+)?(?:\\b(\\w+)\\W+)?\\b' + safeWt + 's?\\b', 'gi');
-                let match, foundWt = false, fitsOurWeapon = false;
+        // 1. Convert the object to an array of [key, value] pairs
+        let returnObj = Object.entries(index)
+            .filter(([, value]) => value !== 0)
+            // 2. Sort descending (highest count first)
+            .sort((a, b) => {
+                // Tie-breaker: random order if counts are identical
+                if (b[1] === a[1]) return Math.random() - 0.5;
                 
-                while ((match = regex.exec(text)) !== null) {
-                    foundWt = true;
-                    const words = [match[1], match[2], match[3]].map(w => w ? w.toLowerCase() : "");
-                    const elements = ['solar', 'void', 'arc', 'stasis', 'strand', 'kinetic'];
-                    const precedingElements = words.filter(w => elements.includes(w));
-                    
-                    if (wt === chosenWeapon.weaponType) {
-                        if (precedingElements.length === 0 || precedingElements.includes(chosenWeapon.damageType)) fitsOurWeapon = true;
-                    }
-                }
-
-                if (foundWt) {
-                    if (wt === chosenWeapon.weaponType && fitsOurWeapon) mentionsChosenWeapon = true;
-                    else mentionsOtherWeapons = true;
-                }
-            });
+                // Primary sort: descending by count
+                return b[1] - a[1];
+            })
+            // 3. Keep only the top N results
+            .slice(0, topN);
+        if (debug) {
+            console.log("DEBUG: Return Object:", JSON.stringify(returnObj));
         }
-
-        let demandedWeaponElements = [];
-        ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-            if (new RegExp('\\b' + el + '\\b(?:\\s+or\\s+\\w+)?(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?|hits?)\\b', 'i').test(text)) demandedWeaponElements.push(el);
-        });
-
-        if (demandedWeaponElements.length > 0) {
-            if (chosenWeapon && !demandedWeaponElements.includes(chosenWeapon.damageType)) mentionsOtherWeapons = true;
-            else mentionsChosenWeapon = true;
-        }
-
-        let demandedAbilityElements = [];
-        ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-            if (new RegExp('\\b' + el + '\\b\\s+(?:damage\\s+)?(?:grenades?|melees?|super|abilities|ability)\\b', 'i').test(text)) demandedAbilityElements.push(el);
-        });
-
-        if (demandedAbilityElements.length > 0) {
-            const activeElements = new Set([dominantElement]);
-            if (superAbil && superAbil.elementConstraint && superAbil.elementConstraint !== 'neutral' && superAbil.elementConstraint !== 'prismatic') activeElements.add(superAbil.elementConstraint);
-            if (grenade && grenade.elementConstraint && grenade.elementConstraint !== 'neutral' && grenade.elementConstraint !== 'prismatic') activeElements.add(grenade.elementConstraint);
-            if (melee && melee.elementConstraint && melee.elementConstraint !== 'neutral' && melee.elementConstraint !== 'prismatic') activeElements.add(melee.elementConstraint);
-            if (classAbil && classAbil.elementConstraint && classAbil.elementConstraint !== 'neutral' && classAbil.elementConstraint !== 'prismatic') activeElements.add(classAbil.elementConstraint);
-            
-            if (demandedAbilityElements.some(el => activeElements.has(el))) score += 50;
-            else abilityElementMismatch = true;
-        }
-
-        if (precisionRegex.test(text)) {
-            if (chosenWeapon && nonPrecisionTypes.includes(chosenWeapon.weaponType)) precisionMismatch = true;
-        }
-
-        activeKeywords.forEach(kw => {
-            if (new RegExp('\\b' + kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(text)) score += getKeywordWeight(kw) * 1.5;
-        });
-
-        if (mentionsChosenWeapon) score += 25; 
-        else if (mentionsOtherWeapons) score -= 1000; 
-        
-        if (abilityElementMismatch) score -= 1000;
-        if (precisionMismatch) score -= 1000;
-
-        return score;
+        return returnObj;
     };
+    // return hashtable
+    let getAllMatches = (text, regex, weight, keywordCountIndex = {}) => {
+        let flags = regex.flags.includes('g') ? regex.flags : regex.flags + 'g';
+        let globalRegex = new RegExp(regex.source, flags);
 
-    const addKeywords = (text, activeKeywords, armorElements, isArmor = false) => {
-        const lowerText = text.replace(/[-]/g, ' ').toLowerCase();
-        Object.entries(KEYWORDS).forEach(([el, words]) => {
-            words.forEach(word => {
-                const safeWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                if (new RegExp('\\b' + safeWord + '\\b', 'i').test(lowerText)) {
-                    activeKeywords.add(word);
-                    if (['solar', 'void', 'arc', 'stasis', 'strand', 'prismatic'].includes(el)) {
-                        activeKeywords.add(el);
-                        if (isArmor) armorElements.add(el); 
-                    }
-                }
-            });
-        });
+        let matches = text.matchAll(globalRegex); 
 
-        if (db.weaponTypes) {
-            db.weaponTypes.forEach(wt => {
-                const safeWord = wt.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                if (new RegExp('\\b' + safeWord + 's?\\b', 'i').test(lowerText)) {
-                    activeKeywords.add(wt);
-                }
-            });
-        }
-    };
-
-    let finalClass = selClass !== "" ? parseInt(selClass) : Math.floor(Math.random() * 3);
-    let chosenArmor;
-    
-    const exoticClassItems = ["stoicism", "relativism", "solipsism"];
-    
-    if (selArmor) {
-        chosenArmor = db.armor.find(a => a.hash === selArmor);
-        finalClass = chosenArmor.classType; 
-    } else {
-        let availableArmor = db.armor.filter(a => a.classType === finalClass);
-        
-        if (selWeapon || selSubclass) {
-            const preSelWep = selWeapon ? db.weapons.find(w => w.hash === selWeapon) : null;
-            const preSub = selSubclass ? db.subclasses.find(s => s.hash === selSubclass) : null;
-            
-            let scoredArmor = availableArmor.map(a => {
-                let score = 0;
-                const aText = (a.name + " " + a.desc + " " + (a.perkName || "")).replace(/[-]/g, ' ').toLowerCase();
+        for (let match of matches) {
+            for (let i = 1; i < match.length; i++) {
+                let capture = match[i];
                 
-                if (preSelWep && preSelWep.damageType) {
-                    if (new RegExp('\\b' + preSelWep.damageType + '\\b(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(aText)) {
-                        score += 100;
-                    }
+                if (capture) {
+                    keywordCountIndex[capture] = (keywordCountIndex[capture] || 0) + (1 * weight);
                 }
-                if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic') {
-                    if (new RegExp('\\b' + preSub.element + '\\b', 'i').test(aText)) score += 100;
-                }
-                return { item: a, score };
-            });
-            
-            if (preSub && preSub.element !== 'prismatic') {
-                scoredArmor = scoredArmor.filter(sa => !exoticClassItems.some(n => sa.item.name.toLowerCase().includes(n)));
             }
-            
-            chosenArmor = pickFromScoredList(scoredArmor, 3) || availableArmor[Math.floor(Math.random() * availableArmor.length)];
-        } else {
-            chosenArmor = availableArmor[Math.floor(Math.random() * availableArmor.length)];
         }
+
+        // FIX: Removed the Object.entries().sort() block entirely!
+        return keywordCountIndex;
+    };
+    // return array
+    let getMatchKeywords = (keywordData) => {
+        // FIX: Handle both sorted arrays and raw objects
+        if (Array.isArray(keywordData)) {
+            return keywordData.map(item => item[0]);
+        }
+        return Object.keys(keywordData);
+    }
+    // return sum
+    let totalMatches = (keywordCountIndex) => {
+        return Object.values(keywordCountIndex).reduce((sum, count) => sum + count, 0);
+    };
+    // return regexp
+    let buildRegexString = (keywords) => {
+        let escapedKeywords = keywords.map(word => 
+            // This replaces any special regex character with a backslash version of itself
+            word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        );
+
+        let regexString = `(${escapedKeywords.join('?|')}?)`;
+        let myRegex = new RegExp(regexString, "i");
+        
+        return myRegex;
+    };
+    let makeRandomChoice = (choices, debug=false) => {
+        if (debug) {
+            console.log("DEBUG: Choice Options", JSON.stringify(choices));
+        }
+        let choice = null;
+        if (choices.length > 1) {
+            choice = choices[Math.floor(Math.random() * choices.length)];
+        }
+        else {
+            choice = choices[0];
+        }
+        if (debug) {
+            console.log("DEBUG: Choice", JSON.stringify(choice));
+        }
+        return choice;
+    };
+
+    // extract the regex checks to a function call
+    let updateKeywordMatches = (text, elementChoices, generalIndex, abilityKeywordIndex, mechanicKeywordIndex, statKeywordIndex) => {
+        ['arc','solar','void','stasis','strand','prism'].forEach(i => {
+            if (ABILITY_KEYWORD_REGEX[i].test(text.toLowerCase())) {
+                elementChoices.push(i);
+                generalIndex = getAllMatches(text.toLowerCase(), ABILITY_KEYWORD_REGEX[i], 10, generalIndex);
+                abilityKeywordIndex = getAllMatches(text.toLowerCase(), ABILITY_KEYWORD_REGEX[i], 10, abilityKeywordIndex);
+            }
+            if (KEYWORD_REGEX[i].test(text.toLowerCase())) {
+                elementChoices.push(i);
+                generalIndex = getAllMatches(text.toLowerCase(), KEYWORD_REGEX[i], 10, generalIndex);
+                mechanicKeywordIndex = getAllMatches(text.toLowerCase(), KEYWORD_REGEX[i], 10, mechanicKeywordIndex);
+            }
+        });
+        if (KEYWORD_REGEX['mechanic'].test(text.toLowerCase())) {
+            generalIndex = getAllMatches(text.toLowerCase(), KEYWORD_REGEX['mechanic'], 10, generalIndex);
+        }
+        ['health','melee','grenade','super','class','weapons'].forEach(i => {
+            statKeywordIndex = getAllMatches(text.toLowerCase(), STAT_REGEX[i], 10, statKeywordIndex);
+        });
+    };
+
+    // filter choices based on keywords
+    let choiceFilterByKeywords = (choices, abilityKeywordIndex, mechanicKeywordIndex, generalIndex, properties) => {
+        tmpChoices = choices;
+        let safeProperties = properties == null ? [] : (Array.isArray(properties) ? properties : [properties]);
+        let matchedChoices = [];
+        for (const index in safeProperties) {
+            let prop = safeProperties[index];
+            if (Object.keys(abilityKeywordIndex).length > 0) {
+                let abilityKeywords = getMatchKeywords(filterAndSortIndex(abilityKeywordIndex, 5, 'abilityKeywordIndex'));
+                let abilityRegex = buildRegexString(abilityKeywords);
+                let tmpMatchedChoices = tmpChoices.filter(m => {
+                    return abilityRegex.test(m[prop].toLowerCase());
+                });
+                matchedChoices.push(...tmpMatchedChoices);
+            }
+            else if (Object.keys(mechanicKeywordIndex).length > 0) {
+                let abilityKeywords = getMatchKeywords(filterAndSortIndex(mechanicKeywordIndex, 5, 'mechanicKeywordIndex'));
+                let abilityRegex = buildRegexString(abilityKeywords);
+                let tmpMatchedChoices = tmpChoices.filter(m => {
+                    return abilityRegex.test(m[prop].toLowerCase());
+                });
+                matchedChoices.push(...tmpMatchedChoices);
+            }
+            else if (Object.keys(generalIndex).length > 0) {
+                let abilityKeywords = getMatchKeywords(filterAndSortIndex(generalIndex, 5, 'generalIndex'));
+                let abilityRegex = buildRegexString(abilityKeywords);
+                let tmpMatchedChoices = tmpChoices.filter(m => {
+                    return abilityRegex.test(m[prop].toLowerCase());
+                });
+                matchedChoices.push(...tmpMatchedChoices);
+            }
+        }
+        if (matchedChoices.length > 0) {
+            tmpChoices = matchedChoices;
+        }
+        
+        return tmpChoices;
+    };
+    
+    // set the class
+    let chosenClass = selClass !== "" ? selClass : makeRandomChoice(['warlock','titan','hunter']);
+
+    // setup choice array vars
+    let armorChoices = [];
+    let weaponChoices = [];
+    let subclassChoices = [];
+    let classAbilityChoices = [];
+    let jumpAbilityChoices = [];
+    let superAbilityChoices = [];
+    let meleeAbilityChoices = [];
+    let grenadeAbilityChoices = [];
+    let aspectChoices = [];
+    let fragmentChoices = [];
+    let elementChoices = [];
+
+    // setup choice vars
+    let chosenArmor = {};
+    let chosenWeapon = {};
+    let chosenSubclass = {};
+    let chosenClassAbility = {};
+    let chosenJumpAbility = {};
+    let chosenSuperAbility = {};
+    let chosenMeleeAbility = {};
+    let chosenGrenadeAbility = {};
+    let chosenAspects = [];
+    let chosenFragments = [];
+    let chosenElement = "";
+
+    // setup keyword vars
+    let foundKeywords = [];
+    let foundKeywordIndex = {};
+    let keywordRegex = new RegExp();
+
+    // testing a new keyword search vars
+    let foundAbilityKeywordIndex = {};
+    let foundMechanicKeywordIndex = {};
+    let foundStatKeywordIndex = {};
+    let abilityKeywordRegex = new RegExp();
+    let mechanicKeywordRegex = new RegExp();
+    
+
+    // if there is a selected armor, weapon, or subclass, go ahead and grab keywords and set restrictions
+    if (selArmor) {
+        chosenArmor = db.armor.find(m => m.hash === selArmor);
+        updateKeywordMatches(chosenArmor.perkDescription, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+        if (selClass !== "") {
+            chosenClass = chosenArmor.charClass.toLowerCase();
+    
+        }
+    }
+    if (selWeapon) {
+        chosenWeapon = db.weapons.find(m => m.hash === selWeapon);
+        updateKeywordMatches(chosenWeapon.perkDescription, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+        updateKeywordMatches(chosenWeapon.catalystDescription, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    }
+    if (selSubclass) {
+        chosenSubclass = db.subclasses.find(m => m.hash === selSubclass);
+        elementChoices = [chosenSubclass.element.toLowerCase()];
+        if (selClass !== "") {
+            chosenClass = chosenSubclass.charClass.toLowerCase();
+        }
+    }
+
+    if (!selArmor) {
+        armorChoices = db.armor.filter(m => m.charClass.toLowerCase() === chosenClass);
+        armorChoices = choiceFilterByKeywords(armorChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, 'perkDescription');
+        
+        if (armorChoices.length > 1) {
+            chosenArmor = makeRandomChoice(armorChoices);
+        }
+        else if (armorChoices.length === 1) {
+            chosenArmor = armorChoices[0];
+        }
+        updateKeywordMatches(chosenArmor.perkDescription, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    }
+    if (!selWeapon) {
+        weaponChoices = db.weapons;
+        weaponChoices = choiceFilterByKeywords(weaponChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['perkDescription','catalystDescription']);
+        if (weaponChoices.length > 1) {
+            chosenWeapon = makeRandomChoice(weaponChoices);
+        }
+        else if (weaponChoices.length === 1) {
+            chosenWeapon = weaponChoices[0];
+        }
+        updateKeywordMatches(chosenWeapon.perkDescription, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+        updateKeywordMatches(chosenWeapon.catalystDescription, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    }
+    if (!selSubclass) {
+        let elementCountsIndex = elementChoices.reduce((index, word) => {
+            // If the word exists in the index, add 1. Otherwise, start it at 1.
+            index[word] = (index[word] || 0) + 1;
+            
+            // Return the updated index for the next loop iteration
+            return index;
+        }, {});
+
+        let top2Elements = getMatchKeywords(filterAndSortIndex(elementCountsIndex, 2, 'elementCountsIndex'));
+        if (top2Elements.includes('prism') && top2Elements.length > 1) {
+            top2Elements = top2Elements.filter(m => m !== 'prism');
+        }
+
+        if (Object.keys(foundAbilityKeywordIndex).length > 0) {
+            let topKeyword = new RegExp(`${getMatchKeywords(filterAndSortIndex(foundAbilityKeywordIndex, 1, 'foundAbilityAndKeywordIndex'))}?`);
+            let matchedSubclasses = db.abilities.filter(m => topKeyword.test(m.name.toLowerCase()));
+            top2Elements = matchedSubclasses.map(m => {
+                return m.subclass.toLowerCase();
+            });
+        }
+
+        subclassChoices = db.subclasses.filter(m => m.charClass.toLowerCase() === chosenClass && top2Elements.includes(m.element.toLowerCase()));
+        if (top2Elements.length === 1) {
+            chosenSubclass = subclassChoices.find(m => m.element.toLowerCase() === top2Elements[0]);
+        }
+        else {
+            chosenSubclass =  makeRandomChoice(subclassChoices);
+        }
+    }
+
+    // Time to choose abilities
+    classAbilityChoices = db.abilities.filter(m => {
+        return (m.equipSlot === "class_abilities" && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase());
+    });
+    classAbilityChoices = choiceFilterByKeywords(classAbilityChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex ['name', 'description']);
+    chosenClassAbility = makeRandomChoice(classAbilityChoices);
+    updateKeywordMatches(chosenClassAbility.name, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    updateKeywordMatches(chosenClassAbility.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+
+    jumpAbilityChoices = db.abilities.filter(m => {
+        return (m.equipSlot === "movement" && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase());
+    });
+    jumpAbilityChoices = choiceFilterByKeywords(jumpAbilityChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['name','description']);
+    chosenJumpAbility = makeRandomChoice(jumpAbilityChoices);
+    updateKeywordMatches(chosenJumpAbility.name, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    updateKeywordMatches(chosenJumpAbility.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    
+    superAbilityChoices = db.abilities.filter(m => {
+        return (m.equipSlot === "supers" && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase());
+    });
+    superAbilityChoices = choiceFilterByKeywords(superAbilityChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['name','description']);
+    chosenSuperAbility = makeRandomChoice(superAbilityChoices);
+    updateKeywordMatches(chosenSuperAbility.name, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    updateKeywordMatches(chosenSuperAbility.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+
+    meleeAbilityChoices = db.abilities.filter(m => {
+        return (m.equipSlot === "melee" && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase());
+    });
+    meleeAbilityChoices = choiceFilterByKeywords(meleeAbilityChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['name','description']);
+    chosenMeleeAbility = makeRandomChoice(meleeAbilityChoices);
+    updateKeywordMatches(chosenMeleeAbility.name, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    updateKeywordMatches(chosenMeleeAbility.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+
+    grenadeAbilityChoices = db.abilities.filter(m => {
+        return (m.equipSlot === "grenades" && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase());
+    });
+    grenadeAbilityChoices = choiceFilterByKeywords(grenadeAbilityChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['name','description']);
+    chosenGrenadeAbility = makeRandomChoice(grenadeAbilityChoices);
+    updateKeywordMatches(chosenGrenadeAbility.name, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+    updateKeywordMatches(chosenGrenadeAbility.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+
+    // choose aspects
+    for (i = 0; i < 2; i++) {
+        if (chosenAspects.length > 0) {
+            aspectChoices = db.abilities.filter(m => {
+                return (["aspects","totems"].includes(m.equipSlot.toLowerCase()) && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase() && !chosenAspects.includes(m));
+            });
+        }
+        else {
+            aspectChoices = db.abilities.filter(m => {
+                return (["aspects","totems"].includes(m.equipSlot.toLowerCase()) && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase());
+            });
+        }
+        aspectChoices = choiceFilterByKeywords(aspectChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['name','description']);
+        let chosenAspect = makeRandomChoice(aspectChoices);
+        chosenAspects.push(chosenAspect);
+        updateKeywordMatches(chosenAspect.name, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+        updateKeywordMatches(chosenAspect.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
     }
     
-    let chosenArmorPerks = [];
-    if (chosenArmor && exoticClassItems.some(n => chosenArmor.name.toLowerCase().includes(n)) && chosenArmor.perkColumns && chosenArmor.perkColumns.length >= 1) {
-        const scoreCol = (col) => {
-            if (!col || col.length === 0) return null;
-            let scored = col.map(perk => {
-                let score = 0;
-                let text = (perk.name + " " + perk.desc).toLowerCase().replace(/[-]/g, ' ');
-                if (selWeapon) {
-                     const preSelWep = db.weapons.find(w => w.hash === selWeapon);
-                     if (preSelWep && text.includes(preSelWep.damageType)) score += 50;
-                }
-                if (selSubclass) {
-                     const preSub = db.subclasses.find(s => s.hash === selSubclass);
-                     if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic' && text.includes(preSub.element)) score += 50;
-                }
-                return { item: perk, score };
+    let fragmentCapacity = chosenAspects.reduce((total, item) => total + item.energyCapacity, 0);
+
+    for (i = 0; i < fragmentCapacity; i++) {
+        if (chosenFragments.length > 0) {
+            fragmentChoices = db.abilities.filter(m => {
+                return (["fragments","trinkets"].includes(m.equipSlot) && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase() && !chosenFragments.includes(m));
             });
-            return pickFromScoredList(scored, 3) || col[Math.floor(Math.random() * col.length)];
-        };
-
-        let p1 = scoreCol(chosenArmor.perkColumns[0]);
-        let p2 = chosenArmor.perkColumns.length > 1 ? scoreCol(chosenArmor.perkColumns[1]) : null;
-        
-        if (p1 && p2 && p1.hash === p2.hash && chosenArmor.perkColumns[1].length > 1) {
-            const filteredCol2 = chosenArmor.perkColumns[1].filter(p => p.hash !== p1.hash);
-            p2 = scoreCol(filteredCol2);
         }
-
-        chosenArmorPerks = [p1, p2].filter(Boolean); 
+        else {
+            fragmentChoices = db.abilities.filter(m => {
+                return (["fragments","trinkets"].includes(m.equipSlot) && ['shared',chosenClass].includes(m.charClass.toLowerCase()) && m.subclass.toLowerCase() === chosenSubclass.element.toLowerCase());
+            });
+        }
+        fragmentChoices = choiceFilterByKeywords(fragmentChoices, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['name','description']);
+        let chosenFragment = makeRandomChoice(fragmentChoices);
+        chosenFragments.push(chosenFragment);
+        updateKeywordMatches(chosenFragment.name, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+        updateKeywordMatches(chosenFragment.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
     }
 
-    const armorText = (chosenArmor.name + " " + chosenArmor.desc + " " + (chosenArmor.perkName || "") + " " + chosenArmorPerks.map(p => p.name + " " + p.desc).join(" ")).toLowerCase();
-    const armorFullText = armorText.replace(/[-]/g, ' ');
+    // lets get that artifact configured
+    if (Object.keys(foundKeywordIndex).length > 0) {
+        let top5Keywords = getMatchKeywords(filterAndSortIndex(foundKeywordIndex, 10, 'foundKeywordIndex'));
+        keywordRegex = buildRegexString(top5Keywords);
+    }
 
-    const activeKeywords = new Set();
-    const armorElements = new Set(); 
+    let weaponRegex = buildRegexString([chosenWeapon.itemType.toLowerCase()]);
+    let artifactIndexes = {};
+    db.artifacts.forEach(artifact => {
+        let currentArtifactIndex = {};
+        artifact.tier1Perks.forEach(perk => {
+            currentArtifactIndex = getAllMatches(perk.description.toLowerCase(), keywordRegex, 1, currentArtifactIndex);
+        });
+        artifact.tier2Perks.forEach(perk => {
+            currentArtifactIndex = getAllMatches(perk.description.toLowerCase(), keywordRegex, 1, currentArtifactIndex);
+        });
+        artifact.tier3Perks.forEach(perk => {
+            currentArtifactIndex = getAllMatches(perk.description.toLowerCase(), keywordRegex, 1, currentArtifactIndex);
+        });
+        
+        let score = totalMatches(currentArtifactIndex);
+        
+        // Assign the score directly to the hash key in the object
+        artifactIndexes[artifact.hash] = score; 
+    });
+    
+    let chosenArtifactHash = (getMatchKeywords(filterAndSortIndex(artifactIndexes, 1, 'artifactIndexes')))[0];
+    let chosenArtifact = db.artifacts.find(m => m.hash === chosenArtifactHash);
 
-    addKeywords(armorFullText, activeKeywords, armorElements, true);
+    let chosenArtifactPerks = [];
+    let availableArtifactPerks = [];
+    let artifactPerkOptionsScore = {};
+    let removePerkNames = [];
+    let elementRegex = new RegExp("(void|solar|arc|stasis|strand|kinetic) weapon", "i");
+    let weaponType = chosenWeapon.itemType;
+    let weaponElement = chosenWeapon.element;
+    
+    // FIX: Spread operator so we don't nest arrays
+    availableArtifactPerks.push(...chosenArtifact.tier1Perks);
 
-    let requiredWeaponElements = [];
-    ['kinetic', 'solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-        if (new RegExp('\\b' + el + '\\b(?:\\s+or\\s+\\w+)?(?:\\s+and\\s+\\w+)?\\s+(?:damage\\s+)?(?:weapons?|final blows?|kills?)', 'i').test(armorFullText)) {
-            requiredWeaponElements.push(el);
+    availableArtifactPerks = availableArtifactPerks.filter(m => {
+        if (WEAPON_TYPE_REGEX.test(m.description)) {
+            return weaponRegex.test(m.description);
         }
+        return true;
+    });
+    availableArtifactPerks = availableArtifactPerks.filter(m => {
+        if (PRECISION_REGEX.test(m.description) && NON_PRECISION_TYPE_REGEX.test(chosenWeapon.itemType.toLowerCase())) {
+            return false;
+        }
+        return true;
+    });
+    availableArtifactPerks = availableArtifactPerks.filter(m => {
+        if (elementRegex.test(m.description) ) {
+            return false;
+        }
+        return true;
+    });
+    
+    for (let i = 0; i < 2; i++) {
+        let artifactPerkChoices = choiceFilterByKeywords(availableArtifactPerks, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['description']);
+        let chosenArtifactPerk = makeRandomChoice(artifactPerkChoices);
+        updateKeywordMatches(chosenArtifactPerk.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+        chosenArtifactPerks.push(chosenArtifactPerk);
+        removePerkNames.push(chosenArtifactPerk.name);
+        
+        availableArtifactPerks = availableArtifactPerks.filter(m => m.hash !== Number(chosenArtifactPerk.hash));
+        delete artifactPerkOptionsScore[chosenArtifactPerk.hash];
+    }
+    
+    // FIX: Fixed the typo '$'
+    // 1. Create the Set of new names
+    let tmpRemove = new Set(chosenArtifact.tier2Perks.map(obj => obj.name));
+    let newArray = chosenArtifact.tier2Perks.filter(obj => !removePerkNames.includes(obj.name));
+
+    // 2. Filter out the duplicates and combine in one step
+    availableArtifactPerks = [
+    ...availableArtifactPerks.filter(obj => !tmpRemove.has(obj.name)), 
+    ...newArray
+    ];
+    availableArtifactPerks = availableArtifactPerks.filter(m => {
+        if (WEAPON_TYPE_REGEX.test(m.description)) {
+            return weaponRegex.test(m.description);
+        }
+        return true;
+    });
+    availableArtifactPerks = availableArtifactPerks.filter(m => {
+        if (PRECISION_REGEX.test(m.description) && NON_PRECISION_TYPE_REGEX.test(chosenWeapon.itemType.toLowerCase())) {
+            return false;
+        }
+        return true;
+    });
+    
+    for (let i = 0; i < 3; i++) {
+        let artifactPerkChoices = choiceFilterByKeywords(availableArtifactPerks, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['description']);
+        let chosenArtifactPerk = makeRandomChoice(artifactPerkChoices);
+        updateKeywordMatches(chosenArtifactPerk.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+        chosenArtifactPerks.push(chosenArtifactPerk);
+        removePerkNames.push(chosenArtifactPerk.name);
+        
+        availableArtifactPerks = availableArtifactPerks.filter(m => m.hash !== Number(chosenArtifactPerk.hash));
+        delete artifactPerkOptionsScore[chosenArtifactPerk.hash];
+    }
+    
+    // 1. Create the Set of new names
+    tmpRemove = new Set(chosenArtifact.tier3Perks.map(obj => obj.name));
+    newArray = chosenArtifact.tier3Perks.filter(obj => !removePerkNames.includes(obj.name));
+
+    // 2. Filter out the duplicates and combine in one step
+    availableArtifactPerks = [
+    ...availableArtifactPerks.filter(obj => !tmpRemove.has(obj.name)), 
+    ...newArray
+    ];
+    availableArtifactPerks = availableArtifactPerks.filter(m => {
+        if (WEAPON_TYPE_REGEX.test(m.description)) {
+            return weaponRegex.test(m.description);
+        }
+        return true;
+    });
+    availableArtifactPerks = availableArtifactPerks.filter(m => {
+        if (PRECISION_REGEX.test(m.description) && NON_PRECISION_TYPE_REGEX.test(chosenWeapon.itemType.toLowerCase())) {
+            return false;
+        }
+        return true;
+    });
+    
+    for (let i = 0; i < 2; i++) {
+        let artifactPerkChoices = choiceFilterByKeywords(availableArtifactPerks, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['description']);
+        let chosenArtifactPerk = makeRandomChoice(artifactPerkChoices);
+        updateKeywordMatches(chosenArtifactPerk.description, elementChoices, foundKeywordIndex, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundStatKeywordIndex);
+        chosenArtifactPerks.push(chosenArtifactPerk);
+        removePerkNames.push(chosenArtifactPerk.name);
+        
+        availableArtifactPerks = availableArtifactPerks.filter(m => m.hash !== Number(chosenArtifactPerk.hash));
+        delete artifactPerkOptionsScore[chosenArtifactPerk.hash];
+    }
+
+    // TODO: might need to revisit this if the hashes aren't enough
+
+    // armor sets next?
+    let chosenArmorSetIndex = {};
+    let armorSetOptionsScore = {};
+    let chosenArmorSets = [];
+    
+    // FIX: Map arrays properly to avoid initial array nesting
+    let availableArmorSets = db.sets.flatMap(set => set.setPerks).filter(m => m.requiredSetCount === 2);
+
+    availableArmorSets = choiceFilterByKeywords(availableArmorSets, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['perkDescription']);
+    let armorSetChoice = makeRandomChoice(availableArmorSets);
+    chosenArmorSets.push(armorSetChoice);
+
+    availableArmorSets = availableArmorSets.filter(m => m.sandboxPerkHash !== Number(armorSetChoice.sandboxPerkHash));
+
+    let matchingSet = db.sets.find(set => set.setPerks.some(perk => perk.sandboxPerkHash === Number(armorSetChoice.sandboxPerkHash)));
+    
+    if (matchingSet) {
+        let tier2Perks = matchingSet.setPerks.filter(m => m.requiredSetCount === 4);
+        availableArmorSets.push(...tier2Perks);
+    }
+
+    availableArmorSets = choiceFilterByKeywords(availableArmorSets, foundAbilityKeywordIndex, foundMechanicKeywordIndex, foundKeywordIndex, ['perkDescription']);
+    chosenArmorSets.push(makeRandomChoice(availableArmorSets));
+
+    let chosenSetBonuses = Object.fromEntries(chosenArmorSets.map(obj => [db.sets.find(set => set.setPerks.some(perk => perk.sandboxPerkHash === Number(obj.sandboxPerkHash))).hash, obj.requiredSetCount]));
+
+
+    let topStats = getMatchKeywords(filterAndSortIndex(foundStatKeywordIndex, 2, 'foundStatKeywordIndex'));
+    const primaryStatKeyword = topStats[0].charAt(0).toUpperCase() + topStats[0].slice(1);
+    const secondaryStatKeyword = topStats[1].charAt(0).toUpperCase() + topStats[1].slice(1);
+
+    let primaryStat = "";
+    let secondaryStat = "";
+    ['health','melee','grenade','super','class','weapons'].forEach(i => {
+        if (STAT_REGEX[i].test(primaryStatKeyword)) {
+            primaryStat = i.charAt(0).toUpperCase() + i.slice(1);
+        }
+        if (STAT_REGEX[i].test(secondaryStatKeyword)) {
+            secondaryStat = i.charAt(0).toUpperCase() + i.slice(1);
+        }
+
     });
 
-    let targetElement = null;
-    if (selSubclass) {
-        const preSub = db.subclasses.find(s => s.hash === selSubclass);
-        if (preSub && preSub.element !== 'neutral' && preSub.element !== 'prismatic') targetElement = preSub.element;
-    }
-
-    const precisionRegex = /\bprecision\b\s+(?:hits?|kills?|final blows?|damage)\b/i;
-    const nonPrecisionTypes = ['grenade launcher', 'rocket launcher', 'sword', 'glaive', 'fusion rifle'];
-    const armorNeedsPrecision = precisionRegex.test(armorFullText);
-
-    let chosenWeapon;
-    if (selWeapon) {
-        chosenWeapon = db.weapons.find(w => w.hash === selWeapon);
-    } else {
-        let weaponPool = db.weapons;
-        if (requiredWeaponElements.length > 0) {
-            const filteredPool = weaponPool.filter(w => requiredWeaponElements.includes(w.damageType));
-            if (filteredPool.length > 0) weaponPool = filteredPool;
+    return {
+        class: CLASS_TYPES[chosenClass],
+        element: chosenElement,
+        armor: chosenArmor,
+        armorPerks: chosenArmor,
+        weapon: chosenWeapon,
+        subclass: chosenSubclass,
+        chosenSetBonuses: chosenSetBonuses,
+        actualSetBonuses: chosenArmorSets,
+        artifact: chosenArtifact,
+        artifactPerks: chosenArtifactPerks,
+        stats: { primary: primaryStat, secondary: secondaryStat },
+        abilities: {
+            chosenClassAbility: chosenClassAbility,
+            chosenJumpAbility: chosenJumpAbility,
+            chosenSuperAbility: chosenSuperAbility,
+            chosenMeleeAbility: chosenMeleeAbility,
+            chosenGrenadeAbility: chosenGrenadeAbility,
+            chosenAspects: chosenAspects,
+            chosenFragments: chosenFragments,
+            fragmentCapacity: fragmentCapacity
         }
-
-        let scoredWeapons = weaponPool.map(weapon => {
-            const wText = (weapon.name + " " + (weapon.weaponType || "") + " " + weapon.desc + " " + (weapon.perkName || "")).replace(/[-]/g, ' ').toLowerCase();
-            let score = 0;
-            
-            activeKeywords.forEach(kw => {
-                const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                if (new RegExp('\\b' + safeKw + '\\b', 'i').test(wText)) score += getKeywordWeight(kw);
-            });
-            
-            if (requiredWeaponElements.includes(weapon.damageType)) {
-                score += 1000; 
-            } else if (targetElement && weapon.damageType === targetElement) {
-                score += 20; 
-            } else if (armorElements.has(weapon.damageType)) {
-                score += 15; 
-            }
-            
-            if (armorNeedsPrecision && nonPrecisionTypes.includes(weapon.weaponType)) {
-                score -= 2000;
-            }
-
-            return { item: weapon, score };
-        });
-        
-        chosenWeapon = pickFromScoredList(scoredWeapons, 4) || weaponPool[Math.floor(Math.random() * weaponPool.length)];
-    }
-
-    const weaponText = (chosenWeapon.name + " " + (chosenWeapon.weaponType || "") + " " + chosenWeapon.desc + " " + (chosenWeapon.perkName || "")).toLowerCase();
-    addKeywords(weaponText, activeKeywords, armorElements, false);
-    
-    if (chosenWeapon.ammoType) {
-        activeKeywords.add(chosenWeapon.ammoType);
-    }
-    
-    let chosenSubclass;
-    let dominantElement = "neutral";
-    
-    const isExoticClassItem = chosenArmor && exoticClassItems.some(n => chosenArmor.name.toLowerCase().includes(n));
-    
-    let forcedSubclasses = [];
-    if (chosenArmor && !isExoticClassItem) {
-        ['super', 'melee', 'grenade', 'classAbility', 'jump'].forEach(cat => {
-            if (db.abilities[cat]) {
-                db.abilities[cat].forEach(a => {
-                    const aName = a.name.toLowerCase();
-                    if (aName.length > 4 && new RegExp('\\b' + aName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s)?\\b', 'i').test(armorFullText)) {
-                        let el = a.elementConstraint;
-                        if (el !== 'neutral' && el !== 'prismatic') {
-                            let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
-                            let nativeSub = subclassPool.find(s => s.element === el);
-                            let prismSub = subclassPool.find(s => s.element === 'prismatic');
-                            
-                            if (nativeSub && !forcedSubclasses.includes(nativeSub)) forcedSubclasses.push(nativeSub);
-                            if (prismSub && prismSub.validPlugs && prismSub.validPlugs.has(String(a.hash)) && !forcedSubclasses.includes(prismSub)) {
-                                forcedSubclasses.push(prismSub);
-                            }
-                        }
-                    }
-                });
-            }
-        });
-
-        ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-            if (new RegExp('\\b' + el + '\\s+super\\b', 'i').test(armorFullText)) {
-                let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
-                let nativeSub = subclassPool.find(s => s.element === el);
-                let prismSub = subclassPool.find(s => s.element === 'prismatic');
-                
-                if (nativeSub && !forcedSubclasses.includes(nativeSub)) forcedSubclasses.push(nativeSub);
-                
-                if (prismSub && db.abilities.super) {
-                    const hasMatchingPrismSuper = db.abilities.super.some(a => 
-                        a.elementConstraint === el && 
-                        prismSub.validPlugs && 
-                        prismSub.validPlugs.has(String(a.hash))
-                    );
-                    if (hasMatchingPrismSuper && !forcedSubclasses.includes(prismSub)) {
-                        forcedSubclasses.push(prismSub);
-                    }
-                }
-            }
-        });
-        
-        if (chosenArmor.name.toLowerCase().includes("getaway artist")) {
-            let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
-            let arcSub = subclassPool.find(s => s.element === 'arc');
-            let prismSub = subclassPool.find(s => s.element === 'prismatic');
-            if (arcSub && !forcedSubclasses.includes(arcSub)) forcedSubclasses.push(arcSub);
-            if (prismSub && !forcedSubclasses.includes(prismSub)) forcedSubclasses.push(prismSub);
-        }
-    }
-
-    if (selSubclass) {
-        chosenSubclass = db.subclasses.find(s => s.hash === selSubclass);
-        if (isExoticClassItem && chosenSubclass && chosenSubclass.element !== 'prismatic') {
-            chosenSubclass = null; 
-        }
-    } 
-    
-    if (!chosenSubclass) {
-        let subclassPool = db.subclasses.filter(s => s.classType === finalClass);
-        
-        let scoredSubclasses = subclassPool.map(sub => {
-            let score = 0;
-            
-            if (isExoticClassItem) {
-                if (sub.element === 'prismatic') score += 5000;
-                else score -= 5000;
-            } else if (forcedSubclasses.includes(sub)) {
-                score += 1000;
-            }
-            
-            const evaluateElementSynergy = (el) => {
-                let elScore = 0;
-                    if (armorElements.has(el)) elScore += 200;
-                    if (requiredWeaponElements.length > 0 && requiredWeaponElements.includes(el)) elScore += 50;
-                    if (chosenWeapon && chosenWeapon.damageType !== 'kinetic' && chosenWeapon.damageType === el) elScore += 20;
-                    if (activeKeywords.has(el)) elScore += 30;
-                    
-                    if (chosenWeapon && KEYWORDS[el]) {
-                        let weaponKeywordHits = 0;
-                        KEYWORDS[el].forEach(kw => {
-                            const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                            if (new RegExp('\\b' + safeKw + '\\b', 'i').test(weaponText)) {
-                                weaponKeywordHits++;
-                            }
-                        });
-                        if (weaponKeywordHits > 0) {
-                            if (armorElements.has(el) || armorElements.has('prismatic')) {
-                                elScore += weaponKeywordHits * 100;
-                            } else {
-                                elScore += weaponKeywordHits * 25;
-                            }
-                        }
-                    }
-
-                    activeKeywords.forEach(kw => {
-                        const weight = getKeywordWeight(kw);
-                        if (weight !== 10 && KEYWORDS[el] && KEYWORDS[el].includes(kw)) {
-                            elScore += weight * 2;
-                        }
-                    });
-
-                    return elScore;
-                };
-
-                if (sub.element === 'prismatic') {
-                    let maxScore = evaluateElementSynergy('prismatic');
-                    ['solar', 'void', 'arc', 'stasis', 'strand'].forEach(el => {
-                        maxScore = Math.max(maxScore, evaluateElementSynergy(el));
-                    });
-                    score += maxScore;
-                } else {
-                    score += evaluateElementSynergy(sub.element);
-                }
-                
-                return { item: sub, score };
-            });
-            
-            chosenSubclass = pickFromScoredList(scoredSubclasses, 3) || subclassPool[Math.floor(Math.random() * subclassPool.length)];
-        }
-
-        if (chosenSubclass && chosenSubclass.element !== 'neutral') {
-            dominantElement = chosenSubclass.element;
-            activeKeywords.add(dominantElement);
-        }
-
-        const getValidAbilities = (category, sub) => {
-            if (!sub || !db.abilities[category]) return [];
-            return db.abilities[category].filter(a => {
-                return Array.from(a.hashes).some(h => sub.validPlugs.has(h));
-            });
-        };
-
-        const pickAbilityFromPool = (pool, kwsSet, category = null) => {
-            if (!pool || pool.length === 0) return null;
-            
-            let scored = pool.map(abil => {
-                let score = 0;
-                const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
-                kwsSet.forEach(kw => { 
-                    const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += getKeywordWeight(kw); 
-                });
-                
-                if (new RegExp('\\b' + abil.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s)?\\b', 'i').test(armorFullText)) {
-                    score += 1000;
-                }
-
-                if (category === 'super' && abil.elementConstraint && abil.elementConstraint !== 'neutral' && abil.elementConstraint !== 'prismatic') {
-                    if (new RegExp('\\b' + abil.elementConstraint + '\\s+super\\b', 'i').test(armorFullText)) {
-                        score += 1000;
-                    }
-                }
-                
-                return { item: abil, score };
-            });
-            
-            const picked = pickFromScoredList(scored, 3);
-            if (picked) {
-                addKeywords((picked.name + " " + picked.desc), activeKeywords, armorElements);
-            }
-            return picked;
-        };
-
-        const superAbil = pickAbilityFromPool(getValidAbilities('super', chosenSubclass), activeKeywords, 'super');
-        const classAbil = pickAbilityFromPool(getValidAbilities('classAbility', chosenSubclass), activeKeywords, 'classAbility');
-        const jump = pickAbilityFromPool(getValidAbilities('jump', chosenSubclass), activeKeywords, 'jump');
-        const melee = pickAbilityFromPool(getValidAbilities('melee', chosenSubclass), activeKeywords, 'melee');
-        
-        let grenadePool = getValidAbilities('grenade', chosenSubclass);
-        
-        const damageGrenadeRegexes = [
-            /grenade final blow/i, 
-            /grenade kill/i, 
-            /grenade damage/i, 
-            /damage .*? with .*? grenade/i, 
-            /kills? .*? with .*? grenade/i, 
-            /defeating .*? with .*? grenade/i,
-            /final blows? .*? with .*? grenade/i
-        ];
-
-        const combinedText = (armorFullText + " " + weaponText).toLowerCase();
-        const needsGrenadeDamage = damageGrenadeRegexes.some(regex => regex.test(combinedText));
-
-        if (needsGrenadeDamage) {
-            grenadePool = grenadePool.filter(g => g.name.toLowerCase() !== "healing grenade");
-        }
-        
-        if (chosenArmor && chosenArmor.name.toLowerCase().includes("getaway artist")) {
-            const arcGrenades = grenadePool.filter(g => g.elementConstraint === 'arc');
-            if (arcGrenades.length > 0) {
-                grenadePool = arcGrenades;
-            }
-        }
-
-        const grenade = pickAbilityFromPool(grenadePool, activeKeywords, 'grenade');
-        const isHealingGrenade = grenade && grenade.name.toLowerCase() === "healing grenade";
-
-        let aspects = [];
-        let fragmentCapacity = 0;
-        const aspectPool = getValidAbilities('aspects', chosenSubclass);
-        
-        if (aspectPool.length > 0) {
-            const scoredAspects = aspectPool.filter(abil => {
-                if (!isHealingGrenade) return true;
-                const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
-                return !damageGrenadeRegexes.some(r => r.test(text));
-            }).map(abil => {
-                let score = 0;
-                const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
-                activeKeywords.forEach(kw => { 
-                    const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) score += getKeywordWeight(kw) * 1.5; 
-                });
-                return { item: abil, score };
-            });
-            
-            let aspect1 = pickFromScoredList(scoredAspects, 3);
-            if (aspect1) {
-                aspects.push(aspect1);
-                fragmentCapacity += aspect1.fragmentSlots || 0;
-                addKeywords((aspect1.name + " " + aspect1.desc), activeKeywords, armorElements);
-                
-                let remainingAspects = scoredAspects.filter(a => a.item.hash !== aspect1.hash);
-                let aspect2 = pickFromScoredList(remainingAspects, 3);
-                if (aspect2) {
-                    aspects.push(aspect2);
-                    fragmentCapacity += aspect2.fragmentSlots || 0;
-                    addKeywords((aspect2.name + " " + aspect2.desc), activeKeywords, armorElements);
-                }
-            }
-        }
-
-        let fragments = [];
-        const fragPool = getValidAbilities('fragments', chosenSubclass);
-        if (fragPool.length > 0 && fragmentCapacity > 0) {
-            const strictFrags = [];
-            
-            fragPool.forEach(abil => {
-                const text = (abil.name + " " + abil.desc).replace(/[-]/g, ' ').toLowerCase();
-                if (isHealingGrenade && damageGrenadeRegexes.some(r => r.test(text))) return;
-
-                let score = 0;
-                let hasKeywordMatch = false;
-
-                activeKeywords.forEach(kw => {
-                    const safeKw = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    if (new RegExp('\\b' + safeKw + '\\b', 'i').test(text)) {
-                        score += getKeywordWeight(kw);
-                        hasKeywordMatch = true;
-                    }
-                });
-
-                if (hasKeywordMatch) {
-                    strictFrags.push({ item: abil, score });
-                }
-            });
-            
-            for (let i = 0; i < fragmentCapacity; i++) {
-                let remainingFrags = strictFrags.filter(f => !fragments.some(sel => sel.hash === f.item.hash));
-                let picked = pickFromScoredList(remainingFrags, 4); 
-                if (picked) fragments.push(picked);
-            }
-        }
-
-        let bestArtifact = null;
-        let bestArtifactPerks = []; // Format: [{ socketIndex, perk }]
-
-        if (db.artifacts && db.artifacts.length > 0) {
-            let availableArtifacts = db.artifacts;
-            if (selArtifact) {
-                availableArtifacts = db.artifacts.filter(a => String(a.hash) === selArtifact);
-            }
-
-            const scoredArtifacts = availableArtifacts.map(artifact => {
-                let currentArtifactScore = 0;
-                let currentSelectedPerks = [];
-                
-                const t1Scored = artifact.tier1.map(p => ({ item: p, score: getPerkScore(p) }));
-                const t2Scored = artifact.tier2.map(p => ({ item: p, score: getPerkScore(p) }));
-                const t3Scored = artifact.tier3.map(p => ({ item: p, score: getPerkScore(p) }));
-
-                let pool1 = [...t1Scored];
-                let pool2 = [...t2Scored];
-                let pool3 = [...t3Scored];
-                let picked = [];
-
-                const removePickedFromAll = (hash) => {
-                    pool1 = pool1.filter(p => p.item.hash !== hash);
-                    pool2 = pool2.filter(p => p.item.hash !== hash);
-                    pool3 = pool3.filter(p => p.item.hash !== hash);
-                };
-
-                for (let i = 0; i < 2; i++) {
-                    const selection = pickFromScoredList(pool1, 2);
-                    if (selection) {
-                        const scoredItem = pool1.find(p => p.item.hash === selection.hash);
-                        picked.push({ item: selection, score: scoredItem?.score || 0 });
-                        removePickedFromAll(selection.hash);
-                    }
-                }
-
-                let combinedPool2 = [...pool1, ...pool2];
-                for (let i = 0; i < 3; i++) {
-                    const selection = pickFromScoredList(combinedPool2, 2);
-                    if (selection) {
-                        const scoredItem = combinedPool2.find(p => p.item.hash === selection.hash);
-                        picked.push({ item: selection, score: scoredItem?.score || 0 });
-                        removePickedFromAll(selection.hash);
-                        combinedPool2 = combinedPool2.filter(p => p.item.hash !== selection.hash);
-                    }
-                }
-
-                let combinedPool3 = [...pool1, ...pool2, ...pool3];
-                for (let i = 0; i < 2; i++) {
-                    const selection = pickFromScoredList(combinedPool3, 2);
-                    if (selection) {
-                        const scoredItem = combinedPool3.find(p => p.item.hash === selection.hash);
-                        picked.push({ item: selection, score: scoredItem?.score || 0 });
-                        removePickedFromAll(selection.hash);
-                        combinedPool3 = combinedPool3.filter(p => p.item.hash !== selection.hash);
-                    }
-                }
-
-                currentArtifactScore = picked.reduce((sum, p) => sum + p.score, 0);
-                currentSelectedPerks = picked.map(p => p.item);
-
-                return { 
-                    item: { artifact, perks: currentSelectedPerks }, 
-                    score: currentArtifactScore 
-                };
-            });
-
-            if (scoredArtifacts.length > 0) {
-                const chosenData = pickFromScoredList(scoredArtifacts, 2);
-                if (chosenData) {
-                    bestArtifact = chosenData.artifact;
-                    bestArtifactPerks = chosenData.perks;
-                }
-            }
-        }
-
-        const statScores = {
-            Health: finalClass === 0 ? 80 : 60,
-            Class: finalClass === 1 ? 60 : 30,
-            Melee: 20,
-            Grenade: 20,
-            Super: 10,
-            Weapons: 20
-        };
-
-        const buildText = [
-            armorFullText,
-            superAbil?.desc, superAbil?.name,
-            melee?.desc, melee?.name,
-            grenade?.desc, grenade?.name,
-            classAbil?.desc, classAbil?.name,
-            ...aspects.map(a => a?.desc),
-            ...fragments.map(f => f?.desc)
-        ].filter(Boolean).join(" ").toLowerCase();
-
-        const countOccurrences = (str, word) => {
-            const regex = new RegExp(`\\b${word}\\b`, 'gi');
-            return (str.match(regex) || []).length;
-        };
-
-        const grenadeCount = countOccurrences(buildText, "grenade") + countOccurrences(buildText, "cure") + countOccurrences(buildText, "restoration");
-        const meleeCount = countOccurrences(buildText, "melee") + countOccurrences(buildText, "glaive");
-        const superCount = countOccurrences(buildText, "super");
-        const classAbilCount = countOccurrences(buildText, "class ability") + countOccurrences(buildText, "dodge") + countOccurrences(buildText, "barricade") + countOccurrences(buildText, "rift") + countOccurrences(buildText, "overshield");
-        const weaponCount = countOccurrences(buildText, "weapon") + countOccurrences(buildText, "precision") + countOccurrences(buildText, "ammo") + countOccurrences(buildText, "reload") + countOccurrences(buildText, "handling") + countOccurrences(buildText, "damage");
-        const healthCount = countOccurrences(buildText, "orb of power") + countOccurrences(buildText, "orbs of power") + countOccurrences(buildText, "flinch") + countOccurrences(buildText, "shield");
-
-        statScores.Grenade += (grenadeCount * 15);
-        statScores.Melee += (meleeCount * 15);
-        statScores.Super += (superCount * 10);
-        statScores.Weapons += (weaponCount * 10);
-        statScores.Class += (classAbilCount * 15);
-        statScores.Health += (healthCount * 15);
-
-        const sortedStats = Object.entries(statScores).sort((a, b) => b[1] - a[1]);
-        const primaryStat = sortedStats[0][0];
-        const secondaryStat = sortedStats[1][0];
-
-        const scoredSets = db.sets.map(set => {
-            let score = 0;
-            activeKeywords.forEach(kw => {
-                const safeKw = kw.replace(/[.*+?^${}]/g, '\$&');
-                if (new RegExp('\\b' + safeKw + '\\b', 'i').test(set.synergyText.replace(/[-]/g, ' '))) {
-                    score += getKeywordWeight(kw);
-                }
-            });
-            return { item: set, score: score }; 
-        });
-
-        let finalSets = [];
-        const prefers4Piece = Math.random() > 0.5;
-        const setsWith4 = scoredSets.filter(s => s.item.has4);
-        const setsWith2 = scoredSets.filter(s => s.item.has2);
-
-        if (prefers4Piece && setsWith4.length > 0) {
-            const chosen4Piece = pickFromScoredList(setsWith4, 4);
-            if (chosen4Piece) {
-                const perk2 = chosen4Piece.perks.find(p => p.count === 2);
-                const perk4 = chosen4Piece.perks.find(p => p.count === 4);
-                if (perk2) finalSets.push({ setName: chosen4Piece.name, perk: perk2, setDef: chosen4Piece });
-                if (perk4) finalSets.push({ setName: chosen4Piece.name, perk: perk4, setDef: chosen4Piece });
-            }
-        } else if (setsWith2.length > 0) {
-            const chosen1 = pickFromScoredList(setsWith2, 4);
-            if (chosen1) {
-                finalSets.push({ setName: chosen1.name, perk: chosen1.perks.find(p => p.count === 2), setDef: chosen1 });
-                const remainingSets = setsWith2.filter(s => s.item.hash !== chosen1.hash);
-                if (remainingSets.length > 0) {
-                    const chosen2 = pickFromScoredList(remainingSets, 3);
-                    if (chosen2) {
-                        finalSets.push({ setName: chosen2.name, perk: chosen2.perks.find(p => p.count === 2), setDef: chosen2 });
-                        }
-                    }
-                }
-        }
-
-        return {
-            class: CLASS_TYPES[finalClass],
-            element: dominantElement,
-            armor: chosenArmor,
-            armorPerks: chosenArmorPerks,
-            weapon: chosenWeapon,
-            subclass: chosenSubclass,
-            actualSetBonuses: finalSets,
-            artifact: bestArtifact,
-            artifactPerks: bestArtifactPerks,
-            stats: { primary: primaryStat, secondary: secondaryStat },
-            abilities: {
-                superAbil,
-                grenade,
-                melee,
-                classAbil,
-                jump,
-                aspects,
-                fragments,
-                fragmentCapacity
-            }
-        };
     };
+};

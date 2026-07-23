@@ -31,13 +31,14 @@
         function App() {
             const [status, setStatus] = React.useState("Initializing...");
             const [isReady, setIsReady] = React.useState(false);
-            const [db, setDb] = React.useState({ weapons: [], armor: [], subclasses: [], abilities: {}, sets: [], abilityNames: new Set(), weaponTypes: new Set(), artifacts: [] });
+            const [db, setDb] = React.useState({ weapons: [], armor: [], subclasses: [], abilities: [], sets: [], artifacts: [], plugSets: [] });
             
             const [selClass, setSelClass] = React.useState("");
             const [selArmor, setSelArmor] = React.useState("");
             const [selWeapon, setSelWeapon] = React.useState("");
             const [selSubclass, setSelSubclass] = React.useState("");
             const [selArtifact, setSelArtifact] = React.useState("");
+            const [selSetBonus, setSelSetBonus] = React.useState("");
 
             const [build, setBuild] = React.useState(null);
             
@@ -73,57 +74,43 @@
                         } catch (e) {
                             lData = JSON.parse(decodeURIComponent(loadoutParam));
                         }
-                        const classStr = CLASS_TYPES[lData.classType] || "Titan";
+                        const classStr = CLASS_TYPES[lData.charClass.toLowerCase()] || "Titan";
                         
                         const armorHash = lData.exoticArmorHash || lData.parameters?.exoticArmorHash;
                         const chosenArmor = armorHash ? db.armor.find(a => String(a.hash) === String(armorHash)) : null;
                         
                         let chosenWeapon = null;
                         let chosenSubclass = null;
-                        let socketOverrides = {};
+                        
+                        let itemHashesForSubclass = [];
                         
                         lData.equipped.forEach(eq => {
                             const hashStr = String(eq.hash);
                             if (db.weapons.some(w => w.hash === hashStr)) chosenWeapon = db.weapons.find(w => w.hash === hashStr);
                             else if (db.subclasses.some(s => s.hash === hashStr)) {
                                 chosenSubclass = db.subclasses.find(s => s.hash === hashStr);
-                                socketOverrides = eq.socketOverrides || {};
+                                itemHashesForSubclass = eq.unlockedItemHashes || Object.values(eq.socketOverrides || {});
                             }
                         });
 
-                        const getAbil = (cat, hashStr) => hashStr ? db.abilities[cat]?.find(a => a.hashes.has(String(hashStr))) || null : null;
-                        
                         let superAbil = null, classAbil = null, jump = null, melee = null, grenade = null;
                         let aspects = [], fragments = [];
 
-                        if (chosenSubclass && chosenSubclass.socketCategoryMap) {
-                            const findBySockets = (cat) => {
-                                return (chosenSubclass.socketCategoryMap[cat] || [])
-                                    .map(sIdx => getAbil(cat, String(socketOverrides[String(sIdx)])))
-                                    .filter(Boolean);
-                            };
-                            superAbil = findBySockets('super')[0] || null;
-                            classAbil = findBySockets('classAbility')[0] || null;
-                            jump = findBySockets('jump')[0] || null;
-                            melee = findBySockets('melee')[0] || null;
-                            grenade = findBySockets('grenade')[0] || null;
-                            aspects = findBySockets('aspects');
-                            fragments = findBySockets('fragments');
-                        } else {
-                            superAbil = getAbil('super', socketOverrides["0"]);
-                            classAbil = getAbil('classAbility', socketOverrides["1"]);
-                            jump = getAbil('jump', socketOverrides["2"]);
-                            melee = getAbil('melee', socketOverrides["3"]);
-                            grenade = getAbil('grenade', socketOverrides["4"]);
-                            aspects = [getAbil('aspects', socketOverrides["5"]), getAbil('aspects', socketOverrides["6"])];
-                            fragments = [
-                                getAbil('fragments', socketOverrides["7"]), getAbil('fragments', socketOverrides["8"]),
-                                getAbil('fragments', socketOverrides["9"]), getAbil('fragments', socketOverrides["10"]),
-                                getAbil('fragments', socketOverrides["11"]), getAbil('fragments', socketOverrides["12"])
-                            ];
-                        }
+                        itemHashesForSubclass.forEach(h => {
+                            let hashStr = String(h);
+                            let ability = db.abilities.find(a => a.hash === hashStr);
+                            if (ability) {
+                                if (ability.equipSlot === 'supers') superAbil = ability;
+                                else if (ability.equipSlot === 'class_abilities') classAbil = ability;
+                                else if (ability.equipSlot === 'movement') jump = ability;
+                                else if (ability.equipSlot === 'melee') melee = ability;
+                                else if (ability.equipSlot === 'grenades') grenade = ability;
+                                else if (['aspects', 'totems'].includes(ability.equipSlot.toLowerCase())) aspects.push(ability);
+                                else if (['fragments', 'trinkets'].includes(ability.equipSlot.toLowerCase())) fragments.push(ability);
+                            }
+                        });
 
-                        let fragmentCapacity = aspects.reduce((acc, a) => acc + (a ? a.fragmentSlots : 0), 0);
+                        let fragmentCapacity = aspects.reduce((acc, a) => acc + (a && a.energyCapacity ? a.energyCapacity : 0), 0);
 
                         let bestArtifact = null;
                         const artifactPerks = []; 
@@ -134,22 +121,10 @@
                             const unlocksObj = lData.artifactUnlocks || lData.parameters?.artifactUnlocks;
 
                             if (bestArtifact && unlocksObj && unlocksObj.unlockedItemHashes) {
+                                const allPerks = [...(bestArtifact.tier1Perks || []), ...(bestArtifact.tier2Perks || []), ...(bestArtifact.tier3Perks || [])];
                                 unlocksObj.unlockedItemHashes.forEach(pHash => {
-                                    const sData = bestArtifact.sockets.find(s => s.pool.some(p => p.hash === String(pHash)));
-                                    if (sData) {
-                                        const perk = sData.pool.find(p => p.hash === String(pHash));
-                                        if (perk) artifactPerks.push({ socketIndex: sData.socketIndex, perk });
-                                    }
-                                });
-                            } else if (bestArtifact && equippedArtifactObj.socketOverrides) {
-                                Object.entries(equippedArtifactObj.socketOverrides).forEach(([sIdx, pHash]) => {
-                                    const sData = bestArtifact.sockets.find(s => String(s.socketIndex) === sIdx);
-                                    if (sData) {
-                                        const perk = sData.pool.find(p => p.hash === String(pHash));
-                                        if (perk) {
-                                            artifactPerks.push({ socketIndex: sData.socketIndex, perk });
-                                        }
-                                    }
+                                    const perk = allPerks.find(p => String(p.hash) === String(pHash));
+                                    if (perk) artifactPerks.push(perk);
                                 });
                             }
                         }
@@ -190,7 +165,7 @@
                         setBuild({
                             class: classStr, element, armor: chosenArmor, armorPerks, weapon: chosenWeapon,
                             subclass: chosenSubclass, actualSetBonuses, artifact: bestArtifact, artifactPerks, stats,
-                            abilities: { superAbil, grenade, melee, classAbil, jump, aspects: aspects.filter(Boolean), fragments: fragments.filter(Boolean), fragmentCapacity }
+                            abilities: { chosenSuperAbility: superAbil, chosenGrenadeAbility: grenade, chosenMeleeAbility: melee, chosenClassAbility: classAbil, chosenJumpAbility: jump, chosenAspects: aspects.filter(Boolean), chosenFragments: fragments.filter(Boolean), fragmentCapacity }
                         });
                         
                         window.history.replaceState({}, document.title, window.location.pathname);
@@ -220,19 +195,26 @@
                 if (b.subclass) {
                     const socketOverrides = {};
                     
-                    if (b.abilities.superAbil) socketOverrides["0"] = Number(b.abilities.superAbil.hash);
-                    if (b.abilities.classAbil) socketOverrides["1"] = Number(b.abilities.classAbil.hash);
-                    if (b.abilities.jump) socketOverrides["2"] = Number(b.abilities.jump.hash);
-                    if (b.abilities.melee) socketOverrides["3"] = Number(b.abilities.melee.hash);
-                    if (b.abilities.grenade) socketOverrides["4"] = Number(b.abilities.grenade.hash);
+                    if (b.abilities.chosenClassAbility) socketOverrides["0"] = Number(b.abilities.chosenClassAbility.hash);
+                    if (b.abilities.chosenJumpAbility) socketOverrides["1"] = Number(b.abilities.chosenJumpAbility.hash);
+                    if (b.abilities.chosenSuperAbility) socketOverrides["2"] = Number(b.abilities.chosenSuperAbility.hash);
+                    if (b.abilities.chosenMeleeAbility) socketOverrides["3"] = Number(b.abilities.chosenMeleeAbility.hash);
+                    if (b.abilities.chosenGrenadeAbility) socketOverrides["4"] = Number(b.abilities.chosenGrenadeAbility.hash);
                     
-                    b.abilities.aspects.forEach((a, i) => { 
-                        if (a) socketOverrides[String(5 + i)] = Number(a.hash); 
-                    });
+                    let i = 5;
+                    if (b.abilities.chosenAspects) {
+                        b.abilities.chosenAspects.forEach(a => { 
+                            if (a) socketOverrides[String(i)] = Number(a.hash);
+                            i++;
+                        });
+                    }
                     
-                    b.abilities.fragments.forEach((f, i) => { 
-                        if (f) socketOverrides[String(7 + i)] = Number(f.hash); 
-                    });
+                    if (b.abilities.chosenFragments) {
+                        b.abilities.chosenFragments.forEach(f => { 
+                            if (f) socketOverrides[String(i)] = Number(f.hash); 
+                            i++;
+                        });
+                    }
 
                     equippedItems.push({
                         hash: Number(b.subclass.hash),
@@ -240,7 +222,17 @@
                     });
                 }
 
-                const classTypeNum = parseInt(Object.keys(CLASS_TYPES).find(key => CLASS_TYPES[key] === b.class) || "0");
+                const classType = Object.keys(CLASS_TYPES).find(key => CLASS_TYPES[key] === b.class) || "titan";
+                let classNum = null;
+                if (classType === 'titan') {
+                    classNum = 0;
+                }
+                else if (classType === 'hunter') {
+                    classNum = 1;
+                }
+                else if (classType === 'warlock') {
+                    classNum = 2;
+                }
                 
                 let notes = `Generated using Random Build tool. Focuses on ${b.weapon?.name} and ${b.armor?.name}.`;
                 if (b.armorPerks && b.armorPerks.length > 0) {
@@ -250,39 +242,42 @@
                 const loadout = {
                     name: `Random ${b.class} Build`,
                     notes: notes,
-                    classType: classTypeNum,
+                    classType: classNum,
                     equipped: equippedItems,
                     unequipped: [],
                     parameters: {
                         builderData: {
                             stats: b.stats,
-                            armorPerks: b.armorPerks?.map(p => p.hash) || [],
+                            armorPerks: b.armor?.perkDescription || [],
                             element: b.element
                         }
                     }
                 };
 
+                console.log(loadout);
+
                 if (b.artifact && b.artifactPerks && b.artifactPerks.length > 0) {
-                    const intrinsicHashes = b.artifact.intrinsics ? b.artifact.intrinsics.map(p => Number(p.hash)) : [];
-                    const selectedHashes = b.artifactPerks.map(ap => Number(ap.perk?.hash || ap.hash));
+                    const selectedHashes = b.artifactPerks.map(ap => Number(ap.hash));
                     
                     loadout.parameters.artifactUnlocks = {
                         seasonNumber: b.artifact.seasonNumber || 28,
-                        unlockedItemHashes: [...intrinsicHashes, ...selectedHashes]
+                        unlockedItemHashes: [...selectedHashes]
                     };
                 }
 
-                if (b.actualSetBonuses && b.actualSetBonuses.length > 0) {
-                    loadout.parameters.setBonuses = {};
-                    b.actualSetBonuses.forEach(sb => {
-                        const current = loadout.parameters.setBonuses[sb.setDef.hash] || 0;
-                        loadout.parameters.setBonuses[sb.setDef.hash] = Math.max(current, sb.perk.count);
-                    });
+                console.log(loadout);
+
+                if (b.chosenSetBonuses) {
+                    loadout.parameters.setBonuses = b.chosenSetBonuses;
                 }
+
+                console.log(loadout);
 
                 if (b.armor) {
                     loadout.parameters.exoticArmorHash = Number(b.armor.hash);
                 }
+
+                console.log(loadout);
 
                 return loadout;
             };
@@ -363,9 +358,9 @@
                                     <label className="block text-xs uppercase text-slate-400 mb-1">Class</label>
                                     <select value={selClass} onChange={e => { setSelClass(e.target.value); setSelArmor(""); setSelSubclass(""); }} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
                                         <option value="">Any Class</option>
-                                        <option value="0">Titan</option>
-                                        <option value="1">Hunter</option>
-                                        <option value="2">Warlock</option>
+                                        <option value="titan">Titan</option>
+                                        <option value="hunter">Hunter</option>
+                                        <option value="warlock">Warlock</option>
                                     </select>
                                 </div>
                                 
@@ -373,7 +368,7 @@
                                     <label className="block text-xs uppercase text-slate-400 mb-1">Specific Exotic Armor</label>
                                     <select value={selArmor} onChange={e => setSelArmor(e.target.value)} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
                                         <option value="">Random Armor</option>
-                                        {db.armor.filter(a => selClass === "" || a.classType.toString() === selClass).sort((a,b)=>a.name.localeCompare(b.name)).map(a => (
+                                        {db.armor.filter(a => selClass === "" || a.charClass.toString().toLowerCase() === selClass).sort((a,b)=>a.name.localeCompare(b.name)).map(a => (
                                             <option key={a.hash} value={a.hash}>{a.name}</option>
                                         ))}
                                     </select>
@@ -393,7 +388,7 @@
                                     <label className="block text-xs uppercase text-slate-400 mb-1">Subclass</label>
                                     <select value={selSubclass} onChange={e => setSelSubclass(e.target.value)} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
                                         <option value="">Random Subclass</option>
-                                        {db.subclasses.filter(s => selClass === "" || s.classType.toString() === selClass).sort((a,b)=>a.name.localeCompare(b.name)).map(s => (
+                                        {db.subclasses.filter(s => selClass === "" || s.charClass.toString().toLowerCase() === selClass).sort((a,b)=>a.name.localeCompare(b.name)).map(s => (
                                             <option key={s.hash} value={s.hash}>{s.name}</option>
                                         ))}
                                     </select>
@@ -404,7 +399,7 @@
                                     <select value={selArtifact} onChange={e => setSelArtifact(e.target.value)} className="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:outline-none focus:border-blue-400">
                                         <option value="">Random Artifact (Synergy Based)</option>
                                         {db.artifacts.map(a => (
-                                            <option key={a.hash} value={a.hash} >{a.name}</option>
+                                            <option key={a.hash} value={a.hash}>{a.name}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -445,23 +440,23 @@
                                             <div>
                                                 <div className="flex items-center gap-2 mb-1">
                                                     <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Exotic Weapon</div>
-                                                    {build.weapon?.damageType && (
+                                                    {build.weapon?.element && (
                                                         <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-bold tracking-wider border ${
-                                                            build.weapon.damageType === 'solar' ? 'bg-orange-900/30 text-orange-400 border-orange-800' :
-                                                            build.weapon.damageType === 'void' ? 'bg-purple-900/30 text-purple-400 border-purple-800' :
-                                                            build.weapon.damageType === 'arc' ? 'bg-cyan-900/30 text-cyan-400 border-cyan-800' :
-                                                            build.weapon.damageType === 'stasis' ? 'bg-blue-900/30 text-blue-400 border-blue-800' :
-                                                            build.weapon.damageType === 'strand' ? 'bg-green-900/30 text-green-400 border-green-800' :
+                                                            build.weapon.element === 'Solar' ? 'bg-orange-900/30 text-orange-400 border-orange-800' :
+                                                            build.weapon.element === 'Void' ? 'bg-purple-900/30 text-purple-400 border-purple-800' :
+                                                            build.weapon.element === 'Arc' ? 'bg-cyan-900/30 text-cyan-400 border-cyan-800' :
+                                                            build.weapon.element === 'Stasis' ? 'bg-blue-900/30 text-blue-400 border-blue-800' :
+                                                            build.weapon.element === 'Strand' ? 'bg-green-900/30 text-green-400 border-green-800' :
                                                             'bg-slate-700/30 text-slate-300 border-slate-600'
                                                         }`}>
-                                                            {build.weapon.damageType}
+                                                            {build.weapon.element}
                                                         </span>
                                                     )}
                                                     {build.weapon?.ammoType && (
                                                         <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded font-bold tracking-wider border ${
-                                                            build.weapon.ammoType === 'primary' ? 'bg-slate-100/10 text-slate-100 border-slate-300' :
-                                                            build.weapon.ammoType === 'special' ? 'bg-green-500/20 text-green-400 border-green-500' :
-                                                            build.weapon.ammoType === 'heavy' ? 'bg-purple-500/20 text-purple-400 border-purple-500' :
+                                                            build.weapon.ammoType === 'Primary' ? 'bg-slate-100/10 text-slate-100 border-slate-300' :
+                                                            build.weapon.ammoType === 'Special' ? 'bg-green-500/20 text-green-400 border-green-500' :
+                                                            build.weapon.ammoType === 'Heavy' ? 'bg-purple-500/20 text-purple-400 border-purple-500' :
                                                             'bg-slate-700/30 text-slate-300 border-slate-600'
                                                         }`}>
                                                             {build.weapon.ammoType}
@@ -469,8 +464,8 @@
                                                     )}
                                                 </div>
                                                 <div className="font-bold text-[#ceae33] text-lg leading-none mb-1.5">{build.weapon?.name}</div>
-                                                {build.weapon?.perkName && <div className="text-xs font-semibold text-slate-300 mb-0.5">{build.weapon.perkName}</div>}
-                                                <div className="text-[11px] text-slate-400 leading-tight">{build.weapon?.desc}</div>
+                                                <div className="text-xs font-bold text-slate-200 leading-none mb-1">{build.weapon?.itemType}</div>
+                                                <div className="text-[11px] text-slate-400 leading-tight">{build.weapon?.perkDescription}</div>
                                             </div>
                                         </div>
                                         <div className="bg-slate-800/50 rounded p-4 flex gap-4 items-start">
@@ -481,20 +476,20 @@
                                                 
                                                 {build.armorPerks && build.armorPerks.length > 0 ? (
                                                     <div className="mt-3 space-y-2">
-                                                        {build.armorPerks.map((p, idx) => (
+                                                        {build.armorPerks.map((perk, idx) => (
                                                             <div key={idx} className="flex gap-2 items-start bg-slate-900/50 p-2 rounded border border-slate-700/50">
-                                                                {p.icon && <img src={p.icon} className="w-6 h-6 rounded border border-slate-600" alt="Perk" />}
+                                                                {perk.icon && <img src={perk.icon} className="w-6 h-6 rounded border border-slate-600" alt="Perk" />}
                                                                 <div>
-                                                                    <div className="text-xs font-bold text-slate-200 leading-none mb-1">{p.name}</div>
-                                                                    <div className="text-[10px] text-slate-400 leading-tight">{p.desc}</div>
+                                                                    <div className="text-xs font-bold text-slate-200 leading-none mb-1">{perk.name}</div>
+                                                                    <div className="text-[10px] text-slate-400 leading-tight">{perk.perkDescription || perk.description}</div>
                                                                 </div>
                                                             </div>
                                                         ))}
                                                     </div>
                                                 ) : (
                                                     <React.Fragment>
-                                                        {build.armor?.perkName && <div className="text-xs font-semibold text-slate-300 mb-0.5">{build.armor.perkName}</div>}
-                                                        <div className="text-[11px] text-slate-400 leading-tight">{build.armor?.desc}</div>
+                                                        {build.armor?.name && <div className="text-xs font-semibold text-slate-300 mb-0.5">{build.armor.name}</div>}
+                                                        <div className="text-[11px] text-slate-400 leading-tight">{build.armor?.perkDescription}</div>
                                                     </React.Fragment>
                                                 )}
                                             </div>
@@ -525,37 +520,37 @@
 
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                                             {[
-                                                { label: 'Super', data: build.abilities.superAbil },
-                                                { label: 'Class Ability', data: build.abilities.classAbil },
-                                                { label: 'Movement', data: build.abilities.jump },
-                                                { label: 'Melee', data: build.abilities.melee },
-                                                { label: 'Grenade', data: build.abilities.grenade }
+                                                { label: 'Class Ability', data: build.abilities.chosenClassAbility },
+                                                { label: 'Movement', data: build.abilities.chosenJumpAbility },
+                                                { label: 'Super', data: build.abilities.chosenSuperAbility },
+                                                { label: 'Melee', data: build.abilities.chosenMeleeAbility },
+                                                { label: 'Grenade', data: build.abilities.chosenGrenadeAbility }
                                             ].map((slot, i) => slot.data && (
                                                 <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
                                                     {slot.data.icon && <img src={slot.data.icon} className="w-10 h-10 rounded" alt={slot.label} />}
                                                     <div>
                                                         <span className="text-slate-400 block text-[10px] font-bold uppercase tracking-wider mb-1">{slot.label}</span>
                                                         <span className="font-semibold text-slate-200 block text-base leading-none mb-1">{slot.data.name}</span>
-                                                        <p className="text-[11px] text-slate-400 leading-tight">{slot.data.desc}</p>
+                                                        <p className="text-[11px] text-slate-400 leading-tight">{slot.data.description}</p>
                                                     </div>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
                                     
-                                    {build.abilities.aspects && build.abilities.aspects.length > 0 && (
+                                    {build.abilities.chosenAspects && build.abilities.chosenAspects.length > 0 && (
                                         <div className="bg-slate-800/50 rounded p-5 mb-4">
                                             <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300">Aspects</h3>
                                             <div className="grid grid-cols-1 gap-4 text-sm">
-                                                {build.abilities.aspects.map((aspect, i) => aspect && (
+                                                {build.abilities.chosenAspects.map((aspect, i) => aspect && (
                                                     <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
                                                         {aspect.icon && <img src={aspect.icon} className="w-12 h-12 rounded border border-slate-700" alt="Aspect" />}
                                                         <div>
                                                             <div className="flex items-center gap-2 mb-1">
                                                                 <span className="font-semibold text-slate-200 text-base">{aspect.name}</span>
-                                                                <span className="text-[10px] uppercase bg-slate-800 border border-slate-600 px-2 py-0.5 rounded-full text-[#ceae33] font-bold tracking-wider">{aspect.fragmentSlots} Slots</span>
+                                                                <span className="text-[10px] uppercase bg-slate-800 border border-slate-600 px-2 py-0.5 rounded-full text-[#ceae33] font-bold tracking-wider">{aspect.energyCapacity || 0} Slots</span>
                                                             </div>
-                                                            <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line">{aspect.desc}</p>
+                                                            <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line">{aspect.description}</p>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -563,16 +558,16 @@
                                         </div>
                                     )}
 
-                                    {build.abilities.fragments && build.abilities.fragments.length > 0 && (
+                                    {build.abilities.chosenFragments && build.abilities.chosenFragments.length > 0 && (
                                         <div className="bg-slate-800/50 rounded p-5 mb-4">
                                             <h3 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-slate-700 pb-2 text-slate-300 flex justify-between items-center">
                                                 Fragments
                                                 <span className="text-[10px] bg-slate-900 px-3 py-1 rounded-full text-slate-300 font-normal">
-                                                    {build.abilities.fragments.length} / {build.abilities.fragmentCapacity} Energy Used
+                                                    {build.abilities.chosenFragments.length} / {build.abilities.fragmentCapacity} Energy Used
                                                 </span>
                                             </h3>
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                                                {build.abilities.fragments.map((frag, i) => frag && (
+                                                {build.abilities.chosenFragments.map((frag, i) => frag && (
                                                     <div key={i} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded">
                                                         {frag.icon && <img src={frag.icon} className="w-10 h-10 rounded border border-slate-700" alt="Fragment" />}
                                                         <div>
@@ -584,7 +579,7 @@
                                                                     </span>
                                                                 ))}
                                                             </div>
-                                                            <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{frag.desc}</p>
+                                                            <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{frag.description}</p>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -607,7 +602,7 @@
                                                         {ap.icon && <img src={ap.icon} className="w-10 h-10 rounded border border-slate-700" alt="Artifact Perk" />}
                                                         <div>
                                                             <div className="font-semibold text-slate-200 block text-base leading-none mb-1">{ap.name}</div>
-                                                            <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{ap.desc}</p>
+                                                            <p className="text-[11px] text-slate-400 leading-tight whitespace-pre-line">{ap.description}</p>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -621,9 +616,9 @@
                                             <div className="space-y-3">
                                                 {build.actualSetBonuses.map((setBonus, i) => (
                                                     <div key={i} className="bg-slate-900/50 p-3 rounded text-sm">
-                                                        <div className="font-bold text-[#ceae33] text-[10px] uppercase tracking-wider mb-1">{setBonus.setName} ({setBonus.perk.count}-Piece)</div>
-                                                        <div className="text-slate-200 font-semibold mb-1 text-base leading-none">{setBonus.perk.name}</div>
-                                                        <div className="text-slate-400 text-xs leading-relaxed">{setBonus.perk.description}</div>
+                                                        <div className="font-bold text-[#ceae33] text-[10px] uppercase tracking-wider mb-1">{setBonus.name} ({setBonus.requiredSetCount}-Piece)</div>
+                                                        <div className="text-slate-200 font-semibold mb-1 text-base leading-none">{setBonus.name}</div>
+                                                        <div className="text-slate-400 text-xs leading-relaxed">{setBonus.perkDescription}</div>
                                                     </div>
                                                 ))}
                                             </div>

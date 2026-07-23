@@ -1,0 +1,1857 @@
+{
+  "3518286241": {
+    "hash": 3518286241,
+    "name": "Queensfoil Censer",
+    "description": "Works best with:\nElements: [Solar] [Stasis] [Strand]\nWeapons: [Rocket Launcher] [Grenade Launcher] [Special Grenade Launcher]",
+    "icon": "https://www.bungie.net/common/destiny2_content/icons/95227d27dee5447e7c59b8f9f482bd63.jpg",
+    "seasonNumber": 23,
+    "tier1Perks": [
+      {
+        "hash": 3153265450,
+        "name": "Fever and Chill",
+        "description": "Rapid precision hits with [Solar]Solar weapons grant Radiant. Rapid precision hits with [Stasis]Stasis weapons grant Frost Armor.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/8b19ceba1b2b7a5453de5198a2ca8a97.png"
+      },
+      {
+        "hash": 3547711349,
+        "name": "Torch",
+        "description": "While radiant, deal increased weapon damage to combatants affected by Strand and Stasis debuffs.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e438774c2bfe24507bb789adc8855ee1.png"
+      },
+      {
+        "hash": 3547711348,
+        "name": "Heart of the Flame",
+        "description": "Casting your Solar Super grants nearby allies radiant and increases the damage of your Super for each nearby ally.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/384727d91fc52e44109ef4544e80e191.png"
+      },
+      {
+        "hash": 2903198437,
+        "name": "Armorsmith",
+        "description": "Breaking a combatant's shield temporarily grants you damage resistance and increased melee damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f48754b849cbc1b813ea2d078e36ed0c.png"
+      },
+      {
+        "hash": 3547711346,
+        "name": "Wished into Being",
+        "description": "While your Super is nearly fully-charged, ability final blows spawn Orbs of Power.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f1fac794534049a58e51b0511bfc2ca5.png"
+      },
+      {
+        "hash": 2317325398,
+        "name": "Kindling Trigger",
+        "description": "Radiant causes Solar weapons to apply scorch to unscorched combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/abaf5494df7860b116e12f02ee0accc9.png"
+      },
+      {
+        "hash": 2317325399,
+        "name": "Blast Radius",
+        "description": "Rapid final blows with Rocket Launchers and Grenade Launchers grant Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/08966e730bae193ec6f30ed90b54662e.png"
+      }
+    ],
+    "tier2Perks": [
+      {
+        "hash": 3585856464,
+        "name": "Unraveling Orbs",
+        "description": "Picking up an Orb of Power or a Tangle grants [Strand]Strand weapons Unraveling Rounds.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/14a1ddccf719d767162b94f3ff81db23.png"
+      },
+      {
+        "hash": 51032916,
+        "name": "Pillar of Ice",
+        "description": "Defeating a frozen target spawns Stasis crystals.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/ab6a016b75337cf8f8914ed5a23b62ea.png"
+      },
+      {
+        "hash": 51032917,
+        "name": "Revitalizing Blast",
+        "description": "Stunning a Champion causes it to ignite and clears your shield stun.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/ba64187ecb3a163549e567389733ee4a.png"
+      },
+      {
+        "hash": 51032914,
+        "name": "Anti-Champion Nosecone",
+        "description": "Rocket Launchers deal increased damage to Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/472be0e9c6152c0a702bd3d148c6b0a7.png"
+      },
+      {
+        "hash": 51032915,
+        "name": "Dragon's Bite",
+        "description": "Breaking a combatant's shield with a Strand or Stasis weapon has a chance to suspend or freeze that combatant.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/77302763049dc780df6693dbb7c01a6b.png"
+      },
+      {
+        "hash": 3116632769,
+        "name": "Creeping Chill",
+        "description": "Stasis final blows against slowed or frozen targets release a burst that slows combatants and grants Frost Armor to allies caught in the blast.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a0719ca991cc7c5b3029c36f5b7db153.png"
+      },
+      {
+        "hash": 3585856467,
+        "name": "Perpetual Destruction",
+        "description": "Rapid final blows with non-Exotic Rocket Launchers refund ammo and increase reload speed for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7f676b258c7d0f54be3c2fc9a20678e8.png"
+      },
+      {
+        "hash": 3153265450,
+        "name": "Fever and Chill",
+        "description": "Rapid precision hits with [Solar]Solar weapons grant Radiant. Rapid precision hits with [Stasis]Stasis weapons grant Frost Armor.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/8b19ceba1b2b7a5453de5198a2ca8a97.png"
+      },
+      {
+        "hash": 3547711349,
+        "name": "Torch",
+        "description": "While radiant, deal increased weapon damage to combatants affected by Strand and Stasis debuffs.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e438774c2bfe24507bb789adc8855ee1.png"
+      },
+      {
+        "hash": 3547711348,
+        "name": "Heart of the Flame",
+        "description": "Casting your Solar Super grants nearby allies radiant and increases the damage of your Super for each nearby ally.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/384727d91fc52e44109ef4544e80e191.png"
+      },
+      {
+        "hash": 2903198437,
+        "name": "Armorsmith",
+        "description": "Breaking a combatant's shield temporarily grants you damage resistance and increased melee damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f48754b849cbc1b813ea2d078e36ed0c.png"
+      },
+      {
+        "hash": 3547711346,
+        "name": "Wished into Being",
+        "description": "While your Super is nearly fully-charged, ability final blows spawn Orbs of Power.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f1fac794534049a58e51b0511bfc2ca5.png"
+      },
+      {
+        "hash": 2317325398,
+        "name": "Kindling Trigger",
+        "description": "Radiant causes Solar weapons to apply scorch to unscorched combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/abaf5494df7860b116e12f02ee0accc9.png"
+      },
+      {
+        "hash": 2317325399,
+        "name": "Blast Radius",
+        "description": "Rapid final blows with Rocket Launchers and Grenade Launchers grant Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/08966e730bae193ec6f30ed90b54662e.png"
+      }
+    ],
+    "tier3Perks": [
+      {
+        "hash": 2596646301,
+        "name": "Horde Shuttle",
+        "description": "Damaging unraveled targets with a weapon occasionally spawns a Threadling. Threadlings sever targets that they damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e59d66773e3f17fca0ce9a1db1ad26d4.png"
+      },
+      {
+        "hash": 1328115227,
+        "name": "Hail The Storm",
+        "description": "Shattering frozen targets and Stasis crystals deals increased damage.\n\nShattering Stasis crystals releases shards of ice that damage and slow targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/71e4fa0e5b358e6b731e0415de6ce0e9.png"
+      },
+      {
+        "hash": 1328115226,
+        "name": "Rays of Precision",
+        "description": "While radiant, Solar precision final blows cause combatants to ignite.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e4f1cd438eb61d85c896294ad7fd0e0b.png"
+      },
+      {
+        "hash": 1328115229,
+        "name": "Solo Operative",
+        "description": "While you are the only member of your fireteam, precision weapon final blows increase weapon damage until you are defeated.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/0dfd63e45cf5b622a610301afebac679.png"
+      },
+      {
+        "hash": 1328115228,
+        "name": "Argent Ordnance",
+        "description": "Firing a Rocket Launcher consumes one stack of Armor Charge, granting increased damage and reload speed until you reload or stow your Rocket Launcher.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7148f81e1d12751937f731bc97f37d53.png"
+      },
+      {
+        "hash": 2659604384,
+        "name": "Frigid Glare",
+        "description": "While Frost Armor is active, [Stasis]Stasis precision final blows cause combatants to release a freezing burst.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a8e0ad8585c13eead66d224a18608556.png"
+      },
+      {
+        "hash": 1319563985,
+        "name": "To Shreds",
+        "description": "Dealing sustained damage to severed targets unravels them. Defeating a severed target creates a hotspot of Strand energy, granting Woven Mail to nearby allies for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/db9994e38f3019475db3dd46162400fb.png"
+      },
+      {
+        "hash": 3585856464,
+        "name": "Unraveling Orbs",
+        "description": "Picking up an Orb of Power or a Tangle grants [Strand]Strand weapons Unraveling Rounds.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/14a1ddccf719d767162b94f3ff81db23.png"
+      },
+      {
+        "hash": 51032916,
+        "name": "Pillar of Ice",
+        "description": "Defeating a frozen target spawns Stasis crystals.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/ab6a016b75337cf8f8914ed5a23b62ea.png"
+      },
+      {
+        "hash": 51032917,
+        "name": "Revitalizing Blast",
+        "description": "Stunning a Champion causes it to ignite and clears your shield stun.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/ba64187ecb3a163549e567389733ee4a.png"
+      },
+      {
+        "hash": 51032914,
+        "name": "Anti-Champion Nosecone",
+        "description": "Rocket Launchers deal increased damage to Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/472be0e9c6152c0a702bd3d148c6b0a7.png"
+      },
+      {
+        "hash": 51032915,
+        "name": "Dragon's Bite",
+        "description": "Breaking a combatant's shield with a Strand or Stasis weapon has a chance to suspend or freeze that combatant.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/77302763049dc780df6693dbb7c01a6b.png"
+      },
+      {
+        "hash": 3116632769,
+        "name": "Creeping Chill",
+        "description": "Stasis final blows against slowed or frozen targets release a burst that slows combatants and grants Frost Armor to allies caught in the blast.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a0719ca991cc7c5b3029c36f5b7db153.png"
+      },
+      {
+        "hash": 3585856467,
+        "name": "Perpetual Destruction",
+        "description": "Rapid final blows with non-Exotic Rocket Launchers refund ammo and increase reload speed for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7f676b258c7d0f54be3c2fc9a20678e8.png"
+      },
+      {
+        "hash": 3153265450,
+        "name": "Fever and Chill",
+        "description": "Rapid precision hits with [Solar]Solar weapons grant Radiant. Rapid precision hits with [Stasis]Stasis weapons grant Frost Armor.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/8b19ceba1b2b7a5453de5198a2ca8a97.png"
+      },
+      {
+        "hash": 3547711349,
+        "name": "Torch",
+        "description": "While radiant, deal increased weapon damage to combatants affected by Strand and Stasis debuffs.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e438774c2bfe24507bb789adc8855ee1.png"
+      },
+      {
+        "hash": 3547711348,
+        "name": "Heart of the Flame",
+        "description": "Casting your Solar Super grants nearby allies radiant and increases the damage of your Super for each nearby ally.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/384727d91fc52e44109ef4544e80e191.png"
+      },
+      {
+        "hash": 2903198437,
+        "name": "Armorsmith",
+        "description": "Breaking a combatant's shield temporarily grants you damage resistance and increased melee damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f48754b849cbc1b813ea2d078e36ed0c.png"
+      },
+      {
+        "hash": 3547711346,
+        "name": "Wished into Being",
+        "description": "While your Super is nearly fully-charged, ability final blows spawn Orbs of Power.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f1fac794534049a58e51b0511bfc2ca5.png"
+      },
+      {
+        "hash": 2317325398,
+        "name": "Kindling Trigger",
+        "description": "Radiant causes Solar weapons to apply scorch to unscorched combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/abaf5494df7860b116e12f02ee0accc9.png"
+      },
+      {
+        "hash": 2317325399,
+        "name": "Blast Radius",
+        "description": "Rapid final blows with Rocket Launchers and Grenade Launchers grant Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/08966e730bae193ec6f30ed90b54662e.png"
+      }
+    ]
+  },
+  "1504442987": {
+    "hash": 1504442987,
+    "name": "NPA Repulsion Regulator",
+    "description": "Works best with:\nElements: [Arc] [Void] [Strand]\nWeapons: [Glaive] [Auto Rifle]",
+    "icon": "https://www.bungie.net/common/destiny2_content/icons/d710c0340c78b1eecd6821bd5dd104ce.jpg",
+    "seasonNumber": 21,
+    "tier1Perks": [
+      {
+        "hash": 255237660,
+        "name": "Improved Unraveling",
+        "description": "Increases the amount of damage dealt by unraveling a target.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d0a3d776e9edc7c2cb24870707937b15.png"
+      },
+      {
+        "hash": 255237663,
+        "name": "Volatile Flow",
+        "description": "Picking up an Orb of Power grants your Void weapons Volatile rounds.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e695f6722f6b804915497124a4ca1878.png"
+      },
+      {
+        "hash": 255237662,
+        "name": "Unto the Breach",
+        "description": "Defeating a Void debuffed target creates a Void Breach while your Void or Prismatic subclass is equipped.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7e8236bfa362af6e9d6bad1c44c22085.png"
+      },
+      {
+        "hash": 255237657,
+        "name": "Amped Up",
+        "description": "Stay amplified longer while your Arc or Prismatic subclass is equipped.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/1aaf471a9b1e75ddf7a50416b6104035.png"
+      },
+      {
+        "hash": 255237656,
+        "name": "Thunderous Retort",
+        "description": "Grants bonus Arc Super damage if cast while critically wounded or while amplified. Lasts until the end of the Super activation.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/67f99870af07f9244a7ee0bb8ca0dda9.png"
+      },
+      {
+        "hash": 255237659,
+        "name": "Sustained Fire",
+        "description": "Continuously damaging combatants or healing allies with an Auto Rifle grants you damage resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3485c4751f37951002170d05c4468a87.png"
+      },
+      {
+        "hash": 255237658,
+        "name": "Shatter Orbs",
+        "description": "The first time you break a combatant's shield, you create an Orb of Power if you break the shield with the matching damage type.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/5ed571e47400d0a33896eb2db3428dc6.png"
+      }
+    ],
+    "tier2Perks": [
+      {
+        "hash": 4232817857,
+        "name": "Strand Soldier",
+        "description": "Your Strand weapons gain Unraveling Rounds whenever you gain Woven Mail while your Strand or Prismatic subclass is equipped.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/6c0a55f052695864d195376f21a0fc0c.png"
+      },
+      {
+        "hash": 4232817858,
+        "name": "Suppressing Glaive",
+        "description": "Damaging combatants with your Glaive suppresses them, preventing them from using abilities for a short time.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/5f2ab7afbfd950990b263ab0020b5c14.png"
+      },
+      {
+        "hash": 4232817859,
+        "name": "Protective Breach",
+        "description": "Picking up a Void Breach gives you an overshield or refreshes your existing overshield.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/0fd65c61c83cbaafaebeb0a03a0f9456.png"
+      },
+      {
+        "hash": 4232817860,
+        "name": "Counter Charge",
+        "description": "Gain a stack of Armor Charge when you stun a Champion.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e0c34da78b75368ee1c50926f895ab1a.png"
+      },
+      {
+        "hash": 4232817861,
+        "name": "Bricks from Beyond",
+        "description": "Defeating a powerful combatant with a Void weapon has a chance to generate Heavy ammo progress for you and your teammates.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d5eb9b63bbb4672a9adfec452c1c3d5d.png"
+      },
+      {
+        "hash": 4232817862,
+        "name": "Overload Grenades",
+        "description": "Void grenades disrupt combatants, stunning them, delaying ability energy regeneration and lowering combatant damage output. Strong against [Disruption] Overload Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f9d64a247c90884cce173b29d28cff19.png"
+      },
+      {
+        "hash": 4232817863,
+        "name": "Targeting Autoloader",
+        "description": "While you have an Auto Rifle equipped, defeating combatants reloads your equipped weapon and temporarily increases weapon damage. \n\nAwards bonus progress when dealing final blows while surrounded.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/af01d655f6082ad2c9eb3ee81b77effa.png"
+      },
+      {
+        "hash": 255237660,
+        "name": "Improved Unraveling",
+        "description": "Increases the amount of damage dealt by unraveling a target.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d0a3d776e9edc7c2cb24870707937b15.png"
+      },
+      {
+        "hash": 255237663,
+        "name": "Volatile Flow",
+        "description": "Picking up an Orb of Power grants your Void weapons Volatile rounds.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e695f6722f6b804915497124a4ca1878.png"
+      },
+      {
+        "hash": 255237662,
+        "name": "Unto the Breach",
+        "description": "Defeating a Void debuffed target creates a Void Breach while your Void or Prismatic subclass is equipped.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7e8236bfa362af6e9d6bad1c44c22085.png"
+      },
+      {
+        "hash": 255237657,
+        "name": "Amped Up",
+        "description": "Stay amplified longer while your Arc or Prismatic subclass is equipped.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/1aaf471a9b1e75ddf7a50416b6104035.png"
+      },
+      {
+        "hash": 255237656,
+        "name": "Thunderous Retort",
+        "description": "Grants bonus Arc Super damage if cast while critically wounded or while amplified. Lasts until the end of the Super activation.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/67f99870af07f9244a7ee0bb8ca0dda9.png"
+      },
+      {
+        "hash": 255237659,
+        "name": "Sustained Fire",
+        "description": "Continuously damaging combatants or healing allies with an Auto Rifle grants you damage resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3485c4751f37951002170d05c4468a87.png"
+      },
+      {
+        "hash": 255237658,
+        "name": "Shatter Orbs",
+        "description": "The first time you break a combatant's shield, you create an Orb of Power if you break the shield with the matching damage type.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/5ed571e47400d0a33896eb2db3428dc6.png"
+      }
+    ],
+    "tier3Perks": [
+      {
+        "hash": 2311625538,
+        "name": "Conductive Cosmic Needle",
+        "description": "Targets affected by Strand debuffs take increased damage from Arc and Void abilities.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/802a490f2b11e346091926e4b0a1ebb7.png"
+      },
+      {
+        "hash": 2311625537,
+        "name": "Shock and Awe",
+        "description": "Arc final blows while you are amplified summon a burst of lightning that damages and jolts targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d0619bebb5fe2dbaede5282a51c6d3fb.png"
+      },
+      {
+        "hash": 2311625536,
+        "name": "Supernova",
+        "description": "Picking up a Void Breach causes your next source of Void damage to create a large weakening pulse.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/815e319a7dd9b8675619aa2f515f03b8.png"
+      },
+      {
+        "hash": 2311625543,
+        "name": "Squad Goals",
+        "description": "Performing a finisher while you are amplified grants Amplified to nearby allies. \n\nPerforming a finisher while you have Woven Mail grants Woven Mail to nearby allies. \n\nPerforming a finisher while you have Devour grants Devour to nearby allies.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/46656d890be5ef3870606c84360429b0.png"
+      },
+      {
+        "hash": 2311625542,
+        "name": "Lightning Strikes Twice",
+        "description": "After throwing an Arc grenade, gain increased grenade recharge for a short time. Arc final blows extend the duration of this benefit.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/11401dfda102df2b4da5c9ff09950144.png"
+      },
+      {
+        "hash": 2311625541,
+        "name": "Passive Aggressive Guard",
+        "description": "Receive less damage from combatants that are close to you while you are wielding a Glaive.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c2b8daf574576911a89ae85dccaf67d3.png"
+      },
+      {
+        "hash": 2311625540,
+        "name": "Void Weapon Channeling",
+        "description": "You gain a temporary bonus to Void weapon damage after you defeat a target with a Void weapon while at least one of your Void abilities is fully charged. This damage bonus increases based on the number of fully charged Void abilities you have.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/22ca2ec59b144ae96610b2b6f25e8190.png"
+      },
+      {
+        "hash": 4232817857,
+        "name": "Strand Soldier",
+        "description": "Your Strand weapons gain Unraveling Rounds whenever you gain Woven Mail while your Strand or Prismatic subclass is equipped.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/6c0a55f052695864d195376f21a0fc0c.png"
+      },
+      {
+        "hash": 4232817858,
+        "name": "Suppressing Glaive",
+        "description": "Damaging combatants with your Glaive suppresses them, preventing them from using abilities for a short time.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/5f2ab7afbfd950990b263ab0020b5c14.png"
+      },
+      {
+        "hash": 4232817859,
+        "name": "Protective Breach",
+        "description": "Picking up a Void Breach gives you an overshield or refreshes your existing overshield.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/0fd65c61c83cbaafaebeb0a03a0f9456.png"
+      },
+      {
+        "hash": 4232817860,
+        "name": "Counter Charge",
+        "description": "Gain a stack of Armor Charge when you stun a Champion.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e0c34da78b75368ee1c50926f895ab1a.png"
+      },
+      {
+        "hash": 4232817861,
+        "name": "Bricks from Beyond",
+        "description": "Defeating a powerful combatant with a Void weapon has a chance to generate Heavy ammo progress for you and your teammates.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d5eb9b63bbb4672a9adfec452c1c3d5d.png"
+      },
+      {
+        "hash": 4232817862,
+        "name": "Overload Grenades",
+        "description": "Void grenades disrupt combatants, stunning them, delaying ability energy regeneration and lowering combatant damage output. Strong against [Disruption] Overload Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f9d64a247c90884cce173b29d28cff19.png"
+      },
+      {
+        "hash": 4232817863,
+        "name": "Targeting Autoloader",
+        "description": "While you have an Auto Rifle equipped, defeating combatants reloads your equipped weapon and temporarily increases weapon damage. \n\nAwards bonus progress when dealing final blows while surrounded.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/af01d655f6082ad2c9eb3ee81b77effa.png"
+      },
+      {
+        "hash": 255237660,
+        "name": "Improved Unraveling",
+        "description": "Increases the amount of damage dealt by unraveling a target.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d0a3d776e9edc7c2cb24870707937b15.png"
+      },
+      {
+        "hash": 255237663,
+        "name": "Volatile Flow",
+        "description": "Picking up an Orb of Power grants your Void weapons Volatile rounds.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e695f6722f6b804915497124a4ca1878.png"
+      },
+      {
+        "hash": 255237662,
+        "name": "Unto the Breach",
+        "description": "Defeating a Void debuffed target creates a Void Breach while your Void or Prismatic subclass is equipped.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7e8236bfa362af6e9d6bad1c44c22085.png"
+      },
+      {
+        "hash": 255237657,
+        "name": "Amped Up",
+        "description": "Stay amplified longer while your Arc or Prismatic subclass is equipped.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/1aaf471a9b1e75ddf7a50416b6104035.png"
+      },
+      {
+        "hash": 255237656,
+        "name": "Thunderous Retort",
+        "description": "Grants bonus Arc Super damage if cast while critically wounded or while amplified. Lasts until the end of the Super activation.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/67f99870af07f9244a7ee0bb8ca0dda9.png"
+      },
+      {
+        "hash": 255237659,
+        "name": "Sustained Fire",
+        "description": "Continuously damaging combatants or healing allies with an Auto Rifle grants you damage resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3485c4751f37951002170d05c4468a87.png"
+      },
+      {
+        "hash": 255237658,
+        "name": "Shatter Orbs",
+        "description": "The first time you break a combatant's shield, you create an Orb of Power if you break the shield with the matching damage type.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/5ed571e47400d0a33896eb2db3428dc6.png"
+      }
+    ]
+  },
+  "3821685388": {
+    "hash": 3821685388,
+    "name": "Tablet of Ruin",
+    "description": "Works best with:\nElements: [Arc] [Strand] [Void] \nWeapons: [Fusion Rifle] [Glaive] [Trace Rifle]",
+    "icon": "https://www.bungie.net/common/destiny2_content/icons/e95e1ed79044d40ba6f32092cc2a3179.jpg",
+    "seasonNumber": 26,
+    "tier1Perks": [
+      {
+        "hash": 3585856469,
+        "name": "Hold the Line",
+        "description": "While surrounded, Machine Guns and Glaives gain increased reload speed and stability; final blows heal you.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/27a2a50104033d0b152175a117b74645.png"
+      },
+      {
+        "hash": 3585856470,
+        "name": "Dielectric",
+        "description": "Defeating [Arc]Arc debuffed targets grants Bolt Charge.\n\nRapidly defeating Arc debuffed targets spawns an Orb of Power and heals a small portion of health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2ba8a6fb47d9a36d8e5651bad5a86752.png"
+      },
+      {
+        "hash": 3585856471,
+        "name": "Volatile Marksman",
+        "description": "Rapid [Void]Void weapon precision hits and rapid Void weapon final blows grant Volatile Rounds. Volatile detonations grant class ability energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cc6ea0a9b8288f4483e6eeed678369fe.png"
+      },
+      {
+        "hash": 3585856464,
+        "name": "Unraveling Orbs",
+        "description": "Picking up an Orb of Power or a Tangle grants [Strand]Strand weapons Unraveling Rounds.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/14a1ddccf719d767162b94f3ff81db23.png"
+      },
+      {
+        "hash": 3585856465,
+        "name": "Photonic Flare",
+        "description": "Defeating an exhausted or severed target with [Arc]Arc damage releases a blinding burst.\n\nExhausted targets deal reduced outgoing damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/888d22f5f20d5e4c5b7e9d3bdb15384b.png"
+      },
+      {
+        "hash": 3585856466,
+        "name": "Elemental Siphon",
+        "description": "Rapid final blows with a Kinetic weapon or a weapon matching your equipped Super create an Elemental pickup that matches your equipped Super. Elemental pickups grant matching Super energy when they are collected.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cdbd8fb13483ef3c287727d88f53a5e0.png"
+      },
+      {
+        "hash": 3585856467,
+        "name": "Perpetual Destruction",
+        "description": "Rapid final blows with non-Exotic Rocket Launchers refund ammo and increase reload speed for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7f676b258c7d0f54be3c2fc9a20678e8.png"
+      }
+    ],
+    "tier2Perks": [
+      {
+        "hash": 2596646296,
+        "name": "Vile Weave",
+        "description": "Targets hit by your Tangles are severed. Reduce Tangle cooldown by picking one up.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/30d7b4a86b37c00b7888c039ce928dae.png"
+      },
+      {
+        "hash": 2596646299,
+        "name": "Maligned Harvest",
+        "description": "Rapidly applying Volatile causes your next instance of [Void]Void weapon damage to create a weakening burst. Applying Weaken provides a small Void Overshield.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/4a2d1e613721d89b19e1cd272fa0e4df.png"
+      },
+      {
+        "hash": 2596646298,
+        "name": "Flashover",
+        "description": "When you gain maximum Bolt Charge, you also become amplified. Lightning bolts deal more damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/39fa68afce49ce18debf66cca98d568c.png"
+      },
+      {
+        "hash": 2596646301,
+        "name": "Horde Shuttle",
+        "description": "Damaging unraveled targets with a weapon occasionally spawns a Threadling. Threadlings sever targets that they damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e59d66773e3f17fca0ce9a1db1ad26d4.png"
+      },
+      {
+        "hash": 2596646300,
+        "name": "No Bell",
+        "description": "Rapid Glaive melee final blows grant Special ammo Glaives additional ammo. Blocking damage with Glaives increases their melee damage to targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a25bf672c20acc4f3702806d79ad5be8.png"
+      },
+      {
+        "hash": 2596646303,
+        "name": "Harsh Refraction",
+        "description": "Trace Rifles do more damage to targets afflicted by elemental debuffs matching their element type.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/83d3cd1ea4cfc888ad17c98857092d65.png"
+      },
+      {
+        "hash": 2596646302,
+        "name": "Gold from Lead",
+        "description": "Picking up Special ammo has the chance to grant Heavy ammo.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/60b79563cd0c5e0585602692f2675720.png"
+      },
+      {
+        "hash": 3585856469,
+        "name": "Hold the Line",
+        "description": "While surrounded, Machine Guns and Glaives gain increased reload speed and stability; final blows heal you.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/27a2a50104033d0b152175a117b74645.png"
+      },
+      {
+        "hash": 3585856470,
+        "name": "Dielectric",
+        "description": "Defeating [Arc]Arc debuffed targets grants Bolt Charge.\n\nRapidly defeating Arc debuffed targets spawns an Orb of Power and heals a small portion of health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2ba8a6fb47d9a36d8e5651bad5a86752.png"
+      },
+      {
+        "hash": 3585856471,
+        "name": "Volatile Marksman",
+        "description": "Rapid [Void]Void weapon precision hits and rapid Void weapon final blows grant Volatile Rounds. Volatile detonations grant class ability energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cc6ea0a9b8288f4483e6eeed678369fe.png"
+      },
+      {
+        "hash": 3585856464,
+        "name": "Unraveling Orbs",
+        "description": "Picking up an Orb of Power or a Tangle grants [Strand]Strand weapons Unraveling Rounds.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/14a1ddccf719d767162b94f3ff81db23.png"
+      },
+      {
+        "hash": 3585856465,
+        "name": "Photonic Flare",
+        "description": "Defeating an exhausted or severed target with [Arc]Arc damage releases a blinding burst.\n\nExhausted targets deal reduced outgoing damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/888d22f5f20d5e4c5b7e9d3bdb15384b.png"
+      },
+      {
+        "hash": 3585856466,
+        "name": "Elemental Siphon",
+        "description": "Rapid final blows with a Kinetic weapon or a weapon matching your equipped Super create an Elemental pickup that matches your equipped Super. Elemental pickups grant matching Super energy when they are collected.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cdbd8fb13483ef3c287727d88f53a5e0.png"
+      },
+      {
+        "hash": 3585856467,
+        "name": "Perpetual Destruction",
+        "description": "Rapid final blows with non-Exotic Rocket Launchers refund ammo and increase reload speed for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7f676b258c7d0f54be3c2fc9a20678e8.png"
+      }
+    ],
+    "tier3Perks": [
+      {
+        "hash": 1319563991,
+        "name": "Particle Reconstruction",
+        "description": "Dealing sustained damage with Fusion Rifles or Linear Fusion Rifles partially refills the magazine from reserves and grants them bonus damage for a short duration against that target.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e93be604e075d37fb6553827bca8b145.png"
+      },
+      {
+        "hash": 1319563988,
+        "name": "Elemental Supercharger",
+        "description": "Defeating exhausted or severed targets with weapons that match your Super element grants Super energy.\n\nExhausted targets deal reduced outgoing damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/72bed48bdb3786392576557133af73c8.png"
+      },
+      {
+        "hash": 1319563989,
+        "name": "Heavy Ordnance Regeneration",
+        "description": "Dealing sustained damage to targets with a Heavy Machine Gun or Rocket Launcher grants damage resistance and increases grenade and melee regeneration for a short duration. While active, defeating powerful combatants disorients nearby rank-and-file combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d1e477b155ded312541855d8dc482084.png"
+      },
+      {
+        "hash": 1319563986,
+        "name": "Defibrillating Blast",
+        "description": "Stunning a Champion grants maximum stacks of Bolt Charge. Damaging targets with Bolt Charge bolts jolts them and heals you.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/432d57ccbac460b2effe218c7b43de75.png"
+      },
+      {
+        "hash": 1319563987,
+        "name": "Void Flux",
+        "description": "Defeating weakened targets with a [Void] Void weapon applies Volatile to nearby targets.\nPowerful targets increase the radius of the explosion.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/1470eea452581c26e38a0fe8b132cdb0.png"
+      },
+      {
+        "hash": 1319563984,
+        "name": "Limit Break",
+        "description": "Casting a Super while you are critically wounded or have a elemental buff matching your Super element grants a period of increased Super damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/bac87bfc4b21caf68c5e1994e95d6ded.png"
+      },
+      {
+        "hash": 1319563985,
+        "name": "To Shreds",
+        "description": "Dealing sustained damage to severed targets unravels them. Defeating a severed target creates a hotspot of Strand energy, granting Woven Mail to nearby allies for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/db9994e38f3019475db3dd46162400fb.png"
+      },
+      {
+        "hash": 2596646296,
+        "name": "Vile Weave",
+        "description": "Targets hit by your Tangles are severed. Reduce Tangle cooldown by picking one up.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/30d7b4a86b37c00b7888c039ce928dae.png"
+      },
+      {
+        "hash": 2596646299,
+        "name": "Maligned Harvest",
+        "description": "Rapidly applying Volatile causes your next instance of [Void]Void weapon damage to create a weakening burst. Applying Weaken provides a small Void Overshield.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/4a2d1e613721d89b19e1cd272fa0e4df.png"
+      },
+      {
+        "hash": 2596646298,
+        "name": "Flashover",
+        "description": "When you gain maximum Bolt Charge, you also become amplified. Lightning bolts deal more damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/39fa68afce49ce18debf66cca98d568c.png"
+      },
+      {
+        "hash": 2596646301,
+        "name": "Horde Shuttle",
+        "description": "Damaging unraveled targets with a weapon occasionally spawns a Threadling. Threadlings sever targets that they damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e59d66773e3f17fca0ce9a1db1ad26d4.png"
+      },
+      {
+        "hash": 2596646300,
+        "name": "No Bell",
+        "description": "Rapid Glaive melee final blows grant Special ammo Glaives additional ammo. Blocking damage with Glaives increases their melee damage to targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a25bf672c20acc4f3702806d79ad5be8.png"
+      },
+      {
+        "hash": 2596646303,
+        "name": "Harsh Refraction",
+        "description": "Trace Rifles do more damage to targets afflicted by elemental debuffs matching their element type.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/83d3cd1ea4cfc888ad17c98857092d65.png"
+      },
+      {
+        "hash": 2596646302,
+        "name": "Gold from Lead",
+        "description": "Picking up Special ammo has the chance to grant Heavy ammo.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/60b79563cd0c5e0585602692f2675720.png"
+      },
+      {
+        "hash": 3585856469,
+        "name": "Hold the Line",
+        "description": "While surrounded, Machine Guns and Glaives gain increased reload speed and stability; final blows heal you.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/27a2a50104033d0b152175a117b74645.png"
+      },
+      {
+        "hash": 3585856470,
+        "name": "Dielectric",
+        "description": "Defeating [Arc]Arc debuffed targets grants Bolt Charge.\n\nRapidly defeating Arc debuffed targets spawns an Orb of Power and heals a small portion of health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2ba8a6fb47d9a36d8e5651bad5a86752.png"
+      },
+      {
+        "hash": 3585856471,
+        "name": "Volatile Marksman",
+        "description": "Rapid [Void]Void weapon precision hits and rapid Void weapon final blows grant Volatile Rounds. Volatile detonations grant class ability energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cc6ea0a9b8288f4483e6eeed678369fe.png"
+      },
+      {
+        "hash": 3585856464,
+        "name": "Unraveling Orbs",
+        "description": "Picking up an Orb of Power or a Tangle grants [Strand]Strand weapons Unraveling Rounds.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/14a1ddccf719d767162b94f3ff81db23.png"
+      },
+      {
+        "hash": 3585856465,
+        "name": "Photonic Flare",
+        "description": "Defeating an exhausted or severed target with [Arc]Arc damage releases a blinding burst.\n\nExhausted targets deal reduced outgoing damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/888d22f5f20d5e4c5b7e9d3bdb15384b.png"
+      },
+      {
+        "hash": 3585856466,
+        "name": "Elemental Siphon",
+        "description": "Rapid final blows with a Kinetic weapon or a weapon matching your equipped Super create an Elemental pickup that matches your equipped Super. Elemental pickups grant matching Super energy when they are collected.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cdbd8fb13483ef3c287727d88f53a5e0.png"
+      },
+      {
+        "hash": 3585856467,
+        "name": "Perpetual Destruction",
+        "description": "Rapid final blows with non-Exotic Rocket Launchers refund ammo and increase reload speed for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7f676b258c7d0f54be3c2fc9a20678e8.png"
+      }
+    ]
+  },
+  "1770364095": {
+    "hash": 1770364095,
+    "name": "Slayer Baron Apothecary Satchel",
+    "description": "Works best with:\nElements: [Stasis] [Void] [Arc]\nWeapons: [Grenade Launcher] [Special Grenade Launcher] [Shotgun]",
+    "icon": "https://www.bungie.net/common/destiny2_content/icons/fe806a8c8e4ef23813ec195d74bb74f7.jpg",
+    "seasonNumber": 25,
+    "tier1Perks": [
+      {
+        "hash": 4037132128,
+        "name": "Wind Chill",
+        "description": "Rapid [Stasis] Stasis weapon hits grant you a stack of Frost Armor; hits against slowed or frozen targets also create a Stasis Shard.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/608b9c7dab2343690ad2a3090ef048d3.png"
+      },
+      {
+        "hash": 4037132131,
+        "name": "Crystalline Converter",
+        "description": "After activating your class ability, your next [Stasis] Stasis weapon final blow creates a Stasis Shard. \n\nGather Stasis Shards to gain stacks of Crystalline Converter, which cause your next powered Stasis melee hit to create Stasis crystals equal to the number of stacks you have.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b62c35fd04b0295070bb26b99e2c31f1.png"
+      },
+      {
+        "hash": 4037132130,
+        "name": "Total Carnage",
+        "description": "After finishing a powerful combatant, gain temporary damage resistance and replenish health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3645b62e3dbf97f12a6dac5b7ed52549.png"
+      },
+      {
+        "hash": 4037132133,
+        "name": "Power from Pain",
+        "description": "Rapid final blows against weakened combatants grants you Devour and creates a Void Breach.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b59af0e3a3880873b9055c3e0697b216.png"
+      },
+      {
+        "hash": 4037132132,
+        "name": "Trace Evidence",
+        "description": "Rapid precision hits or rapid final blows on targets affected by Jolt or Blind will generate Ionic Traces.\n\nPicking up an Ionic Trace grants an Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/9b81cc337afb3946688155fdc9a626b2.png"
+      },
+      {
+        "hash": 4037132135,
+        "name": "The Thick of It",
+        "description": "Rapid final blows while surrounded grant you Armor Charge. While you are surrounded, your weapons have increased handling; Swords gain increased charge rate.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c36d351fbde141013fcf806a23ac04a6.png"
+      },
+      {
+        "hash": 4037132134,
+        "name": "Killing Breeze",
+        "description": "Rapid weapon final blows grant you a bonus to mobility.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/af8f4f997357ffa1efd9dbc90935bf0b.png"
+      }
+    ],
+    "tier2Perks": [
+      {
+        "hash": 611645149,
+        "name": "Frost Renewal",
+        "description": "While you have Frost Armor, taking critical damage releases a burst that freezes nearby combatants and grants Frost Armor to you and nearby allies.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f0a3adfaf8d6c88df24a35f38b3968d2.png"
+      },
+      {
+        "hash": 611645150,
+        "name": "Hail The Storm",
+        "description": "Shattering frozen targets and Stasis crystals deals increased damage.\n\nShattering Stasis crystals releases shards of ice that damage and slow targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/71e4fa0e5b358e6b731e0415de6ce0e9.png"
+      },
+      {
+        "hash": 611645151,
+        "name": "Debilitating Wave",
+        "description": "Finishers emit a damaging wave that matches the element of your currently equipped Super.\n\nArc, Void, and Stasis waves apply Blind, Weaken, and Slow respectively.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2095c328d02e1f522564c25a977d6fbf.png"
+      },
+      {
+        "hash": 611645144,
+        "name": "Weakened Clear",
+        "description": "When using a Grenade Launcher, damaging a boss, damaging a Champion, or breaking a combatant's shield reloads your stowed weapons and weakens the combatant.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/0be012b38f318cde7d3f704e1c5f27c9.png"
+      },
+      {
+        "hash": 611645145,
+        "name": "Retinal Burn",
+        "description": "Rapid [Arc] Arc weapon precision hits consume an Armor Charge to trigger a blinding burst at the target's location.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/4c4871eebe2c22029dccd0939c718c35.png"
+      },
+      {
+        "hash": 611645146,
+        "name": "Curative Orbs",
+        "description": "The first time you break a target's shield or break the shield of a Guardian using their Super, you create an Orb of Power.\n\nCollecting an Elemental pickup, collecting an Orb of Power, or destroying a Tangle grants you a small amount of health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/5ed571e47400d0a33896eb2db3428dc6.png"
+      },
+      {
+        "hash": 611645147,
+        "name": "Void Renewal",
+        "description": "While Devour is active, [Void] Void weapon final blows have a chance to generate a Void Breach.\n\nPicking up a Void Breach increases weapon reload and handling; Shotguns and Grenade Launchers are also reloaded from reserves.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f50ee87fe85424ea395e9342031b7839.png"
+      },
+      {
+        "hash": 4037132128,
+        "name": "Wind Chill",
+        "description": "Rapid [Stasis] Stasis weapon hits grant you a stack of Frost Armor; hits against slowed or frozen targets also create a Stasis Shard.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/608b9c7dab2343690ad2a3090ef048d3.png"
+      },
+      {
+        "hash": 4037132131,
+        "name": "Crystalline Converter",
+        "description": "After activating your class ability, your next [Stasis] Stasis weapon final blow creates a Stasis Shard. \n\nGather Stasis Shards to gain stacks of Crystalline Converter, which cause your next powered Stasis melee hit to create Stasis crystals equal to the number of stacks you have.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b62c35fd04b0295070bb26b99e2c31f1.png"
+      },
+      {
+        "hash": 4037132130,
+        "name": "Total Carnage",
+        "description": "After finishing a powerful combatant, gain temporary damage resistance and replenish health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3645b62e3dbf97f12a6dac5b7ed52549.png"
+      },
+      {
+        "hash": 4037132133,
+        "name": "Power from Pain",
+        "description": "Rapid final blows against weakened combatants grants you Devour and creates a Void Breach.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b59af0e3a3880873b9055c3e0697b216.png"
+      },
+      {
+        "hash": 4037132132,
+        "name": "Trace Evidence",
+        "description": "Rapid precision hits or rapid final blows on targets affected by Jolt or Blind will generate Ionic Traces.\n\nPicking up an Ionic Trace grants an Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/9b81cc337afb3946688155fdc9a626b2.png"
+      },
+      {
+        "hash": 4037132135,
+        "name": "The Thick of It",
+        "description": "Rapid final blows while surrounded grant you Armor Charge. While you are surrounded, your weapons have increased handling; Swords gain increased charge rate.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c36d351fbde141013fcf806a23ac04a6.png"
+      },
+      {
+        "hash": 4037132134,
+        "name": "Killing Breeze",
+        "description": "Rapid weapon final blows grant you a bonus to mobility.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/af8f4f997357ffa1efd9dbc90935bf0b.png"
+      }
+    ],
+    "tier3Perks": [
+      {
+        "hash": 3117519998,
+        "name": "Brain Freeze",
+        "description": "Frozen combatants become surrounded by chilling fog, which slows combatants that aren't already.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a4530082e61b74247bffbb0a0b36f81d.png"
+      },
+      {
+        "hash": 3117519997,
+        "name": "Supernova",
+        "description": "Picking up a Void Breach causes your next source of Void damage to create a large weakening pulse.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/815e319a7dd9b8675619aa2f515f03b8.png"
+      },
+      {
+        "hash": 3117519996,
+        "name": "Conductive Cosmic Crystal",
+        "description": "Your [Arc] Arc and [Void] Void abilities deal bonus damage to targets that are affected by a [Stasis] Stasis debuff.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e8476be17d4b1c2b6cc9569076b39436.png"
+      },
+      {
+        "hash": 3117519995,
+        "name": "Served Cold",
+        "description": "Picking up a [Stasis] Stasis Shard grants you class ability energy. \n\nPicking up a [Void] Void Breach grants you melee energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/52398f36d77016797d4a5aab9f51491e.png"
+      },
+      {
+        "hash": 3117519994,
+        "name": "Kinetic Impacts",
+        "description": "Sustained damage with a Grenade Launcher increases the reload speed of Grenade Launchers and triggers a damaging Kinetic shockwave.\n\nThis shockwave can stun [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/653848407ebd720e0b01bcb5b3a02375.png"
+      },
+      {
+        "hash": 3117519993,
+        "name": "Arc Compounding",
+        "description": "[Arc] Arc sources deal increased damage to Blind targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/841ae372a0f1df1351b111938b01aa7a.png"
+      },
+      {
+        "hash": 3117519992,
+        "name": "Old God's Rite",
+        "description": "After picking up a [Void] Void Breach, dealing damage with a Void weapon creates a rain of seeking projectiles.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/6a2f2cd24049470e18ff5aaf2bc44bd0.png"
+      },
+      {
+        "hash": 611645149,
+        "name": "Frost Renewal",
+        "description": "While you have Frost Armor, taking critical damage releases a burst that freezes nearby combatants and grants Frost Armor to you and nearby allies.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f0a3adfaf8d6c88df24a35f38b3968d2.png"
+      },
+      {
+        "hash": 611645150,
+        "name": "Hail The Storm",
+        "description": "Shattering frozen targets and Stasis crystals deals increased damage.\n\nShattering Stasis crystals releases shards of ice that damage and slow targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/71e4fa0e5b358e6b731e0415de6ce0e9.png"
+      },
+      {
+        "hash": 611645151,
+        "name": "Debilitating Wave",
+        "description": "Finishers emit a damaging wave that matches the element of your currently equipped Super.\n\nArc, Void, and Stasis waves apply Blind, Weaken, and Slow respectively.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2095c328d02e1f522564c25a977d6fbf.png"
+      },
+      {
+        "hash": 611645144,
+        "name": "Weakened Clear",
+        "description": "When using a Grenade Launcher, damaging a boss, damaging a Champion, or breaking a combatant's shield reloads your stowed weapons and weakens the combatant.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/0be012b38f318cde7d3f704e1c5f27c9.png"
+      },
+      {
+        "hash": 611645145,
+        "name": "Retinal Burn",
+        "description": "Rapid [Arc] Arc weapon precision hits consume an Armor Charge to trigger a blinding burst at the target's location.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/4c4871eebe2c22029dccd0939c718c35.png"
+      },
+      {
+        "hash": 611645146,
+        "name": "Curative Orbs",
+        "description": "The first time you break a target's shield or break the shield of a Guardian using their Super, you create an Orb of Power.\n\nCollecting an Elemental pickup, collecting an Orb of Power, or destroying a Tangle grants you a small amount of health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/5ed571e47400d0a33896eb2db3428dc6.png"
+      },
+      {
+        "hash": 611645147,
+        "name": "Void Renewal",
+        "description": "While Devour is active, [Void] Void weapon final blows have a chance to generate a Void Breach.\n\nPicking up a Void Breach increases weapon reload and handling; Shotguns and Grenade Launchers are also reloaded from reserves.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f50ee87fe85424ea395e9342031b7839.png"
+      },
+      {
+        "hash": 4037132128,
+        "name": "Wind Chill",
+        "description": "Rapid [Stasis] Stasis weapon hits grant you a stack of Frost Armor; hits against slowed or frozen targets also create a Stasis Shard.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/608b9c7dab2343690ad2a3090ef048d3.png"
+      },
+      {
+        "hash": 4037132131,
+        "name": "Crystalline Converter",
+        "description": "After activating your class ability, your next [Stasis] Stasis weapon final blow creates a Stasis Shard. \n\nGather Stasis Shards to gain stacks of Crystalline Converter, which cause your next powered Stasis melee hit to create Stasis crystals equal to the number of stacks you have.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b62c35fd04b0295070bb26b99e2c31f1.png"
+      },
+      {
+        "hash": 4037132130,
+        "name": "Total Carnage",
+        "description": "After finishing a powerful combatant, gain temporary damage resistance and replenish health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3645b62e3dbf97f12a6dac5b7ed52549.png"
+      },
+      {
+        "hash": 4037132133,
+        "name": "Power from Pain",
+        "description": "Rapid final blows against weakened combatants grants you Devour and creates a Void Breach.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b59af0e3a3880873b9055c3e0697b216.png"
+      },
+      {
+        "hash": 4037132132,
+        "name": "Trace Evidence",
+        "description": "Rapid precision hits or rapid final blows on targets affected by Jolt or Blind will generate Ionic Traces.\n\nPicking up an Ionic Trace grants an Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/9b81cc337afb3946688155fdc9a626b2.png"
+      },
+      {
+        "hash": 4037132135,
+        "name": "The Thick of It",
+        "description": "Rapid final blows while surrounded grant you Armor Charge. While you are surrounded, your weapons have increased handling; Swords gain increased charge rate.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c36d351fbde141013fcf806a23ac04a6.png"
+      },
+      {
+        "hash": 4037132134,
+        "name": "Killing Breeze",
+        "description": "Rapid weapon final blows grant you a bonus to mobility.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/af8f4f997357ffa1efd9dbc90935bf0b.png"
+      }
+    ]
+  },
+  "2180638678": {
+    "hash": 2180638678,
+    "name": "Hunter's Journal",
+    "description": "Works best with:\nElements:  [Solar] [Arc] [Void]\nWeapons: [Sword] [Sniper Rifle] [Auto Rifle]",
+    "icon": "https://www.bungie.net/common/destiny2_content/icons/564591352b31aab76307d09689d8c6f3.jpg",
+    "seasonNumber": 24,
+    "tier1Perks": [
+      {
+        "hash": 3116632771,
+        "name": "Elemental Siphon",
+        "description": "Rapid final blows with a Kinetic weapon or a weapon matching your equipped Super create an Elemental pickup that matches your equipped Super.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/729357078b7e324467add99816bfda4b.png"
+      },
+      {
+        "hash": 3116632768,
+        "name": "Energy Diffusion Substrate",
+        "description": "Gain a small amount of resistance to all damage dealt to you by combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2be15755a79c3795e2cca85341c8db62.png"
+      },
+      {
+        "hash": 3116632769,
+        "name": "Creeping Chill",
+        "description": "Stasis final blows against slowed or frozen targets release a burst that slows combatants and grants Frost Armor to allies caught in the blast.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a0719ca991cc7c5b3029c36f5b7db153.png"
+      },
+      {
+        "hash": 3116632774,
+        "name": "Press The Advantage",
+        "description": "Breaking a combatant's shield grants increased weapon stability, handling, and reload speed. Swords gain increased guard resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e79751de6d62c4820278fd3f0b833b0b.png"
+      },
+      {
+        "hash": 3116632775,
+        "name": "Threaded Blast",
+        "description": "Destroying a Tangle with a Strand weapon creates a larger and more damaging explosion.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cf8900efe93c42bf29234f431d9a6628.png"
+      },
+      {
+        "hash": 3116632772,
+        "name": "Incendiary Rifle Rounds",
+        "description": "Solar Sniper Rifle precision hits scorch targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7228bff6dcfbd5dbcc9e8da4675ef5c8.png"
+      },
+      {
+        "hash": 3116632773,
+        "name": "Sustained Fire",
+        "description": "Continuously damaging combatants or healing allies with an Auto Rifle grants you damage resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3485c4751f37951002170d05c4468a87.png"
+      }
+    ],
+    "tier2Perks": [
+      {
+        "hash": 2344320970,
+        "name": "Counter Energy",
+        "description": "When you or a member of your fireteam stuns a champion, you gain energy for your least-charged ability.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f9cff3113b9be57572ed6697be195a1a.png"
+      },
+      {
+        "hash": 2344320969,
+        "name": "Blade Stamina",
+        "description": "Rapidly defeating combatants with a Sword refunds some ammo.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/943e21f0e02535c4ea107639fa45882e.png"
+      },
+      {
+        "hash": 2344320968,
+        "name": "Void Hegemony",
+        "description": "While you have a Void or Prismatic subclass equipped, defeating weakened targets provides a small Void Overshield.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/17d84346ffe49f92a4db97b2fa59ba21.png"
+      },
+      {
+        "hash": 2344320975,
+        "name": "Radiant Orbs",
+        "description": "While you have a Solar or Prismatic subclass equipped, picking up an Orb of Power makes you radiant.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/504b0ee422c64b4baa8ba5c1bbbb8ada.png"
+      },
+      {
+        "hash": 2344320974,
+        "name": "Bad Amplitude",
+        "description": "Damaging a Champion with an Arc ability causes the Champion to become jolted.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/49206187423fa8c71de6c5058d237f21.png"
+      },
+      {
+        "hash": 2344320973,
+        "name": "Solar Fulmination",
+        "description": "Your ignitions do increased damage in an increased radius.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c652963de3a4e9860280e0a5a5e84817.png"
+      },
+      {
+        "hash": 2344320972,
+        "name": "Targeting Autoloader",
+        "description": "While you have an Auto Rifle equipped, defeating combatants reloads your equipped weapon and temporarily increases weapon damage. \n\nAwards bonus progress when dealing final blows while surrounded.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/af01d655f6082ad2c9eb3ee81b77effa.png"
+      },
+      {
+        "hash": 3116632771,
+        "name": "Elemental Siphon",
+        "description": "Rapid final blows with a Kinetic weapon or a weapon matching your equipped Super create an Elemental pickup that matches your equipped Super.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/729357078b7e324467add99816bfda4b.png"
+      },
+      {
+        "hash": 3116632768,
+        "name": "Energy Diffusion Substrate",
+        "description": "Gain a small amount of resistance to all damage dealt to you by combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2be15755a79c3795e2cca85341c8db62.png"
+      },
+      {
+        "hash": 3116632769,
+        "name": "Creeping Chill",
+        "description": "Stasis final blows against slowed or frozen targets release a burst that slows combatants and grants Frost Armor to allies caught in the blast.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a0719ca991cc7c5b3029c36f5b7db153.png"
+      },
+      {
+        "hash": 3116632774,
+        "name": "Press The Advantage",
+        "description": "Breaking a combatant's shield grants increased weapon stability, handling, and reload speed. Swords gain increased guard resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e79751de6d62c4820278fd3f0b833b0b.png"
+      },
+      {
+        "hash": 3116632775,
+        "name": "Threaded Blast",
+        "description": "Destroying a Tangle with a Strand weapon creates a larger and more damaging explosion.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cf8900efe93c42bf29234f431d9a6628.png"
+      },
+      {
+        "hash": 3116632772,
+        "name": "Incendiary Rifle Rounds",
+        "description": "Solar Sniper Rifle precision hits scorch targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7228bff6dcfbd5dbcc9e8da4675ef5c8.png"
+      },
+      {
+        "hash": 3116632773,
+        "name": "Sustained Fire",
+        "description": "Continuously damaging combatants or healing allies with an Auto Rifle grants you damage resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3485c4751f37951002170d05c4468a87.png"
+      }
+    ],
+    "tier3Perks": [
+      {
+        "hash": 1533272841,
+        "name": "Prismatic Transfer",
+        "description": "When you cast your Super, each member of your fireteam with a Super type different than yours gains a bonus to weapon damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e2d5f4807e70f1f3ff310415cc44b67c.png"
+      },
+      {
+        "hash": 1533272842,
+        "name": "Argent Blade",
+        "description": "While you have Armor Charge, dealing damage with a Sword consumes an Armor Charge and empowers your Sword for a short time, granting it bonus damage and energy charge rate.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/8c8ec47b96429cb02c2c7640defc79b8.png"
+      },
+      {
+        "hash": 1533272843,
+        "name": "Expanding Abyss",
+        "description": "Void sources deal increased damage to weakened targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f2a75f5858c1e49244972e97362d5c80.png"
+      },
+      {
+        "hash": 1533272844,
+        "name": "Shieldcrush",
+        "description": "While you have Woven Mail, Frost Armor, or a Void Overshield, your melee recharges faster and deals increased damage.\n\nWhile you are amplified or radiant, your grenade recharges faster and deals increased damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d22083ccc81ece6444fa2c022df89705.png"
+      },
+      {
+        "hash": 1533272845,
+        "name": "Transference",
+        "description": "Gain increased grenade and melee damage while transcendent.\n\nWeapon final blows while transcendent refund Light and Dark energy after Transcendence ends.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/ae11028a5a83ed41cb86d88a97161de2.png"
+      },
+      {
+        "hash": 1533272846,
+        "name": "Sniper's Meditation",
+        "description": "Sniper Rifle hits grant stacking Sniper Rifle damage, stability, and reload bonuses for a short time. Heavy ammo Sniper Rifle hits count as more than one.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e7a8b3b1eb71f1d70e31d5642c92c5fb.png"
+      },
+      {
+        "hash": 1533272847,
+        "name": "Shock and Awe",
+        "description": "When you have an Arc or Prismatic subclass equipped, Arc final blows while you are amplified summon a burst of lightning that damages and jolts targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/0a18b425797c5f38a69665d5c3a6333f.png"
+      },
+      {
+        "hash": 2344320970,
+        "name": "Counter Energy",
+        "description": "When you or a member of your fireteam stuns a champion, you gain energy for your least-charged ability.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f9cff3113b9be57572ed6697be195a1a.png"
+      },
+      {
+        "hash": 2344320969,
+        "name": "Blade Stamina",
+        "description": "Rapidly defeating combatants with a Sword refunds some ammo.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/943e21f0e02535c4ea107639fa45882e.png"
+      },
+      {
+        "hash": 2344320968,
+        "name": "Void Hegemony",
+        "description": "While you have a Void or Prismatic subclass equipped, defeating weakened targets provides a small Void Overshield.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/17d84346ffe49f92a4db97b2fa59ba21.png"
+      },
+      {
+        "hash": 2344320975,
+        "name": "Radiant Orbs",
+        "description": "While you have a Solar or Prismatic subclass equipped, picking up an Orb of Power makes you radiant.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/504b0ee422c64b4baa8ba5c1bbbb8ada.png"
+      },
+      {
+        "hash": 2344320974,
+        "name": "Bad Amplitude",
+        "description": "Damaging a Champion with an Arc ability causes the Champion to become jolted.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/49206187423fa8c71de6c5058d237f21.png"
+      },
+      {
+        "hash": 2344320973,
+        "name": "Solar Fulmination",
+        "description": "Your ignitions do increased damage in an increased radius.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c652963de3a4e9860280e0a5a5e84817.png"
+      },
+      {
+        "hash": 2344320972,
+        "name": "Targeting Autoloader",
+        "description": "While you have an Auto Rifle equipped, defeating combatants reloads your equipped weapon and temporarily increases weapon damage. \n\nAwards bonus progress when dealing final blows while surrounded.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/af01d655f6082ad2c9eb3ee81b77effa.png"
+      },
+      {
+        "hash": 3116632771,
+        "name": "Elemental Siphon",
+        "description": "Rapid final blows with a Kinetic weapon or a weapon matching your equipped Super create an Elemental pickup that matches your equipped Super.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/729357078b7e324467add99816bfda4b.png"
+      },
+      {
+        "hash": 3116632768,
+        "name": "Energy Diffusion Substrate",
+        "description": "Gain a small amount of resistance to all damage dealt to you by combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2be15755a79c3795e2cca85341c8db62.png"
+      },
+      {
+        "hash": 3116632769,
+        "name": "Creeping Chill",
+        "description": "Stasis final blows against slowed or frozen targets release a burst that slows combatants and grants Frost Armor to allies caught in the blast.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a0719ca991cc7c5b3029c36f5b7db153.png"
+      },
+      {
+        "hash": 3116632774,
+        "name": "Press The Advantage",
+        "description": "Breaking a combatant's shield grants increased weapon stability, handling, and reload speed. Swords gain increased guard resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e79751de6d62c4820278fd3f0b833b0b.png"
+      },
+      {
+        "hash": 3116632775,
+        "name": "Threaded Blast",
+        "description": "Destroying a Tangle with a Strand weapon creates a larger and more damaging explosion.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cf8900efe93c42bf29234f431d9a6628.png"
+      },
+      {
+        "hash": 3116632772,
+        "name": "Incendiary Rifle Rounds",
+        "description": "Solar Sniper Rifle precision hits scorch targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7228bff6dcfbd5dbcc9e8da4675ef5c8.png"
+      },
+      {
+        "hash": 3116632773,
+        "name": "Sustained Fire",
+        "description": "Continuously damaging combatants or healing allies with an Auto Rifle grants you damage resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/3485c4751f37951002170d05c4468a87.png"
+      }
+    ]
+  },
+  "23349941": {
+    "hash": 23349941,
+    "name": "Implement of Curiosity",
+    "description": "Works best with:\nElements: [Solar] [Stasis] [Strand] [Kill]\nWeapons: [Bow] [Sword] ",
+    "icon": "https://www.bungie.net/common/destiny2_content/icons/51d5606acfeda827603f33b4c562270f.jpg",
+    "seasonNumber": 27,
+    "tier1Perks": [
+      {
+        "hash": 3153265450,
+        "name": "Fever and Chill",
+        "description": "Rapid precision hits with [Solar]Solar weapons grant Radiant. Rapid precision hits with [Stasis]Stasis weapons grant Frost Armor.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/8b19ceba1b2b7a5453de5198a2ca8a97.png"
+      },
+      {
+        "hash": 3153265449,
+        "name": "Elemental Benevolence",
+        "description": "Granting allies an elemental buff gives class ability energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/17c1fe9ffd2c624a32b2a82c28eaa124.png"
+      },
+      {
+        "hash": 3153265448,
+        "name": "Frost Renewal",
+        "description": "While you have Frost Armor, taking critical damage releases a burst that freezes nearby combatants and grants Frost Armor to you and nearby allies.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f0a3adfaf8d6c88df24a35f38b3968d2.png"
+      },
+      {
+        "hash": 2596646301,
+        "name": "Horde Shuttle",
+        "description": "Damaging unraveled targets with a weapon occasionally spawns a Threadling. Threadlings sever targets that they damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e59d66773e3f17fca0ce9a1db1ad26d4.png"
+      },
+      {
+        "hash": 3153265454,
+        "name": "Refresh Threads",
+        "description": "Picking up an Elemental pickup matching your subclass element or picking up a Tangle while you have a [Strand]Strand Super equipped grants energy to your least charged ability.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d17dfad7a1475ae53527c9a208f19928.png"
+      },
+      {
+        "hash": 3153265453,
+        "name": "Pack Tactics",
+        "description": "Dealing damage with Threadlings increases Threadling damage. At maximum stacks, Threadlings stun [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b912d5f9bba66cc24c2c282d768c6061.png"
+      },
+      {
+        "hash": 3153265452,
+        "name": "Semi-Auto Striker",
+        "description": "If you have fewer than 2 stacks of Armor Charge, rapid precision shots with Bows, Snipers, and Scout Rifles generate an Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b65af53611708b2ed9d6a6d9b079fb5b.png"
+      }
+    ],
+    "tier2Perks": [
+      {
+        "hash": 3459646243,
+        "name": "Threaded Blast",
+        "description": "Destroying a Tangle with [Strand]Strand damage increases the radius of the explosion and its damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/1857757ec95e15d5e42311e647f86163.png"
+      },
+      {
+        "hash": 3459646240,
+        "name": "Cauterized Darkness",
+        "description": "[Stasis]Stasis or [Strand] Strand debuffed non-boss combatants take increased [Solar]Solar damage from all sources.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e1eb1a3e3bf6057643a9b52dd36d7cf0.png"
+      },
+      {
+        "hash": 3459646241,
+        "name": "Elemental Daze",
+        "description": "Stunning a Champion with an elemental weapon creates an elementally aligned explosion, applying a matching elemental debuff to them and nearby targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c9c223a63575ed646de09b28bf8e9297.png"
+      },
+      {
+        "hash": 3459646246,
+        "name": "Shoulder to Shoulder",
+        "description": "Dealing sustained precision damage against combatants while near two or more allies grants you damage resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/50d5aacb8e5ea334f20e6effb16c669d.png"
+      },
+      {
+        "hash": 3459646247,
+        "name": "Elemental Coalescence",
+        "description": "Defeating targets has the chance to create an Elemental pickup matching your equipped Super element.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b84ec3e24f1cb8931885b69f18d31ce8.png"
+      },
+      {
+        "hash": 3459646244,
+        "name": "That Fresh Bullets Smell",
+        "description": "Picking up an ammo brick gives your Kinetic weapons increased damage for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/6c3ed1334ca597eb7c4a3efeca50d172.png"
+      },
+      {
+        "hash": 3459646245,
+        "name": "Energy Acceleration",
+        "description": "Sustained damage with micro-missiles causes the combatant to emit a Kinetic shockwave that damages nearby combatants. Strong against [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7b7148c2dbb084f5ce94262022ff9c21.png"
+      },
+      {
+        "hash": 3153265450,
+        "name": "Fever and Chill",
+        "description": "Rapid precision hits with [Solar]Solar weapons grant Radiant. Rapid precision hits with [Stasis]Stasis weapons grant Frost Armor.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/8b19ceba1b2b7a5453de5198a2ca8a97.png"
+      },
+      {
+        "hash": 3153265449,
+        "name": "Elemental Benevolence",
+        "description": "Granting allies an elemental buff gives class ability energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/17c1fe9ffd2c624a32b2a82c28eaa124.png"
+      },
+      {
+        "hash": 3153265448,
+        "name": "Frost Renewal",
+        "description": "While you have Frost Armor, taking critical damage releases a burst that freezes nearby combatants and grants Frost Armor to you and nearby allies.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f0a3adfaf8d6c88df24a35f38b3968d2.png"
+      },
+      {
+        "hash": 2596646301,
+        "name": "Horde Shuttle",
+        "description": "Damaging unraveled targets with a weapon occasionally spawns a Threadling. Threadlings sever targets that they damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e59d66773e3f17fca0ce9a1db1ad26d4.png"
+      },
+      {
+        "hash": 3153265454,
+        "name": "Refresh Threads",
+        "description": "Picking up an Elemental pickup matching your subclass element or picking up a Tangle while you have a [Strand]Strand Super equipped grants energy to your least charged ability.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d17dfad7a1475ae53527c9a208f19928.png"
+      },
+      {
+        "hash": 3153265453,
+        "name": "Pack Tactics",
+        "description": "Dealing damage with Threadlings increases Threadling damage. At maximum stacks, Threadlings stun [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b912d5f9bba66cc24c2c282d768c6061.png"
+      },
+      {
+        "hash": 3153265452,
+        "name": "Semi-Auto Striker",
+        "description": "If you have fewer than 2 stacks of Armor Charge, rapid precision shots with Bows, Snipers, and Scout Rifles generate an Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b65af53611708b2ed9d6a6d9b079fb5b.png"
+      }
+    ],
+    "tier3Perks": [
+      {
+        "hash": 2659604388,
+        "name": "Radiant Shrapnel",
+        "description": "Dealing sustained weapon damage while Radiant or defeating a scorched combatant with a weapon causes the target to release Solar projectiles that deal damage and scorch on impact.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/8abd6d007f5a6a53e85202fddbb0fbb7.png"
+      },
+      {
+        "hash": 2659604391,
+        "name": "Shieldcrush",
+        "description": "While you have Woven Mail, Frost Armor, or a Void overshield, your melee recharges faster and deals increased damage.\n\nWhile you are Amplified or Radiant, your grenade recharges faster and deals increased damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/fdd095c3fee6fff410f09a57fe5c9f0e.png"
+      },
+      {
+        "hash": 2659604390,
+        "name": "Elemental Overdrive",
+        "description": "Picking up an Elemental pickup or Tangle grants increased damage to weapons of the same element.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/08d63e99efb583e4d0d13058a7ed63f4.png"
+      },
+      {
+        "hash": 2659604385,
+        "name": "Tangled Web",
+        "description": "Creating a Tangle by defeating a [Strand]Strand debuffed target suspends nearby combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/82befe9a89b07a901cd352d7a4663239.png"
+      },
+      {
+        "hash": 2659604384,
+        "name": "Frigid Glare",
+        "description": "While Frost Armor is active, [Stasis]Stasis precision final blows cause combatants to release a freezing burst.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a8e0ad8585c13eead66d224a18608556.png"
+      },
+      {
+        "hash": 2659604387,
+        "name": "Iron Lord's Vigor",
+        "description": "While wielding a Sword, you take decreased damage; rapid final blows grant ammo to the wielder.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/08493ea0baf9f657c82c5a7e32e0ff66.png"
+      },
+      {
+        "hash": 2659604386,
+        "name": "Argent Quiver",
+        "description": "Reloading a Bow consumes one stack of Armor Charge, granting increased damage and reload speed for your next 3 shots or until you stow your Bow.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/be505c181030939d775fdd38fef428e5.png"
+      },
+      {
+        "hash": 3459646243,
+        "name": "Threaded Blast",
+        "description": "Destroying a Tangle with [Strand]Strand damage increases the radius of the explosion and its damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/1857757ec95e15d5e42311e647f86163.png"
+      },
+      {
+        "hash": 3459646240,
+        "name": "Cauterized Darkness",
+        "description": "[Stasis]Stasis or [Strand] Strand debuffed non-boss combatants take increased [Solar]Solar damage from all sources.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e1eb1a3e3bf6057643a9b52dd36d7cf0.png"
+      },
+      {
+        "hash": 3459646241,
+        "name": "Elemental Daze",
+        "description": "Stunning a Champion with an elemental weapon creates an elementally aligned explosion, applying a matching elemental debuff to them and nearby targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c9c223a63575ed646de09b28bf8e9297.png"
+      },
+      {
+        "hash": 3459646246,
+        "name": "Shoulder to Shoulder",
+        "description": "Dealing sustained precision damage against combatants while near two or more allies grants you damage resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/50d5aacb8e5ea334f20e6effb16c669d.png"
+      },
+      {
+        "hash": 3459646247,
+        "name": "Elemental Coalescence",
+        "description": "Defeating targets has the chance to create an Elemental pickup matching your equipped Super element.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b84ec3e24f1cb8931885b69f18d31ce8.png"
+      },
+      {
+        "hash": 3459646244,
+        "name": "That Fresh Bullets Smell",
+        "description": "Picking up an ammo brick gives your Kinetic weapons increased damage for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/6c3ed1334ca597eb7c4a3efeca50d172.png"
+      },
+      {
+        "hash": 3459646245,
+        "name": "Energy Acceleration",
+        "description": "Sustained damage with micro-missiles causes the combatant to emit a Kinetic shockwave that damages nearby combatants. Strong against [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/7b7148c2dbb084f5ce94262022ff9c21.png"
+      },
+      {
+        "hash": 3153265450,
+        "name": "Fever and Chill",
+        "description": "Rapid precision hits with [Solar]Solar weapons grant Radiant. Rapid precision hits with [Stasis]Stasis weapons grant Frost Armor.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/8b19ceba1b2b7a5453de5198a2ca8a97.png"
+      },
+      {
+        "hash": 3153265449,
+        "name": "Elemental Benevolence",
+        "description": "Granting allies an elemental buff gives class ability energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/17c1fe9ffd2c624a32b2a82c28eaa124.png"
+      },
+      {
+        "hash": 3153265448,
+        "name": "Frost Renewal",
+        "description": "While you have Frost Armor, taking critical damage releases a burst that freezes nearby combatants and grants Frost Armor to you and nearby allies.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f0a3adfaf8d6c88df24a35f38b3968d2.png"
+      },
+      {
+        "hash": 2596646301,
+        "name": "Horde Shuttle",
+        "description": "Damaging unraveled targets with a weapon occasionally spawns a Threadling. Threadlings sever targets that they damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e59d66773e3f17fca0ce9a1db1ad26d4.png"
+      },
+      {
+        "hash": 3153265454,
+        "name": "Refresh Threads",
+        "description": "Picking up an Elemental pickup matching your subclass element or picking up a Tangle while you have a [Strand]Strand Super equipped grants energy to your least charged ability.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d17dfad7a1475ae53527c9a208f19928.png"
+      },
+      {
+        "hash": 3153265453,
+        "name": "Pack Tactics",
+        "description": "Dealing damage with Threadlings increases Threadling damage. At maximum stacks, Threadlings stun [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b912d5f9bba66cc24c2c282d768c6061.png"
+      },
+      {
+        "hash": 3153265452,
+        "name": "Semi-Auto Striker",
+        "description": "If you have fewer than 2 stacks of Armor Charge, rapid precision shots with Bows, Snipers, and Scout Rifles generate an Armor Charge.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b65af53611708b2ed9d6a6d9b079fb5b.png"
+      }
+    ]
+  },
+  "1014202826": {
+    "hash": 1014202826,
+    "name": "Encrypted Data Disk",
+    "description": "Works best with:\nElements: [Kill] [Void] [Arc] \nWeapons: [Sword] [Sniper Rifle] [Machine Gun]",
+    "icon": "https://www.bungie.net/common/destiny2_content/icons/d567549c87bb8fb18c1972027341a5f4.jpg",
+    "seasonNumber": 28,
+    "tier1Perks": [
+      {
+        "hash": 3834273543,
+        "name": "Press The Advantage",
+        "description": "Breaking a combatant's shield grants increased weapon stability, handling, and reload speed. Swords gain increased guard resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e79751de6d62c4820278fd3f0b833b0b.png"
+      },
+      {
+        "hash": 3834273540,
+        "name": "Kinetic Synthesis",
+        "description": "Sustained Kinetic weapon damage and rapid final blows have a chance to generate a unique ammo brick. Collecting this brick will grant ammo to equipped Kinetic damage weapons and grant Special and Heavy ammo progress.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cf96e4e6ccba04d4948a7bb0ca90761b.png"
+      },
+      {
+        "hash": 3834273541,
+        "name": "Reload at Range",
+        "description": "Precision hits with Bows and Sniper Rifles grant a stacking bonus to their reload speed.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2dacdd67e219bb9ec62226c82bfcfaaf.png"
+      },
+      {
+        "hash": 3834273538,
+        "name": "Riposte",
+        "description": "Shortly after guarding with a Sword, your light and heavy attacks stun unshielded combatants. Strong against [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/379e370534eed91f6ac666196ce56d3d.png"
+      },
+      {
+        "hash": 3834273539,
+        "name": "Power from Pain",
+        "description": "Rapid final blows against weakened combatants grant you Devour.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b59af0e3a3880873b9055c3e0697b216.png"
+      },
+      {
+        "hash": 3834273536,
+        "name": "Fierce Proxemics",
+        "description": "Finisher final blows grant grenade and melee energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a8990e7598af609e1ffca8ff7e3a2f54.png"
+      },
+      {
+        "hash": 3834273537,
+        "name": "Rapid Remedy",
+        "description": "Machine Gun rapid final blows heal you.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d4c2808826b8eceea0a1acca31079f87.png"
+      }
+    ],
+    "tier2Perks": [
+      {
+        "hash": 2903198438,
+        "name": "Dielectric",
+        "description": "Defeating [Arc]Arc debuffed targets grants Bolt Charge.\n\nRapidly defeating Arc debuffed targets spawns an Orb of Power and heals a small portion of health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2ba8a6fb47d9a36d8e5651bad5a86752.png"
+      },
+      {
+        "hash": 2903198437,
+        "name": "Armorsmith",
+        "description": "Breaking a combatant's shield temporarily grants you damage resistance and increased melee damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f48754b849cbc1b813ea2d078e36ed0c.png"
+      },
+      {
+        "hash": 2903198436,
+        "name": "Counter Energy",
+        "description": "When you or a member of your fireteam stuns a champion, you gain energy for your least-charged ability.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f9cff3113b9be57572ed6697be195a1a.png"
+      },
+      {
+        "hash": 2903198435,
+        "name": "Combination Argent Blade",
+        "description": "Briefly pause after executing a light attack, then follow it up with a light or heavy attack to empower your Sword for a short time, granting it bonus damage and charge rate.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b1f285e95953d68a6e72312234bfd363.png"
+      },
+      {
+        "hash": 2903198434,
+        "name": "Singularity Blade",
+        "description": "While you have a Void elemental buff, melee and Sword hits weaken targets, while melee and Sword final blows create a weakening burst.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f510c3b6aaee8ff2da5da4368bd4c63a.png"
+      },
+      {
+        "hash": 2903198433,
+        "name": "Blinding Jolts",
+        "description": "Final blows on jolted combatants blind nearby combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2944f8b47be4ff1f4a0ceaa8439d0367.png"
+      },
+      {
+        "hash": 2903198432,
+        "name": "Precision Equity",
+        "description": "Precision final blows build progress towards a large Orb of Power that also grants bonus weapon damage on pickup. Higher ranked targets grant more progress.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/09c1f017f974b0a8bee28bb519993957.png"
+      },
+      {
+        "hash": 3834273543,
+        "name": "Press The Advantage",
+        "description": "Breaking a combatant's shield grants increased weapon stability, handling, and reload speed. Swords gain increased guard resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e79751de6d62c4820278fd3f0b833b0b.png"
+      },
+      {
+        "hash": 3834273540,
+        "name": "Kinetic Synthesis",
+        "description": "Sustained Kinetic weapon damage and rapid final blows have a chance to generate a unique ammo brick. Collecting this brick will grant ammo to equipped Kinetic damage weapons and grant Special and Heavy ammo progress.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cf96e4e6ccba04d4948a7bb0ca90761b.png"
+      },
+      {
+        "hash": 3834273541,
+        "name": "Reload at Range",
+        "description": "Precision hits with Bows and Sniper Rifles grant a stacking bonus to their reload speed.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2dacdd67e219bb9ec62226c82bfcfaaf.png"
+      },
+      {
+        "hash": 3834273538,
+        "name": "Riposte",
+        "description": "Shortly after guarding with a Sword, your light and heavy attacks stun unshielded combatants. Strong against [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/379e370534eed91f6ac666196ce56d3d.png"
+      },
+      {
+        "hash": 3834273539,
+        "name": "Power from Pain",
+        "description": "Rapid final blows against weakened combatants grant you Devour.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b59af0e3a3880873b9055c3e0697b216.png"
+      },
+      {
+        "hash": 3834273536,
+        "name": "Fierce Proxemics",
+        "description": "Finisher final blows grant grenade and melee energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a8990e7598af609e1ffca8ff7e3a2f54.png"
+      },
+      {
+        "hash": 3834273537,
+        "name": "Rapid Remedy",
+        "description": "Machine Gun rapid final blows heal you.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d4c2808826b8eceea0a1acca31079f87.png"
+      }
+    ],
+    "tier3Perks": [
+      {
+        "hash": 2742146821,
+        "name": "Elemental Orbs: Arc",
+        "description": "[Arc]Arc weapon final blows have a chance to spawn an Arc Elemental Orb. Arc Orbs can be thrown or shot to create an Arc explosion that jolts targets it damages.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/57df71b415811ddee77e55f4b95519aa.png"
+      },
+      {
+        "hash": 2742146822,
+        "name": "Kinetic Rupture",
+        "description": "Kinetic weapon damage against a powerful combatant has a chance to create a Kinetic Rupture. Targeting this Rupture causes a damaging explosion that staggers combatants. Strong against [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/01fddf1eba3b2cca594be0fec0af049e.png"
+      },
+      {
+        "hash": 2742146823,
+        "name": "Sniper's Meditation",
+        "description": "Sniper Rifle hits grant stacking Sniper Rifle damage, stability, and reload bonuses for a short time. Heavy ammo Sniper Rifle hits count as more than one hit.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e7a8b3b1eb71f1d70e31d5642c92c5fb.png"
+      },
+      {
+        "hash": 2742146816,
+        "name": "Sword Storm Combo",
+        "description": "Performing three Sword light attacks followed by a heavy attack summons penumbral blades that surround you to damage and disorient combatants. Sword final blows extend the duration of these penumbral blades.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/daaa2ac873cf0d92f0386667b84450bd.png"
+      },
+      {
+        "hash": 2742146817,
+        "name": "Void Infestation",
+        "description": "Defeating a weakened target spawns a tracking projectile that weakens other targets.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/5eacb6ab8ca7b9ed147dc842accdb41a.png"
+      },
+      {
+        "hash": 2742146818,
+        "name": "Tazer Tag",
+        "description": "Arc-powered melee hits jolt combatants and deal further damage for a short duration.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/c30820ca53f6ec778ddf10c6a0d6956b.png"
+      },
+      {
+        "hash": 2742146819,
+        "name": "Sticker Shock",
+        "description": "Arc Flux, Magnetic, and Fusion Grenades deal more damage when attached to combatants; on final blows, they release several micro-missiles that seek nearby combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/132c4594b9738a242df26521caa6421f.png"
+      },
+      {
+        "hash": 2903198438,
+        "name": "Dielectric",
+        "description": "Defeating [Arc]Arc debuffed targets grants Bolt Charge.\n\nRapidly defeating Arc debuffed targets spawns an Orb of Power and heals a small portion of health.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2ba8a6fb47d9a36d8e5651bad5a86752.png"
+      },
+      {
+        "hash": 2903198437,
+        "name": "Armorsmith",
+        "description": "Breaking a combatant's shield temporarily grants you damage resistance and increased melee damage.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f48754b849cbc1b813ea2d078e36ed0c.png"
+      },
+      {
+        "hash": 2903198436,
+        "name": "Counter Energy",
+        "description": "When you or a member of your fireteam stuns a champion, you gain energy for your least-charged ability.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f9cff3113b9be57572ed6697be195a1a.png"
+      },
+      {
+        "hash": 2903198435,
+        "name": "Combination Argent Blade",
+        "description": "Briefly pause after executing a light attack, then follow it up with a light or heavy attack to empower your Sword for a short time, granting it bonus damage and charge rate.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b1f285e95953d68a6e72312234bfd363.png"
+      },
+      {
+        "hash": 2903198434,
+        "name": "Singularity Blade",
+        "description": "While you have a Void elemental buff, melee and Sword hits weaken targets, while melee and Sword final blows create a weakening burst.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/f510c3b6aaee8ff2da5da4368bd4c63a.png"
+      },
+      {
+        "hash": 2903198433,
+        "name": "Blinding Jolts",
+        "description": "Final blows on jolted combatants blind nearby combatants.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2944f8b47be4ff1f4a0ceaa8439d0367.png"
+      },
+      {
+        "hash": 2903198432,
+        "name": "Precision Equity",
+        "description": "Precision final blows build progress towards a large Orb of Power that also grants bonus weapon damage on pickup. Higher ranked targets grant more progress.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/09c1f017f974b0a8bee28bb519993957.png"
+      },
+      {
+        "hash": 3834273543,
+        "name": "Press The Advantage",
+        "description": "Breaking a combatant's shield grants increased weapon stability, handling, and reload speed. Swords gain increased guard resistance.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/e79751de6d62c4820278fd3f0b833b0b.png"
+      },
+      {
+        "hash": 3834273540,
+        "name": "Kinetic Synthesis",
+        "description": "Sustained Kinetic weapon damage and rapid final blows have a chance to generate a unique ammo brick. Collecting this brick will grant ammo to equipped Kinetic damage weapons and grant Special and Heavy ammo progress.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/cf96e4e6ccba04d4948a7bb0ca90761b.png"
+      },
+      {
+        "hash": 3834273541,
+        "name": "Reload at Range",
+        "description": "Precision hits with Bows and Sniper Rifles grant a stacking bonus to their reload speed.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/2dacdd67e219bb9ec62226c82bfcfaaf.png"
+      },
+      {
+        "hash": 3834273538,
+        "name": "Riposte",
+        "description": "Shortly after guarding with a Sword, your light and heavy attacks stun unshielded combatants. Strong against [Stagger] Unstoppable Champions.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/379e370534eed91f6ac666196ce56d3d.png"
+      },
+      {
+        "hash": 3834273539,
+        "name": "Power from Pain",
+        "description": "Rapid final blows against weakened combatants grant you Devour.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/b59af0e3a3880873b9055c3e0697b216.png"
+      },
+      {
+        "hash": 3834273536,
+        "name": "Fierce Proxemics",
+        "description": "Finisher final blows grant grenade and melee energy.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/a8990e7598af609e1ffca8ff7e3a2f54.png"
+      },
+      {
+        "hash": 3834273537,
+        "name": "Rapid Remedy",
+        "description": "Machine Gun rapid final blows heal you.",
+        "icon": "https://www.bungie.net/common/destiny2_content/icons/d4c2808826b8eceea0a1acca31079f87.png"
+      }
+    ]
+  }
+}

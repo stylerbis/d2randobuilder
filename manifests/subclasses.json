@@ -1,0 +1,2582 @@
+{
+  "4204413574": {
+    "hash": 4204413574,
+    "name": "Broodweaver",
+    "icon": "https://bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 2692309625,
+          "singleInitialItemHash": 383852320,
+          "reusablePlugSetHash": 148,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2648904001,
+          "singleInitialItemHash": 2628485817,
+          "reusablePlugSetHash": 149,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 677393771,
+          "singleInitialItemHash": 1885339915,
+          "reusablePlugSetHash": 150,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 397219646,
+          "singleInitialItemHash": 2307689415,
+          "reusablePlugSetHash": 151,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2076162795,
+          "singleInitialItemHash": 2470512752,
+          "reusablePlugSetHash": 143,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3243339017,
+          "singleInitialItemHash": 2164407902,
+          "reusablePlugSetHash": 2260242405,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3243339017,
+          "singleInitialItemHash": 2164407902,
+          "reusablePlugSetHash": 2260242405,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2608270529,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2608270529,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2608270529,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2608270529,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2608270529,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2608270529,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 764703411,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 193371309,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Warlock",
+    "traitIds": [
+      "item.subclass.dark"
+    ],
+    "element": "Strand"
+  },
+  "3893112950": {
+    "hash": 3893112950,
+    "name": "Prismatic Warlock",
+    "icon": "https://bungie.net/common/destiny2_content/icons/652406349e99e3db0c3198f78af4eeae.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 1175239304,
+          "singleInitialItemHash": 1444664838,
+          "reusablePlugSetHash": 165,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3956992350,
+          "singleInitialItemHash": 5333293,
+          "reusablePlugSetHash": 166,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3250740730,
+          "singleInitialItemHash": 1869939006,
+          "reusablePlugSetHash": 167,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 686663671,
+          "singleInitialItemHash": 3644045867,
+          "reusablePlugSetHash": 168,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2825548992,
+          "singleInitialItemHash": 1048847436,
+          "reusablePlugSetHash": 169,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 577253379,
+          "singleInitialItemHash": 3696633656,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 2121424538,
+          "singleInitialItemHash": 1324853482,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 3116690300,
+          "singleInitialItemHash": 1080004479,
+          "reusablePlugSetHash": 2676106717,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3116690300,
+          "singleInitialItemHash": 1080004479,
+          "reusablePlugSetHash": 2676106717,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 534012976,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 534012976,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 534012976,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 534012976,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 534012976,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 534012976,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 1905270138,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 2047681910,
+          "socketIndexes": [
+            7,
+            8
+          ]
+        },
+        {
+          "socketCategoryHash": 271461480,
+          "socketIndexes": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ]
+        }
+      ]
+    },
+    "charClass": "Warlock",
+    "traitIds": [
+      "item.subclass.dark",
+      "item.subclass.light",
+      "item.subclass.prism"
+    ],
+    "element": "Prism"
+  },
+  "3941205951": {
+    "hash": 3941205951,
+    "name": "Dawnblade",
+    "icon": "https://bungie.net/common/destiny2_content/icons/fedcb91b7ab0584c12f0e9fec730702b.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 957209747,
+          "singleInitialItemHash": 2979486803,
+          "reusablePlugSetHash": 122,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2559659835,
+          "singleInitialItemHash": 3686638442,
+          "reusablePlugSetHash": 123,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3197584837,
+          "singleInitialItemHash": 2274196886,
+          "reusablePlugSetHash": 124,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 4242787800,
+          "singleInitialItemHash": 1470370538,
+          "reusablePlugSetHash": 125,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2582771945,
+          "singleInitialItemHash": 2216698406,
+          "reusablePlugSetHash": 117,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1760926831,
+          "singleInitialItemHash": 2352766955,
+          "reusablePlugSetHash": 3562933678,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1760926831,
+          "singleInitialItemHash": 2352766955,
+          "reusablePlugSetHash": 3562933678,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3782473839,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3782473839,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3782473839,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3782473839,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3782473839,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3782473839,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Warlock",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Solar"
+  },
+  "873720784": {
+    "hash": 873720784,
+    "name": "Revenant",
+    "icon": "https://bungie.net/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 4159020368,
+          "singleInitialItemHash": 3933525366,
+          "reusablePlugSetHash": 85,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2240928854,
+          "singleInitialItemHash": 3531427694,
+          "reusablePlugSetHash": 86,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3005412354,
+          "singleInitialItemHash": 2625980631,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 2846610143,
+          "singleInitialItemHash": 1341767667,
+          "reusablePlugSetHash": 87,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2630552520,
+          "singleInitialItemHash": 1399217,
+          "reusablePlugSetHash": 88,
+          "defaultVisible": true,
+          "plugSources": 14
+        },
+        {
+          "socketTypeHash": 64828383,
+          "singleInitialItemHash": 1715180370,
+          "reusablePlugSetHash": 4098795370,
+          "defaultVisible": true,
+          "plugSources": 12
+        },
+        {
+          "socketTypeHash": 64828383,
+          "singleInitialItemHash": 1715180370,
+          "reusablePlugSetHash": 4098795370,
+          "defaultVisible": true,
+          "plugSources": 12
+        },
+        {
+          "socketTypeHash": 1973898549,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1973898549,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1973898549,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1973898549,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1973898549,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1973898549,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 3400923910,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 2819965312,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Hunter",
+    "traitIds": [
+      "item.subclass.dark"
+    ],
+    "element": "Stasis"
+  },
+  "2932390016": {
+    "hash": 2932390016,
+    "name": "Striker",
+    "icon": "https://bungie.net/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 1368028673,
+          "singleInitialItemHash": 489583096,
+          "reusablePlugSetHash": 131,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3725208665,
+          "singleInitialItemHash": 1698387815,
+          "reusablePlugSetHash": 132,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 431924947,
+          "singleInitialItemHash": 119041299,
+          "reusablePlugSetHash": 133,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 4274880422,
+          "singleInitialItemHash": 2708585279,
+          "reusablePlugSetHash": 134,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3835816883,
+          "singleInitialItemHash": 1713935764,
+          "reusablePlugSetHash": 130,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2951767025,
+          "singleInitialItemHash": 2789698445,
+          "reusablePlugSetHash": 3609966783,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2951767025,
+          "singleInitialItemHash": 2789698445,
+          "reusablePlugSetHash": 3609966783,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 834710217,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 834710217,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 834710217,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 834710217,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 834710217,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 834710217,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Titan",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Arc"
+  },
+  "613647804": {
+    "hash": 613647804,
+    "name": "Behemoth",
+    "icon": "https://bungie.net/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 3889418518,
+          "singleInitialItemHash": 3260056808,
+          "reusablePlugSetHash": 89,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 626374692,
+          "singleInitialItemHash": 469281040,
+          "reusablePlugSetHash": 90,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 722750800,
+          "singleInitialItemHash": 2021620139,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 2951669749,
+          "singleInitialItemHash": 2028772231,
+          "reusablePlugSetHash": 91,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 586284866,
+          "singleInitialItemHash": 1399217,
+          "reusablePlugSetHash": 88,
+          "defaultVisible": true,
+          "plugSources": 14
+        },
+        {
+          "socketTypeHash": 4101608537,
+          "singleInitialItemHash": 321296654,
+          "reusablePlugSetHash": 1445506784,
+          "defaultVisible": true,
+          "plugSources": 12
+        },
+        {
+          "socketTypeHash": 4101608537,
+          "singleInitialItemHash": 321296654,
+          "reusablePlugSetHash": 1445506784,
+          "defaultVisible": true,
+          "plugSources": 12
+        },
+        {
+          "socketTypeHash": 1750379527,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1750379527,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1750379527,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1750379527,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1750379527,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1750379527,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 3400923910,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 2819965312,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Titan",
+    "traitIds": [
+      "item.subclass.dark"
+    ],
+    "element": "Stasis"
+  },
+  "242419885": {
+    "hash": 242419885,
+    "name": "Berserker",
+    "icon": "https://bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 975435568,
+          "singleInitialItemHash": 2087010645,
+          "reusablePlugSetHash": 144,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2524125046,
+          "singleInitialItemHash": 3350493951,
+          "reusablePlugSetHash": 145,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3674916002,
+          "singleInitialItemHash": 3574662354,
+          "reusablePlugSetHash": 146,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3474537087,
+          "singleInitialItemHash": 4094417246,
+          "reusablePlugSetHash": 147,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3338206184,
+          "singleInitialItemHash": 2470512752,
+          "reusablePlugSetHash": 143,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3516283908,
+          "singleInitialItemHash": 3207138885,
+          "reusablePlugSetHash": 3474894050,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3516283908,
+          "singleInitialItemHash": 3207138885,
+          "reusablePlugSetHash": 3474894050,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3322070584,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3322070584,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3322070584,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3322070584,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3322070584,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3322070584,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 764703411,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 193371309,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Titan",
+    "traitIds": [
+      "item.subclass.dark"
+    ],
+    "element": "Strand"
+  },
+  "2328211300": {
+    "hash": 2328211300,
+    "name": "Arcstrider",
+    "icon": "https://bungie.net/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 268465525,
+          "singleInitialItemHash": 426473317,
+          "reusablePlugSetHash": 126,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1364946525,
+          "singleInitialItemHash": 95544328,
+          "reusablePlugSetHash": 127,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 382334831,
+          "singleInitialItemHash": 3769507633,
+          "reusablePlugSetHash": 128,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3313988826,
+          "singleInitialItemHash": 2716335211,
+          "reusablePlugSetHash": 129,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1760132207,
+          "singleInitialItemHash": 1582574009,
+          "reusablePlugSetHash": 130,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1065209373,
+          "singleInitialItemHash": 2802541735,
+          "reusablePlugSetHash": 3432159481,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1065209373,
+          "singleInitialItemHash": 2802541735,
+          "reusablePlugSetHash": 3432159481,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 337532917,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 337532917,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 337532917,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 337532917,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 337532917,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 337532917,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Hunter",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Arc"
+  },
+  "3168997075": {
+    "hash": 3168997075,
+    "name": "Stormcaller",
+    "icon": "https://bungie.net/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 3344648260,
+          "singleInitialItemHash": 25156515,
+          "reusablePlugSetHash": 135,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1935399290,
+          "singleInitialItemHash": 4154539168,
+          "reusablePlugSetHash": 136,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1074626990,
+          "singleInitialItemHash": 1081893460,
+          "reusablePlugSetHash": 137,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 501484515,
+          "singleInitialItemHash": 1232050831,
+          "reusablePlugSetHash": 138,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 961173732,
+          "singleInitialItemHash": 2481624867,
+          "reusablePlugSetHash": 130,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 492342320,
+          "singleInitialItemHash": 3472368310,
+          "reusablePlugSetHash": 3085216490,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 492342320,
+          "singleInitialItemHash": 3472368310,
+          "reusablePlugSetHash": 3085216490,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1777348548,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1777348548,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1777348548,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1777348548,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1777348548,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1777348548,
+          "singleInitialItemHash": 1826298670,
+          "reusablePlugSetHash": 2179662812,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Warlock",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Arc"
+  },
+  "2550323932": {
+    "hash": 2550323932,
+    "name": "Sunbreaker",
+    "icon": "https://bungie.net/common/destiny2_content/icons/fedcb91b7ab0584c12f0e9fec730702b.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 1984530594,
+          "singleInitialItemHash": 2495523340,
+          "reusablePlugSetHash": 118,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3283346080,
+          "singleInitialItemHash": 2225231093,
+          "reusablePlugSetHash": 119,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3177493764,
+          "singleInitialItemHash": 2747500761,
+          "reusablePlugSetHash": 120,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3753398337,
+          "singleInitialItemHash": 852252789,
+          "reusablePlugSetHash": 121,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 4076880854,
+          "singleInitialItemHash": 3969294337,
+          "reusablePlugSetHash": 117,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3389815018,
+          "singleInitialItemHash": 3416473448,
+          "reusablePlugSetHash": 4030440911,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3389815018,
+          "singleInitialItemHash": 3416473448,
+          "reusablePlugSetHash": 4030440911,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2666045590,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2666045590,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2666045590,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2666045590,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2666045590,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2666045590,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Titan",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Solar"
+  },
+  "4282591831": {
+    "hash": 4282591831,
+    "name": "Prismatic Hunter",
+    "icon": "https://bungie.net/common/destiny2_content/icons/fab506e62fa4f188bfe2fb6d56b39614.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 2432179273,
+          "singleInitialItemHash": 2711519340,
+          "reusablePlugSetHash": 155,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2146388881,
+          "singleInitialItemHash": 1588878497,
+          "reusablePlugSetHash": 156,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3533795995,
+          "singleInitialItemHash": 2370269391,
+          "reusablePlugSetHash": 157,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2247414126,
+          "singleInitialItemHash": 2657901006,
+          "reusablePlugSetHash": 158,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 659705531,
+          "singleInitialItemHash": 2842514288,
+          "reusablePlugSetHash": 159,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3759016466,
+          "singleInitialItemHash": 1190101211,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 2286941305,
+          "singleInitialItemHash": 1005476557,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 3280602745,
+          "singleInitialItemHash": 518663192,
+          "reusablePlugSetHash": 2685327650,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3280602745,
+          "singleInitialItemHash": 518663192,
+          "reusablePlugSetHash": 2685327650,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2980843857,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2980843857,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2980843857,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2980843857,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2980843857,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2980843857,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 1905270138,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 2047681910,
+          "socketIndexes": [
+            7,
+            8
+          ]
+        },
+        {
+          "socketCategoryHash": 271461480,
+          "socketIndexes": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ]
+        }
+      ]
+    },
+    "charClass": "Hunter",
+    "traitIds": [
+      "item.subclass.dark",
+      "item.subclass.light",
+      "item.subclass.prism"
+    ],
+    "element": "Prism"
+  },
+  "1616346845": {
+    "hash": 1616346845,
+    "name": "Prismatic Titan",
+    "icon": "https://bungie.net/common/destiny2_content/icons/c1740d829e62afc40a9e57af4e3cad4c.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 2922016085,
+          "singleInitialItemHash": 2868073561,
+          "reusablePlugSetHash": 160,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3536685053,
+          "singleInitialItemHash": 266130438,
+          "reusablePlugSetHash": 161,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3077786767,
+          "singleInitialItemHash": 2529942642,
+          "reusablePlugSetHash": 162,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1290016250,
+          "singleInitialItemHash": 1980796563,
+          "reusablePlugSetHash": 163,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3697817615,
+          "singleInitialItemHash": 1517917190,
+          "reusablePlugSetHash": 164,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2515208934,
+          "singleInitialItemHash": 1396318109,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 285349885,
+          "singleInitialItemHash": 275534325,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 730171709,
+          "singleInitialItemHash": 3635963100,
+          "reusablePlugSetHash": 2407129224,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 730171709,
+          "singleInitialItemHash": 3635963100,
+          "reusablePlugSetHash": 2407129224,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3698895637,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3698895637,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3698895637,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3698895637,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3698895637,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3698895637,
+          "singleInitialItemHash": 2808665197,
+          "reusablePlugSetHash": 3916244727,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 1905270138,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 2047681910,
+          "socketIndexes": [
+            7,
+            8
+          ]
+        },
+        {
+          "socketCategoryHash": 271461480,
+          "socketIndexes": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ]
+        }
+      ]
+    },
+    "charClass": "Titan",
+    "traitIds": [
+      "item.subclass.dark",
+      "item.subclass.light",
+      "item.subclass.prism"
+    ],
+    "element": "Prism"
+  },
+  "2453351420": {
+    "hash": 2453351420,
+    "name": "Nightstalker",
+    "icon": "https://bungie.net/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 3505533535,
+          "singleInitialItemHash": 0,
+          "reusablePlugSetHash": 100,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1661385111,
+          "singleInitialItemHash": 20616656,
+          "reusablePlugSetHash": 101,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 685549881,
+          "singleInitialItemHash": 2722573681,
+          "reusablePlugSetHash": 102,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2569375028,
+          "singleInitialItemHash": 1139822081,
+          "reusablePlugSetHash": 103,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 442106013,
+          "singleInitialItemHash": 0,
+          "reusablePlugSetHash": 104,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3876127107,
+          "singleInitialItemHash": 2801436041,
+          "reusablePlugSetHash": 949441155,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3876127107,
+          "singleInitialItemHash": 2801436041,
+          "reusablePlugSetHash": 949441155,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 4062106003,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 4062106003,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 4062106003,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 4062106003,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 4062106003,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 4062106003,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 3218807805,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Hunter",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Void"
+  },
+  "2842471112": {
+    "hash": 2842471112,
+    "name": "Sentinel",
+    "icon": "https://bungie.net/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 298095187,
+          "singleInitialItemHash": 2722641740,
+          "reusablePlugSetHash": 105,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 4085037819,
+          "singleInitialItemHash": 1380268164,
+          "reusablePlugSetHash": 106,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 661072005,
+          "singleInitialItemHash": 4260353952,
+          "reusablePlugSetHash": 107,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2130732440,
+          "singleInitialItemHash": 4220332374,
+          "reusablePlugSetHash": 108,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3486399913,
+          "singleInitialItemHash": 0,
+          "reusablePlugSetHash": 104,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2566584623,
+          "singleInitialItemHash": 662916127,
+          "reusablePlugSetHash": 1369926501,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2566584623,
+          "singleInitialItemHash": 662916127,
+          "reusablePlugSetHash": 1369926501,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3987035951,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3987035951,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3987035951,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3987035951,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3987035951,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3987035951,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 3218807805,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Titan",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Void"
+  },
+  "3785442599": {
+    "hash": 3785442599,
+    "name": "Threadrunner",
+    "icon": "https://bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 1415543122,
+          "singleInitialItemHash": 1282157891,
+          "reusablePlugSetHash": 139,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3784377168,
+          "singleInitialItemHash": 3721022585,
+          "reusablePlugSetHash": 140,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 754979028,
+          "singleInitialItemHash": 2463983862,
+          "reusablePlugSetHash": 141,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3315216145,
+          "singleInitialItemHash": 1680616210,
+          "reusablePlugSetHash": 142,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2172101702,
+          "singleInitialItemHash": 2470512752,
+          "reusablePlugSetHash": 143,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1230228090,
+          "singleInitialItemHash": 4037640975,
+          "reusablePlugSetHash": 4049781326,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1230228090,
+          "singleInitialItemHash": 4037640975,
+          "reusablePlugSetHash": 4049781326,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1123883782,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1123883782,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1123883782,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1123883782,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1123883782,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1123883782,
+          "singleInitialItemHash": 2111549310,
+          "reusablePlugSetHash": 837761865,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 764703411,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 193371309,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Hunter",
+    "traitIds": [
+      "item.subclass.dark"
+    ],
+    "element": "Strand"
+  },
+  "3291545503": {
+    "hash": 3291545503,
+    "name": "Shadebinder",
+    "icon": "https://bungie.net/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 768835623,
+          "singleInitialItemHash": 3492047641,
+          "reusablePlugSetHash": 92,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 2421283727,
+          "singleInitialItemHash": 890263313,
+          "reusablePlugSetHash": 93,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 98261217,
+          "singleInitialItemHash": 3683904166,
+          "defaultVisible": true,
+          "plugSources": 1
+        },
+        {
+          "socketTypeHash": 1225646556,
+          "singleInitialItemHash": 2543177538,
+          "reusablePlugSetHash": 94,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 981428773,
+          "singleInitialItemHash": 1399217,
+          "reusablePlugSetHash": 88,
+          "defaultVisible": true,
+          "plugSources": 14
+        },
+        {
+          "socketTypeHash": 2677016602,
+          "singleInitialItemHash": 3819991001,
+          "reusablePlugSetHash": 2491007355,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 2677016602,
+          "singleInitialItemHash": 3819991001,
+          "reusablePlugSetHash": 2491007355,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1503676816,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1503676816,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1503676816,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1503676816,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1503676816,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1503676816,
+          "singleInitialItemHash": 3251563851,
+          "reusablePlugSetHash": 2878515719,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 3400923910,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 2819965312,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Warlock",
+    "traitIds": [
+      "item.subclass.dark"
+    ],
+    "element": "Stasis"
+  },
+  "2849050827": {
+    "hash": 2849050827,
+    "name": "Voidwalker",
+    "icon": "https://bungie.net/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 876531438,
+          "singleInitialItemHash": 2209081649,
+          "reusablePlugSetHash": 109,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 842437932,
+          "singleInitialItemHash": 1237488986,
+          "reusablePlugSetHash": 110,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 4103426216,
+          "singleInitialItemHash": 1656118681,
+          "reusablePlugSetHash": 111,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1125002125,
+          "singleInitialItemHash": 2299867342,
+          "reusablePlugSetHash": 112,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3325250074,
+          "singleInitialItemHash": 0,
+          "reusablePlugSetHash": 104,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3481994398,
+          "singleInitialItemHash": 3834374608,
+          "reusablePlugSetHash": 2203811618,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3481994398,
+          "singleInitialItemHash": 3834374608,
+          "reusablePlugSetHash": 2203811618,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 910774442,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 910774442,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 910774442,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 910774442,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 910774442,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 910774442,
+          "singleInitialItemHash": 1372656116,
+          "reusablePlugSetHash": 225543744,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 3218807805,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Warlock",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Void"
+  },
+  "2240888816": {
+    "hash": 2240888816,
+    "name": "Gunslinger",
+    "icon": "https://bungie.net/common/destiny2_content/icons/fedcb91b7ab0584c12f0e9fec730702b.png",
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 3765915356,
+          "singleInitialItemHash": 3636300854,
+          "reusablePlugSetHash": 113,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 4109105378,
+          "singleInitialItemHash": 1128768652,
+          "reusablePlugSetHash": 114,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3471978630,
+          "singleInitialItemHash": 375052469,
+          "reusablePlugSetHash": 115,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 1153797467,
+          "singleInitialItemHash": 4016776972,
+          "reusablePlugSetHash": 116,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 4202091804,
+          "singleInitialItemHash": 3199702642,
+          "reusablePlugSetHash": 117,
+          "defaultVisible": true,
+          "plugSources": 6
+        },
+        {
+          "socketTypeHash": 3187344520,
+          "singleInitialItemHash": 3875863236,
+          "reusablePlugSetHash": 634290851,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 3187344520,
+          "singleInitialItemHash": 3875863236,
+          "reusablePlugSetHash": 634290851,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1602589148,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1602589148,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1602589148,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1602589148,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1602589148,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        },
+        {
+          "socketTypeHash": 1602589148,
+          "singleInitialItemHash": 424005861,
+          "reusablePlugSetHash": 1319395210,
+          "defaultVisible": true,
+          "plugSources": 4
+        }
+      ],
+      "socketCategories": [
+        {
+          "socketCategoryHash": 309722977,
+          "socketIndexes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "socketCategoryHash": 457473665,
+          "socketIndexes": [
+            2
+          ]
+        },
+        {
+          "socketCategoryHash": 2140934067,
+          "socketIndexes": [
+            5,
+            6
+          ]
+        },
+        {
+          "socketCategoryHash": 1313488945,
+          "socketIndexes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ]
+    },
+    "charClass": "Hunter",
+    "traitIds": [
+      "item.subclass.light"
+    ],
+    "element": "Solar"
+  }
+}

@@ -1,0 +1,1122 @@
+{
+  "1223381128": {
+    "hash": "1223381128",
+    "name": "AION Renewal",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2140508055,
+        "name": "Force Converter",
+        "perkDescription": "After a final blow with a Rocket Launcher, Grenade Launcher, or micro-missile, sprint for a short time to gain Speed Booster.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/005db44d00a46515888db51ffd60f1bd.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2140508054,
+        "name": "Reactive Booster",
+        "perkDescription": "Once per activation of Force Converter, sprinting while at critical health, being suspended, or being slowed by a Stasis effect will immediately grant Speed Booster for a short duration.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/609405930d800a057c5e6eef3edac14e.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "894715166": {
+    "hash": "894715166",
+    "name": "AION Adapter",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2840280305,
+        "name": "Force Absorption",
+        "perkDescription": "Final blows with a Rocket Launcher, Grenade Launcher, or micro-missile temporarily decrease incoming area-of-effect damage.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/93c69df9a8c648602b10844524e8a0e6.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2840280304,
+        "name": "Reactive Shock",
+        "perkDescription": "When Force Absorption is active, taking melee damage causes you to emit a disorienting burst once.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/96a637543fc3a60cf55d6b333ad87661.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "239346083": {
+    "hash": "239346083",
+    "name": "Techsec",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1130213040,
+        "name": "Wrecker",
+        "perkDescription": "You deal significantly increased Kinetic damage to combatant shields, overshields, vehicles, and constructs. Constructs include barricades, turrets, Stasis crystals, and other objects created in the field.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/bd2c44c6cb6a7f2a168a90be278aa8c4.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1130213041,
+        "name": "Concussive Rounds",
+        "perkDescription": "Defeating powerful combatants or breaking a combatant shield with Kinetic damage releases a disorienting Kinetic shockwave.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/56a10b99ed0b4b28d33696ec828b29b5.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3252452908": {
+    "hash": "3252452908",
+    "name": "Last Discipline",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2433863523,
+        "name": "Terminal Velocity",
+        "perkDescription": "Final blows with primary ammo weapons grant your primary ammo weapons temporarily increased reload speed.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/6d90a805ee5c1a2a3eafe5b64b29f1ec.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2433863522,
+        "name": "Power Loader",
+        "perkDescription": "Picking up an Orb of Power grants Special ammo progress.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/c918b80d815f1a54755a0b9b8fcbf7ed.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1007956300": {
+    "hash": "1007956300",
+    "name": "Collective Psyche",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1901305283,
+        "name": "Accretion",
+        "perkDescription": "Picking up an ammo brick gives you a stacking bonus to weapon swap and stow speeds until you die.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/e8dc7995d41ec6eb0e68e6b811643a3b.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1901305282,
+        "name": "Doppler Effect",
+        "perkDescription": "Suspend, unravel, and sever effects applied to targets, and radiant and restoration effects applied to you have increased duration.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a96cbdea0b06d28d2780e100ac0ae51f.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1083114430": {
+    "hash": "1083114430",
+    "name": "Bushido",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1964062929,
+        "name": "Iaido",
+        "perkDescription": "Final blows with freshly drawn or reloaded weapons heal you.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/40abb2a18a499cc24222f052fca2a694.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1964062928,
+        "name": "Unfaltering Focus",
+        "perkDescription": "Bow, Shotgun, or Sword final blows temporarily reduce incoming damage. Damaging targets with those weapons extends the effect.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/533277959c64b90c06bdea0a6dbaa723.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3259216565": {
+    "hash": "3259216565",
+    "name": "Twofold Crown",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1025384966,
+        "name": "Crook and Flail",
+        "perkDescription": "Picking up an ammo brick heals you.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/b80634df8d4c10ccd0b3d77f6c03094d.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1025384967,
+        "name": "Gift of Sight",
+        "perkDescription": "Final blows with Primary ammo weapons grant you briefly increased radar resolution.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/d45b0c7e60cb34ef703d20c85e3737a5.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3737690559": {
+    "hash": "3737690559",
+    "name": "Lustrous",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 4048287940,
+        "name": "Photogalvanic",
+        "perkDescription": "Receiving healing temporarily grants your Solar weapons increased flinch resistance, handling, and reload speed.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/3c9918529fb85eb95b151c2461b63b9c.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 4048287941,
+        "name": "Cauterize",
+        "perkDescription": "Rapid Solar final blows heal you.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/fb229a054586415903e6539ea363f63a.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2751989785": {
+    "hash": "2751989785",
+    "name": "Smoke Jumper Set",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3078673682,
+        "name": "Ride Together, Die Together",
+        "perkDescription": "When you pick up an Orb of Power, gain a brief period of rapidly decaying damage reduction.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/e752466e7923c7137927722f38f18550.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3078673683,
+        "name": "Too Old for This",
+        "perkDescription": "Defeating a powerful combatant with a finisher grants you Special ammo progress and replenishes a small amount of health.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a76d27306334a934577ef92a037f2ce0.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2947197258": {
+    "hash": "2947197258",
+    "name": "Disaster Corps Set",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2513809221,
+        "name": "Pleas Heard",
+        "perkDescription": "Reloading an Auto Rifle, Scout Rifle, or Sidearm after a final blow slowly restores health until you reenter combat.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/ff4d0d19141fee88ce61994a3aea8bbc.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2513809220,
+        "name": "Magnificent Duty",
+        "perkDescription": "When you reach critical health or heal an ally at critical health, Auto Rifles, Scout Rifles, and Sidearms gain a period of increased range, stability, and reload speed.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/5dee6c3209d00db6558954aec7fa7219.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2450108908": {
+    "hash": "2450108908",
+    "name": "Wayward Psyche Set",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3376007203,
+        "name": "Special Relativity",
+        "perkDescription": "Picking up ammo reloads stowed Special weapons from reserves.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/daf157f0334a83d1870ef0f325b1c25a.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3376007202,
+        "name": "Superluminal Motion",
+        "perkDescription": "After dealing damage with your Super, health and shields regenerate over time while you are in motion. Additional Super damage refreshes this effect.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/bfaac852d350fb7cabb9a7a06deef4a6.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "305966751": {
+    "hash": "305966751",
+    "name": "Iron Panoply Set",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3157066724,
+        "name": "Vigilant Watch",
+        "perkDescription": "As your health gets lower, your weapons gain increased stability and handling. Weapon final blows while your shields are depleted heal you.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/141304b7b66d2b8fad5b72c4ad29c40f.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3157066725,
+        "name": "Iron Conviction",
+        "perkDescription": "When your shields become broken, you gain increased ammo generation, flinch resistance, and damage resistance against nearby combatants for a short time. Final blows extend this effect.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/729f24f6efeca3f59162885c8eddbaf3.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3734029045": {
+    "hash": "3734029045",
+    "name": "Ferropotent",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3458982982,
+        "name": "Rapid Repair",
+        "perkDescription": "When your shields begin to regenerate, you gain flinch resistance and damage resistance for a short time.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a3ce83264ba9520c563cf6d621c66565.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3458982983,
+        "name": "Built from Scratch",
+        "perkDescription": "While your reserves are low, combatant final blows with weapons provide additional ammo progress based on their ammo type.  Primary ammo weapons boost Special ammo progress, and Special ammo weapons boost Heavy ammo progress.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/354d07625ba9f6806c4062e2711c5f0f.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2258577662": {
+    "hash": "2258577662",
+    "name": "Wild Anthem",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3390457361,
+        "name": "Fanfare",
+        "perkDescription": "Gain increased reload speed for the bottom half of your equipped weapon's magazine.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/403810a27b0b33248f7a876904e1977b.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3390457360,
+        "name": "Suros Harmony",
+        "perkDescription": "Reloading a weapon grants it a bonus to handling and reduces incoming flinch for a short time. Weapons with the SUROS Synergy Origin Trait are granted increased range instead.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/d3959132415be3779f6e2a46dbb531f6.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "4222859846": {
+    "hash": "4222859846",
+    "name": "Sage Protector",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 109046537,
+        "name": "Combat Meditation",
+        "perkDescription": "Sword hits return grenade and class energy. Bonus energy is granted if Blade Focus is active.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/899fc042368ce701ca12f69df23dcc38.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 109046536,
+        "name": "Blade Focus",
+        "perkDescription": "Briefly guard with a Sword to ready Blade Focus. While Blade Focus is readied, hitting a target with your sword increases Sword damage and lunge distance for a moderate duration.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a19540f5e54c76044c91fbac06f697ed.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2391762223": {
+    "hash": "2391762223",
+    "name": "Swordmaster",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3916960436,
+        "name": "Balestra",
+        "perkDescription": "Damaging a target with a Sword, Glaive, or any melee attack exhausts them. \n\nExhausted targets deal reduced outgoing damage.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a29d645f714faf4f59a2a2f5e0cf6f70.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3916960437,
+        "name": "Stesso Tempo",
+        "perkDescription": "Blocking attacks with a Sword or Glaive grants a short period of damage resistance against targets when you next drop your guard.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/837bdc2b437d0ed6da5d665b59af7ebc.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2132906400": {
+    "hash": "2132906400",
+    "name": "New Demotic",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3160370591,
+        "name": "Paroli",
+        "perkDescription": "Primary ammo weapons gain a bonus to flinch resistance after sliding.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/d4ce701db7e340f651fc7683fa615599.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3160370590,
+        "name": "Martingale",
+        "perkDescription": "Your weapons gain a temporary increase to handling and aim-down-sights speed when an ally is defeated or you revive an ally.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/8702ce0687c6933b63075a7456620954.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2839368623": {
+    "hash": "2839368623",
+    "name": "Shrewd Survivor",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 219133236,
+        "name": "Reflex Action",
+        "perkDescription": "Swapping to a Heat weapon, Submachine Gun, or Hand Cannon grants a short period of increased handling and accuracy. This effect is extended by dealing damage with that weapon.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/7f09f6e0067a733d41e745781bc402a9.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 219133237,
+        "name": "Hotshot",
+        "perkDescription": "Dealing final blows while Reflex Action is active grants a bonus to weapon stat and increases stability, reload, and aim assist for Heat weapons, Submachine Guns, and Hand Cannons for a moderate duration.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/04b973a7cfccbd68319667558dcbe82c.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2151917545": {
+    "hash": "2151917545",
+    "name": "Thriving Survivor",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 681117218,
+        "name": "Opening Act",
+        "perkDescription": "Final blows with grenades grant Heat weapons bonus stability and vent speed and grant Primary ammo weapons bonus stability and reload speed.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/9763eb72bc446b9d9f1b2c2b5efca82d.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 681117219,
+        "name": "Room Clearing",
+        "perkDescription": "Multiple final blows with Heat weapons or Primary ammo weapons grant bonuses to weapon and grenade stats and increased ammo generation for Heat weapons and Primary ammo weapons.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/319e1b357fb1e2b7108f489f792c31ed.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "499993704": {
+    "hash": "499993704",
+    "name": "Luminopotent",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2769443639,
+        "name": "Ionic Overclock",
+        "perkDescription": "While amplified, your Fusion Rifles, Linear Fusion Rifles, and Heat weapons gain increased handling, reload, and vent speeds.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/6999410ff04b4144a07c39fbca5ea831.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2769443638,
+        "name": "Shock and Clear",
+        "perkDescription": "Final blows with Jolt or against jolted combatants create Ionic Traces.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/bdd6424d0b5dbee52505d969653c69e0.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "50540439": {
+    "hash": "50540439",
+    "name": "Triumphal Anthem",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 4261390988,
+        "name": "Scoot to Loot",
+        "perkDescription": "Sliding collects nearby ammo and temporarily grants enhanced reload speed and handling to your weapons.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/cac950e06b8de21fafa8aca1ba217a4c.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 4261390989,
+        "name": "Shoot to Scoot",
+        "perkDescription": "Dealing damage with your weapons temporarily grants enhanced sliding. Sliding provides damage resistance.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/69c0437e7a2926aeb72b0395f4b88beb.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3656317458": {
+    "hash": "3656317458",
+    "name": "Flain",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 754620349,
+        "name": "Sinew Stitching",
+        "perkDescription": "Taking damage from combatants sometimes spawns a Threadling.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/c1e6c0367ad681dada7bb3f4f2affd04.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 754620348,
+        "name": "Knit Together",
+        "perkDescription": "For a short time after your shields break, your next several Threadling hits restore health.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/4b3cbd3ca5f5ffa0b6d484f139d1c006.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3639539903": {
+    "hash": "3639539903",
+    "name": "Spacewalk",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 627214276,
+        "name": "Augmented Armaments",
+        "perkDescription": "Primary ammo weapons deal increased damage to disoriented combatants.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/c69c2f408beb711a0529712a53abe120.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 627214277,
+        "name": "Augmented Explosives",
+        "perkDescription": "Your grenade abilities release an additional disorienting pulse shortly after detonating.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/fe4bf02ec75185ba071c0a30b53f8037.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1658353742": {
+    "hash": "1658353742",
+    "name": "Dark Age",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3599123169,
+        "name": "Taking Initiative",
+        "perkDescription": "Hitting combatants with melee attacks or Sword strikes grants a stack of Initiative, giving bonus handling and reload. Stacks decay slowly over time.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/5be6f5f0e14a37f1efe37644f37faa15.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3599123168,
+        "name": "Healing Initiative",
+        "perkDescription": "While you have Initiative, using your class ability creates a stationary healing aura. The aura gains increased healing based on the number of Initiative stacks.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/0273d18ef76b07eadc49e9ca2d131e73.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1624798568": {
+    "hash": "1624798568",
+    "name": "Taken King",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1836665911,
+        "name": "The Ceremony",
+        "perkDescription": "Finishing combatants or reviving allies initiates a Lucent Hive ritual. While the ritual is active, gain increased Super stat.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/3e8ebec7f43a113e821dc29827165316.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1836665910,
+        "name": "Lucent Swarm",
+        "perkDescription": "Collecting Orbs of Power extends the Ceremony. While it is active, ability final blows occasionally spawn allied Arc moths.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a0480d71e1dea57fbea74496dd31e13a.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1523985791": {
+    "hash": "1523985791",
+    "name": "TM Custom",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 446332292,
+        "name": "Old Martian Diplomacy",
+        "perkDescription": "Stowing a weapon after defeating a powerful combatant or a Guardian heals you a small amount and disorients nearby combatants.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/07bba1454e20ee9358ed61c4f20b7c34.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 446332293,
+        "name": "High Noon",
+        "perkDescription": "Freshly drawn weapons deal increased precision damage to combatants for a short period. Weapons with the Tex Balanced Stock Origin Trait equipped or Exotics manufactured by the Tex Mechanica Foundry gain further increased benefits.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/14b1ff03aa7eab854f220fdd32adf0ec.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1557540933": {
+    "hash": "1557540933",
+    "name": "Deep Explorer",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1875006806,
+        "name": "Built Bitter",
+        "perkDescription": "Taking damage increases the reload speed of your equipped weapon until it is stowed. Taking more damage increases the effect.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/3384d936001688833ae09fa92cb280f5.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1875006807,
+        "name": "Bittersweet",
+        "perkDescription": "When you stow a weapon, restore health based on the number of Built Bitter stacks lost.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/2160d0b4551f285830bdf344f47a8a9d.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1507061013": {
+    "hash": "1507061013",
+    "name": "Yearning Echo",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2162040230,
+        "name": "Untold Greed",
+        "perkDescription": "Picking up ammo, Orbs of Power, Elemental pickups, or destroying a Strand Tangle grants stacks of Untold Greed, slightly reducing damage taken and providing reload speed to equipped weapons. When your shields are broken, some stacks are lost.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/e5e74b200fa0ca8c0a9edc63e62a4559.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2162040231,
+        "name": "Overflowing Coffers",
+        "perkDescription": "While you have stacks of Untold Greed, Orbs of Power and Elemental pickups provide more of their respective energy, and Strand Tangles deal increased damage. When your shields are broken, all stacks are converted into a fountain of Orbs of Power.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/9589b92d6863ebf09f776aad4dfbc2e3.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1490136267": {
+    "hash": "1490136267",
+    "name": "CODA",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1814176200,
+        "name": "Between Poles",
+        "perkDescription": "Final blows with Light weapons grants stacks of Light Polarity, which grants Grenade stat. Final blows with Darkness or Kinetic weapons grants stacks of Dark Polarity, which grants stacks of Melee stat.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a0241a2cdaf39e14af7605dd460756d0.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1814176201,
+        "name": "So Very Thin",
+        "perkDescription": "Final blows with Light weapons grants additional grenade energy. Final blows with Dark or Kinetic weapons grants additional melee energy. Rapid final blows that alternate between Light and Darkness grant a short period of damage resistance.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/e9dc45fc2e1f56748d5ddb414ebdf99d.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1439803506": {
+    "hash": "1439803506",
+    "name": "Apostate's Blade",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 696050397,
+        "name": "Regenerative Threshold",
+        "perkDescription": "Performing a finisher stores power. The next time your shields are broken, consume stored power to immediately heal and start health regeneration.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/37ff5b490115feacf7606fa7c7d62105.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 696050396,
+        "name": "Melee Conduction",
+        "perkDescription": "While you have Radiant, Restoration, or Cure, your melee hits release a burst that will scorch the target.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a4ce3890548fa343ab97556f6ef1bac7.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1339137760": {
+    "hash": "1339137760",
+    "name": "Techeun's Regalia",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2458353887,
+        "name": "Queensfoil Rush",
+        "perkDescription": "Gain a powerful overshield while performing your finisher. When you finish a target, release a slowing burst around you.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a57b51a297cda79eacb02322ada388ea.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2458353886,
+        "name": "Truth to Power",
+        "perkDescription": "Gain increasing damage resistance when you deal damage or land final blows. Finishers grant accelerated progress. At max stacks, the recharge rate of your abilities is also increased.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/4449e9beedbec136551849b5a8802b35.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2032049849": {
+    "hash": "2032049849",
+    "name": "Circuit",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2657416818,
+        "name": "Revving Up",
+        "perkDescription": "Fast movement builds up a charge that gradually increases your health regeneration speed. Once you are Fully Revved, sprinting grants Speed Booster.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/2bd8232d3bda3c410729c244956b2934.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2657416819,
+        "name": "Dielectric Drift",
+        "perkDescription": "Sliding while Speed Booster is active jolts combatants in front of you.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/014d2db087e06c17703e3f48f1135e5d.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "673904900": {
+    "hash": "673904900",
+    "name": "Great Hunt",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3657900811,
+        "name": "Taken Barrier",
+        "perkDescription": "Grenade final blows temporarily reduce incoming damage.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/28dc5b70823b878a972034c6eb05e666.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3657900810,
+        "name": "Taken Armaments",
+        "perkDescription": "Grenade final blows grant additional Heavy ammo progress.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/738273f563c6cc73bfde01357418adde.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "640349758": {
+    "hash": "640349758",
+    "name": "Kentarch 3",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 4110483281,
+        "name": "Network Admin",
+        "perkDescription": "Being near allies creates a relay network that gives the wearer improved handling and reload speed. \n\nBeing near other allied Network Admins additionally grants the wearer a bonus to Health stat.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/aae858b35a0768b44be303cf9ae15d52.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 4110483280,
+        "name": "Network Upload",
+        "perkDescription": "Weapon final blows grant the wearer and nearby allies melee energy.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/67080f11f3487aa8e442609becfdae93.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "774717709": {
+    "hash": "774717709",
+    "name": "Legacy's Oath",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2270091246,
+        "name": "Augmented Servos",
+        "perkDescription": "Powered melees release an additional disorienting pulse when used to defeat a target.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/dc92ca1a287bff0693fe128baff9df35.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2270091247,
+        "name": "God-like Judgment",
+        "perkDescription": "When your shields are broken by a combatant, or upon casting your Super, release a swarm of heat seeking micro-missiles.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a33ab7d65a4aa836142ee869b0423c66.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "741162535": {
+    "hash": "741162535",
+    "name": "Atheon's Memory",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 17188252,
+        "name": "Radiolaria Breach",
+        "perkDescription": "After picking up an Orb of Power, the next time your shields are broken, gain a bonus to Health stat for a short duration and release a burst of radiolaria around you.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/0a0c002d2eb7c7687fe93c02143d9c23.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 17188253,
+        "name": "Collective Power",
+        "perkDescription": "While you have a subclass buff, dealing sustained damage creates an Orb of Power.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/19fd2268026b9e381de699a3dc941741.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "305091568": {
+    "hash": "305091568",
+    "name": "Oryx's Memory",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 846599599,
+        "name": "Iron Sharpens Iron",
+        "perkDescription": "Final blows on Guardians and powerful combatants generate additional ammo progress.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/c4d21817ea6e205ff95639019a38e7e2.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 846599598,
+        "name": "Ascendant Escape",
+        "perkDescription": "After a final blow on a powerful combatant, the next time your shields are broken, you become invisible.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/e1e76d3824a761cf038e1f9d9be7c84f.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2586994783": {
+    "hash": "2586994783",
+    "name": "Nezarec's Nightmare",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1567556260,
+        "name": "Bad Dreams",
+        "perkDescription": "Final blows versus subclass-debuffed targets have an escalating chance to spawn an Orb of Power.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/353f44c5dc35f53b9cbdc5e7275e79f5.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1567556261,
+        "name": "Dream-Devourer",
+        "perkDescription": "Performing a finisher versus a powerful combatant grants Devour. While you have Devour, gain damage resistance versus combatants.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/7c6a982de9632a3a04dbe1c9a51fc150.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2620550053": {
+    "hash": "2620550053",
+    "name": "Crota's Memory",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3872620150,
+        "name": "Cursed Fist",
+        "perkDescription": "Melee final blows trigger a Cursed Thrall explosion.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/161a3720af72721392e459e6a66f087d.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3872620151,
+        "name": "Power of the Son",
+        "perkDescription": "Being in combat for a duration grants progressively more flinch resistance and damage resistance versus combatants.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/63000cbeef61981c3efe32992739789b.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2687807560": {
+    "hash": "2687807560",
+    "name": "Promised",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 705026903,
+        "name": "Stable Resonance",
+        "perkDescription": "Defeating a powerful combatant generates Stable Resonance, which grants damage resistance and increased weapon damage for the duration.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/f49ca4f83e2c2f9bc8b8fb331ccf58d7.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 705026902,
+        "name": "Resonance Redirection",
+        "perkDescription": "While you have Stable Resonance, continued weapon damage occasionally generates a resonance burst that damages and exhausts targets.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/e4510ff158987fee7ac3953391f6435e.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "338646742": {
+    "hash": "338646742",
+    "name": "Resonant Fury",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1010623577,
+        "name": "Resonant Plating",
+        "perkDescription": "Your health begins regenerating immediately after taking melee damage from a powerful combatant.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/f7405da4c3f5e18e0a29f4ceca3aa8b0.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1010623576,
+        "name": "Siphoning Touch",
+        "perkDescription": "Gain stacks of Siphoning Touch for weapon or Glaive melee hits. Switching weapons heals you and consumes all stacks.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/4678088483fa5ea38f509a02e24faf21.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2461275960": {
+    "hash": "2461275960",
+    "name": "Eutechnology",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 4083289735,
+        "name": "Gift of the Ley Lines",
+        "perkDescription": "Rapidly defeating combatants with Void energy spawns a Void breach.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/a304f92290458d486ab19fcd1ef6f6ff.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 4083289734,
+        "name": "Techeun's Foresight",
+        "perkDescription": "After collecting a Void breach, your next final blow with a Void weapon triggers a detonation. The detonation is more powerful if it is triggered quickly after collecting a Void breach.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/7a80a0a2d1abacd0ce64e71bafff34f3.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "742845781": {
+    "hash": "742845781",
+    "name": "Cruel Electrum",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2562518502,
+        "name": "Primary Survivor",
+        "perkDescription": "When an ally is defeated, Primary ammo weapons gain increased handling, reload speed, target acquisition, and reduced flinch. Bonus increases when multiple allies are dead at the same time or when you are running solo.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/c1f98cc31a51f865ca062a684442964a.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2562518503,
+        "name": "Primary Phantom",
+        "perkDescription": "Final blows with Primary ammo weapons remove you from radar for a short time. Drawing a weapon that does not use Primary ammo will immediately end this effect.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/72b47646330904d1a46cf54a779be28a.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1777208707": {
+    "hash": "1777208707",
+    "name": "Iron Battalion Set",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3575602896,
+        "name": "Primary Honing",
+        "perkDescription": "Increases handling and reload speed for Primary ammo weapons. Primary ammo weapons gain increased damage against non-boss combatants based on your Weapons stat.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/c3cc01210cee6c18152563202b5ac57d.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3575602897,
+        "name": "Supercyclical",
+        "perkDescription": "Final blows while your Super is active refund Super energy when it ends.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/d8a71c6aa15a6a1d14ab7fc8e13e203c.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2618364783": {
+    "hash": "2618364783",
+    "name": "Per Audacia",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3091068916,
+        "name": "Primary Chain",
+        "perkDescription": "Primary ammo weapon final blows grant a stacking bonus to mobility and Primary weapon range and handling until you are defeated.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/495764dd5f65e2232fb197614a6242bc.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3091068917,
+        "name": "Sublime Transit",
+        "perkDescription": "Increases mobility and grants enhanced sprint speed and slide distance.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/6c68d32bd7dd8a61b059c44ac1218272.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1790308978": {
+    "hash": "1790308978",
+    "name": "Cyberserpent Null",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3432283357,
+        "name": "Adrenal Rush",
+        "perkDescription": "Sprinting for a short time grants a period of improved reload speed and handling. Final blows extend this period.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/3b8036591bab64740db750efb05aab31.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3432283356,
+        "name": "Bountiful Munitions",
+        "perkDescription": "While Adrenal Rush is active, final blows grant Special Ammo progress. Final Blows against powerful combatants, Guardians, and Taken grants additional progress.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/c23f5d490b3084d0f051395dc16bdb42.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "222121557": {
+    "hash": "222121557",
+    "name": "Seventh Seraph",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 4287944422,
+        "name": "Rasputin's Wrath",
+        "perkDescription": "Final blows with area-of-effect damage, Solar abilities, Seventh Seraph weapons, or IKELOS weapons grant Warmind Charges. Each stack of Warmind Charge increases your Weapons and Grenade stats.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/18b5bd384a62c9f960e1f46907987f48.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 4287944423,
+        "name": "Rasputin's Reprisal",
+        "perkDescription": "While you have Warmind Charges, defeating powerful combatants, destroying a construct, or destroying a Tangle releases a Solar detonation that damages combatants and heals allies.\n\nConstructs include barricades, turrets, Stasis crystals, and other objects created in the field.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/991a1596482cd22ca393a748c2aa412c.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2386215115": {
+    "hash": "2386215115",
+    "name": "Pantheos Resplendent",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 2318783944,
+        "name": "Well Prepared",
+        "perkDescription": "Picking up ammo grants Armor Charge. Grants a bonus to Health stat per Armor Charge you have.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/51c4b62173e6e870551d99d256d25d86.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 2318783945,
+        "name": "Down the Line",
+        "perkDescription": "Sustained damage on minibosses, Champions, and bosses increases weapon damage versus base and powerful combatants. Weapon final blows consume one stack each.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/f0a2eb584d440e878d7fe9e9c7884e3b.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2554324129": {
+    "hash": "2554324129",
+    "name": "Wildwood",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 4160419914,
+        "name": "Watchtower",
+        "perkDescription": "Precision final blows while aiming down sights grant damage resistance until you stop aiming down sights.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/4e2aece7b23761d572a716fa737c5d2d.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 4160419915,
+        "name": "Field Expertise",
+        "perkDescription": "Precision final blows with any weapon grant a stacking bonus to reload speed, target acquisition, and weapon damage against non-boss combatants for a short duration.\n\nWeapon final blows with non-precision direct hits end this effect early.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/5311ea5b6731e151e9778deac078710c.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3120219904": {
+    "hash": "3120219904",
+    "name": "Exodus Down",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1076851135,
+        "name": "Emergency Electromagnet",
+        "perkDescription": "When your shields become broken, collect all nearby Orbs of Power and ammo bricks.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/8b11633d8026079a0841ca92c211a713.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1076851134,
+        "name": "Repurposed Charge",
+        "perkDescription": "Whenever you gain, lose, or spend an Armor Charge, heal and gain damage reduction for a short time.\n\nThis effect scales with the amount of Armor Charge gained, lost, or spent.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/98a8854b4477cb8a722024a7015dcf89.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "428813981": {
+    "hash": "428813981",
+    "name": "Reverie Dawn",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1246205950,
+        "name": "A Wish for Protection",
+        "perkDescription": "Taking significant damage in a short time generates a Protective Wish that makes it harder for combatants to hit you, and grants increased reload speed and flinch resistance.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/f61c57bf97db2da78a537c7933e45b94.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1246205951,
+        "name": "A Wish Fulfilled",
+        "perkDescription": "When the Protective Wish expires, it cures you. \n\nRapid final blows prematurely end the Protective Wish.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/6882c7bf6dbcd564e9ef00a41818c9fd.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2250480800": {
+    "hash": "2250480800",
+    "name": "Dreambane",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3449901215,
+        "name": "Nightmarish Power",
+        "perkDescription": "Final blows to a challenging combatant or higher-ranked target grant Unstable Essence. When you have Unstable Essence, you receive grenade and melee stat bonuses.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/589460862ff8d80364db3a9b6205e071.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3449901214,
+        "name": "Nightmarish Resilience",
+        "perkDescription": "When you have Unstable Essence, rapid weapon damage or final blows heal you and begin health regeneration.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/8d927506b9d4310414df97a1da85210e.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3090557911": {
+    "hash": "3090557911",
+    "name": "Crystocrene",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 793561548,
+        "name": "Resupply",
+        "perkDescription": "After being out of combat for a moderate duration, your next final blow grants additional ammo progress and creates an Orb of Power.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/bd176b87f172c0affdec5a8e10e5ae8c.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 793561549,
+        "name": "From the Storm",
+        "perkDescription": "After being out of combat for a moderate duration, slowly gain Frost Armor until you reenter combat.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/046a5d59d06ab9cfb7488faacdc4b6eb.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "2481896422": {
+    "hash": "2481896422",
+    "name": "Veritas",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 1302582377,
+        "name": "Lucent Transmutation",
+        "perkDescription": "Performing a finisher on a combatant, or landing successive powered melee final blows, generates an Elemental pickup based on your Light subclass.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/94133689fdafe43c92af39875e4b35cf.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 1302582376,
+        "name": "Lucent Tithes",
+        "perkDescription": "Performing a finisher on powerful combatants heals you and generates loyal Void moths.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/9ca2d24cfb79d72ec09ddd3c78a19e75.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "3283637820": {
+    "hash": "3283637820",
+    "name": "Thunderhead",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 4275454259,
+        "name": "License to Thrill",
+        "perkDescription": "Activating your grenade or the Nanotech Tracer Missiles Origin Trait provides stacking resistance to incoming damage at point-blank range.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/41f83623b1974e71b4e008b6baeb6269.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 4275454258,
+        "name": "Lethal Weave",
+        "perkDescription": "Defeating an unraveled combatant grants grenade ability energy. If you have max grenade energy, you are granted Special ammo meter progress instead.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/39749db8864643f96bb20296732d4e8d.png",
+        "requiredSetCount": 4
+      }
+    ]
+  },
+  "1625535837": {
+    "hash": "1625535837",
+    "name": "First Ascent",
+    "setPerks": [
+      {
+        "sandboxPerkHash": 3004427454,
+        "name": "Stack 'Em Up",
+        "perkDescription": "Defeating targets with unique elemental damage grants a stacking bonus to Transcendence energy gains while Transcendence is inactive.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/0d086c527eb8a84290ceea3d2069bf69.png",
+        "requiredSetCount": 2
+      },
+      {
+        "sandboxPerkHash": 3004427455,
+        "name": "Burn 'Em Down",
+        "perkDescription": "While Transcendence is active, using your grenade ability consumes all stacks of Stack 'Em Up to grant an escalating amount of grenade energy.",
+        "icon": "https://bungie.net/common/destiny2_content/icons/65a58789810d5617352736c279d51edb.png",
+        "requiredSetCount": 4
+      }
+    ]
+  }
+}

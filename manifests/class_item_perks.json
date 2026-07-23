@@ -1,0 +1,2790 @@
+{
+  "3369947366": {
+    "hash": 3369947366,
+    "displayProperties": {
+      "name": "Spirit of the Assassin",
+      "description": "Finishers and powered melee final blows grant invisibility.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/aa9e98d7f5aaffb28a0aeeec9b436704.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3369947367": {
+    "hash": 3369947367,
+    "displayProperties": {
+      "name": "Spirit of Inmost Light",
+      "description": "Using an ability empowers the other two abilities, granting them improved energy regeneration.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/54ad649c704f5e130fa31e90b3769aaf.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3369947364": {
+    "hash": 3369947364,
+    "displayProperties": {
+      "name": "Spirit of the Ophidian",
+      "description": "Weapons ready very quickly.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/d50ec5f4f99aee5bb64ce527971dd62c.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3369947365": {
+    "hash": 3369947365,
+    "displayProperties": {
+      "name": "Spirit of the Star-Eater",
+      "description": "While your Super energy is full, picking up an Orb of Power overcharges your Super, granting it bonus damage.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/4e6e90c1e3cc4317d4a7d66799de4793.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3369947362": {
+    "hash": 3369947362,
+    "displayProperties": {
+      "name": "Spirit of Synthoceps",
+      "description": "Improves melee damage when you're surrounded.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/8c9b5c53343c0177c8e387829c1691ca.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3369947363": {
+    "hash": 3369947363,
+    "displayProperties": {
+      "name": "Spirit of Verity",
+      "description": "Weapon final blows with a damage type matching your grenade grant a stacking grenade damage bonus and improved grenade regeneration.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/1853d13b41749609c9d3616a3ac2c236.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741131": {
+    "hash": 3754741131,
+    "displayProperties": {
+      "name": "Spirit of the Dragon",
+      "description": "Your weapons ready quicker and are more stable. Using your class ability temporarily increases this benefit and reloads your equipped weapon from reserves.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/0ea9c2237d82d4205c49a97d07ee4edd.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741130": {
+    "hash": 3754741130,
+    "displayProperties": {
+      "name": "Spirit of Galanor",
+      "description": "Hits and final blows with your Super will return Super energy after it ends.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/2fa509f618eedaac2d28e90ac8fefa2a.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741129": {
+    "hash": 3754741129,
+    "displayProperties": {
+      "name": "Spirit of the Foetracer",
+      "description": "Damaging a powerful combatant or Guardian with an ability grants you a temporary damage bonus for weapons matching that ability's element.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/66d3a29404fb49dcb4002f5d8446804b.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741128": {
+    "hash": 3754741128,
+    "displayProperties": {
+      "name": "Spirit of Caliban",
+      "description": "Powered melee final blows trigger an ignition.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/64ef3bad0d3cd281d839501767f0f5b6.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741135": {
+    "hash": 3754741135,
+    "displayProperties": {
+      "name": "Spirit of Renewal",
+      "description": "Allies inside the Duskfield grenade field gain Frost Armor and targets inside the field deal reduced damage.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/eaf443bc9eb348731b7f01ce74b0d05c.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741134": {
+    "hash": 3754741134,
+    "displayProperties": {
+      "name": "Spirit of the Cyrtarachne",
+      "description": "Gain Woven Mail when you use your grenade.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/5e4b3faa0bd0182f86c7165a0dd21302.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741133": {
+    "hash": 3754741133,
+    "displayProperties": {
+      "name": "Spirit of the Gyrfalcon",
+      "description": "Your Void weapons gain volatile rounds after you emerge from being invisible.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/80359649683ced22ec76518d026b7220.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741132": {
+    "hash": 3754741132,
+    "displayProperties": {
+      "name": "Spirit of the Liar",
+      "description": "Dealing damage with a powered melee or being hit by a melee attack will allow you to follow up with an extremely powerful Arc melee counterpunch.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/d07f46831663626aaf1f35d9acf93a3f.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741123": {
+    "hash": 3754741123,
+    "displayProperties": {
+      "name": "Spirit of the Wormhusk",
+      "description": "Activating your class ability grants Cure. Rapidly defeating combatants grants Burning Souls that increase the potency of healing when using Dodge and spread the healing to nearby allies.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/b7b549adb80ca7f9123515ae74c5d6d4.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3754741122": {
+    "hash": 3754741122,
+    "displayProperties": {
+      "name": "Spirit of the Coyote",
+      "description": "Gain an additional class ability charge.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/2c0bd679b0754d7d1fb9075f0002d66c.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264273": {
+    "hash": 2457264273,
+    "displayProperties": {
+      "name": "Spirit of Severance",
+      "description": "Powered melee or finisher final blows unleash a damaging explosion.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/c71c6d2ae6702f88218d34eea2ee8d25.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264272": {
+    "hash": 2457264272,
+    "displayProperties": {
+      "name": "Spirit of Hoarfrost",
+      "description": "Your Barricade becomes a wall of Stasis crystals that slows nearby targets when created. Activating Thruster creates Stasis crystals.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/d3fb9089d8b5e3b87e4dab641cdf4bd3.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264275": {
+    "hash": 2457264275,
+    "displayProperties": {
+      "name": "Spirit of the Eternal Warrior",
+      "description": "Gain bonus damage for weapons matching your Super's element when your Super ends.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/ac1e2a895a2cacaa0a7479f61a070d2e.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264274": {
+    "hash": 2457264274,
+    "displayProperties": {
+      "name": "Spirit of the Abeyant",
+      "description": "Improves Drengr's Lash. Drengr's Lash projectiles track targets more aggressively and travel farther.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/b3225641b07fb40e18b96e45f7201be9.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264277": {
+    "hash": 2457264277,
+    "displayProperties": {
+      "name": "Spirit of the Bear",
+      "description": "Move faster while guarding with the Unbreakable shield. Damage blocked with Unbreakable is converted to grenade energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/5f95a47786ee236c02e021d28ecd56d0.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264276": {
+    "hash": 2457264276,
+    "displayProperties": {
+      "name": "Spirit of Contact",
+      "description": "Damaging a target with a powered melee causes all nearby targets to suffer lightning strikes and become jolted.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/5d572f74b290d434e7df38d2922ffd8a.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264279": {
+    "hash": 2457264279,
+    "displayProperties": {
+      "name": "Spirit of Scars",
+      "description": "Final blows with weapons that have a damage type matching your Super's element create a burst of healing around you that grants allies restoration.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/5f8b1b9cb9a297ebc5b4c55c8bd882d5.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264278": {
+    "hash": 2457264278,
+    "displayProperties": {
+      "name": "Spirit of the Horn",
+      "description": "Your class ability unleashes waves of Solar energy that damage and scorch nearby targets. Combatants damaged and Guardians defeated by these waves are enveloped in a Sunspot.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/e54a2170dfb160ce1e2c7adf6b74d146.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264281": {
+    "hash": 2457264281,
+    "displayProperties": {
+      "name": "Spirit of Alpha Lupi",
+      "description": "Creates a healing pulse when your class ability is activated. Healing allies provides class ability energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/7e5ff1cdd89a3a9a7444d9ef78c27d15.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "2457264280": {
+    "hash": 2457264280,
+    "displayProperties": {
+      "name": "Spirit of the Armamentarium",
+      "description": "Gain an additional grenade charge.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/312f0baf27192be616902b13660849ac.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253858": {
+    "hash": 3181253858,
+    "displayProperties": {
+      "name": "Spirit of the Stag",
+      "description": "Your Rift provides damage reduction to allies standing in it.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/c15d706b959f1b40a26207d3f1cd6e4d.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253861": {
+    "hash": 3181253861,
+    "displayProperties": {
+      "name": "Spirit of the Filaments",
+      "description": "Casting an Empowering Rift will grant you Devour. Defeating a target while Devour is active grants class ability energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/db35c25bdf93fdb15df2b4e7b1d38e2d.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253862": {
+    "hash": 3181253862,
+    "displayProperties": {
+      "name": "Spirit of the Necrotic",
+      "description": "Damaging a target with a melee inflicts potent corruption. Defeating targets afflicted by corruption spreads the condition.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/e6e4142d9f157ef2348f66aa9c2d67e8.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253863": {
+    "hash": 3181253863,
+    "displayProperties": {
+      "name": "Spirit of Osmiomancy",
+      "description": "Your grenades recharge quicker on hits. The seeker spawned from Coldsnap grenades travels farther.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/b245bb5e082f34d175158b68a1c9b90a.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253856": {
+    "hash": 3181253856,
+    "displayProperties": {
+      "name": "Spirit of Apotheosis",
+      "description": "Temporarily gain greatly increased melee and grenade regeneration after your Super ends.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/55caef25f1956ddf72f71d672acdae39.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253857": {
+    "hash": 3181253857,
+    "displayProperties": {
+      "name": "Spirit of Vesper",
+      "description": "Rifts periodically release Arc shockwaves.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/5c01e57ad9f424770a174303f0019914.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253860": {
+    "hash": 3181253860,
+    "displayProperties": {
+      "name": "Spirit of Harmony",
+      "description": "Final blows with weapons that have a damage type matching your Super's element grant you Super energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/33a14f37a766fb822ec860b658e853a0.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253859": {
+    "hash": 3181253859,
+    "displayProperties": {
+      "name": "Spirit of Starfire",
+      "description": "Grenades recharge from empowered weapon damage, with empowered weapon final blows granting more energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/1c015344d0751164863853b0a0aa30dd.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253868": {
+    "hash": 3181253868,
+    "displayProperties": {
+      "name": "Spirit of the Swarm",
+      "description": "Destroying a Tangle spawns Threadlings.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/d8b2612816c8fe27f3781e63788cf5ed.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "3181253869": {
+    "hash": 3181253869,
+    "displayProperties": {
+      "name": "Spirit of the Claw",
+      "description": "Gain an additional melee charge.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/1c41835fa4f86c1e80e1319b7d10da4f.jpg"
+    },
+    "inventory": {
+      "bucketTypeHash": 2422292810,
+      "tierTypeHash": 3340296461,
+      "tierTypeName": "Common",
+      "tierType": 2,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "3109687656"
+    ],
+    "itemType": 20,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0
+  },
+  "302488496": {
+    "hash": 302488496,
+    "displayProperties": {
+      "name": "Spirit of Competition",
+      "description": "During Guardian Games 2020, completing Crucible matches, Gambit matches, Vanguard strikes, patrols, adventures, and forges grants additional Glimmer and XP rewards.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/b1b53c6b42b83236e65309a60a32e310.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "951413738": {
+    "hash": 951413738,
+    "displayProperties": {
+      "name": "Spirit of the Season",
+      "description": "Grants a chance to generate Dawning Spirit whenever you find a Dawning ingredient.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/53a8302e09536cb8a0c11885601851d8.png"
+    },
+    "itemTypeDisplayName": "Ship Mod",
+    "itemTypeAndTierDisplayName": "Legendary Ship Mod",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 4008398120,
+      "tierTypeName": "Legendary",
+      "tierType": 5,
+      "isInstanceItem": false
+    },
+    "itemCategoryHashes": [
+      "59"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "v300.vehicles.mod.function",
+      "plugCategoryHash": 3536704835,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "2593587862": {
+    "hash": 2593587862,
+    "displayProperties": {
+      "name": "Spirit of the Warmind",
+      "icon": "https://bungie.net/common/destiny2_content/icons/5623dc91d89a9ccf8c16a69775c937e1.jpg"
+    },
+    "itemTypeDisplayName": "Ship",
+    "itemTypeAndTierDisplayName": "Exotic Ship",
+    "inventory": {
+      "bucketTypeHash": 284967655,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": true
+    },
+    "equippingBlock": {
+      "uniqueLabelHash": 0,
+      "equipmentSlotTypeHash": 284967655,
+      "attributes": 0,
+      "ammoType": 0
+    },
+    "preview": {
+      "screenStyle": "screen_style_sockets"
+    },
+    "sockets": {
+      "socketEntries": [
+        {
+          "socketTypeHash": 1255484163,
+          "singleInitialItemHash": 4248210736,
+          "reusablePlugSetHash": 236342179,
+          "defaultVisible": true,
+          "plugSources": 7,
+          "reusablePlugItems": [
+            {
+              "plugItemHash": 1545278261
+            },
+            {
+              "plugItemHash": 3387636832
+            },
+            {
+              "plugItemHash": 3387636833
+            },
+            {
+              "plugItemHash": 412487139
+            },
+            {
+              "plugItemHash": 412487138
+            },
+            {
+              "plugItemHash": 3515978520
+            },
+            {
+              "plugItemHash": 2117628185
+            },
+            {
+              "plugItemHash": 1559478790
+            },
+            {
+              "plugItemHash": 3510413604
+            },
+            {
+              "plugItemHash": 195075337
+            },
+            {
+              "plugItemHash": 195075336
+            },
+            {
+              "plugItemHash": 195075339
+            },
+            {
+              "plugItemHash": 2068046139
+            },
+            {
+              "plugItemHash": 2068046138
+            },
+            {
+              "plugItemHash": 2068046137
+            },
+            {
+              "plugItemHash": 2068046136
+            },
+            {
+              "plugItemHash": 2068046143
+            }
+          ]
+        },
+        {
+          "socketTypeHash": 199731397,
+          "singleInitialItemHash": 1390587439,
+          "reusablePlugSetHash": 3723400057,
+          "defaultVisible": true,
+          "plugSources": 13
+        }
+      ]
+    },
+    "itemCategoryHashes": [
+      "42",
+      "52"
+    ],
+    "itemType": 21,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": true,
+    "defaultDamageType": 0,
+    "traitIds": [
+      "item.ship"
+    ],
+    "traitHashes": [
+      "3607584152"
+    ]
+  },
+  "3751917999": {
+    "hash": 3751917999,
+    "displayProperties": {
+      "name": "Spirit of the Dragon",
+      "description": "Your weapons ready quicker and are more stable. Using your class ability temporarily increases this benefit and reloads your equipped weapon from reserves.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/100cd6b35af5fb3f979807d68ad57380.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        1943323491,
+        2996146975
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2644022227,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917998": {
+    "hash": 3751917998,
+    "displayProperties": {
+      "name": "Spirit of Galanor",
+      "description": "Hits and final blows with your Super will return Super energy after it ends.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/467f441de1568bd8c6ad437a76671b5f.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        144602215,
+        4244567218
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2644022226,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917997": {
+    "hash": 3751917997,
+    "displayProperties": {
+      "name": "Spirit of the Foetracer",
+      "description": "Damaging a powerful combatant or Guardian with an ability grants you a temporary damage bonus for weapons matching that ability's element.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/c156b7906217d8b61e7573f9c9cc2dc7.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        2996146975,
+        1735777505
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2644022225,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917996": {
+    "hash": 3751917996,
+    "displayProperties": {
+      "name": "Spirit of Caliban",
+      "description": "Powered melee final blows trigger an ignition.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/cd66bbfb633d559d5c42c6c85e1d6873.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        4244567218,
+        392767087
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2644022224,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917995": {
+    "hash": 3751917995,
+    "displayProperties": {
+      "name": "Spirit of Renewal",
+      "description": "Allies inside the Duskfield grenade field gain Frost Armor and targets inside the field deal reduced damage.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/47fd782cc9b993709e25ca66035d13b8.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        1735777505,
+        144602215
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2644022231,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917994": {
+    "hash": 3751917994,
+    "displayProperties": {
+      "name": "Spirit of the Cyrtarachne",
+      "description": "Gain Woven Mail when you use your grenade.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/358bc75bc96bdadc33cc25d864848de4.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2644022230,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917993": {
+    "hash": 3751917993,
+    "displayProperties": {
+      "name": "Spirit of the Gyrfalcon",
+      "description": "Your Void weapons gain volatile rounds after you emerge from being invisible.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/bd7a131851dd9dad2da3e9f198f67f6e.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2644022229,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917992": {
+    "hash": 3751917992,
+    "displayProperties": {
+      "name": "Spirit of the Liar",
+      "description": "Dealing damage with a powered melee or being hit by a melee attack will allow you to follow up with an extremely powerful Arc melee counterpunch.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/71a75146e38ba257b7379af0efacd61f.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2644022228,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917991": {
+    "hash": 3751917991,
+    "displayProperties": {
+      "name": "Spirit of the Wormhusk",
+      "description": "Activating your class ability grants Cure. Rapidly defeating combatants grants Burning Souls that increase the potency of healing when using Dodge and spread the healing to nearby allies.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/16f43c6fbb972bdc24764a59aacc8161.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2644022235,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 4153970611,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3751917990": {
+    "hash": 3751917990,
+    "displayProperties": {
+      "name": "Spirit of the Coyote",
+      "description": "Gain an additional class ability charge.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/aa2934eb8a1990f6a1e76402ba12f26a.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2644022234,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430254": {
+    "hash": 183430254,
+    "displayProperties": {
+      "name": "Spirit of Harmony",
+      "description": "Final blows with weapons that have a damage type matching your Super's element grant you Super energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/675540240cef9fc9e047d9f9d20a0722.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 1553686802,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430255": {
+    "hash": 183430255,
+    "displayProperties": {
+      "name": "Spirit of the Filaments",
+      "description": "Casting an Empowering Rift will grant you Devour. Defeating a target while Devour is active grants class ability energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/1d4c0be6150c4ca71bc7add447c5d86c.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        1943323491,
+        2996146975
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 1553686803,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1823420964,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430252": {
+    "hash": 183430252,
+    "displayProperties": {
+      "name": "Spirit of the Necrotic",
+      "description": "Damaging a target with a melee inflicts potent corruption. Defeating targets afflicted by corruption spreads the condition.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/4c1a349c2723d3aa84598da98c7a8805.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        4244567218,
+        392767087
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 1553686800,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 3912075059,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430253": {
+    "hash": 183430253,
+    "displayProperties": {
+      "name": "Spirit of Osmiomancy",
+      "description": "Your grenades recharge quicker on hits. The seeker spawned from Coldsnap grenades travels farther.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/81b6412d2d6784891dd7ddad764891cc.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        1735777505,
+        144602215
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 1553686801,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430250": {
+    "hash": 183430250,
+    "displayProperties": {
+      "name": "Spirit of Apotheosis",
+      "description": "Temporarily gain greatly increased melee and grenade regeneration after your Super ends.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/5ca9d0fa8f6c97999ac5927c679401af.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        144602215,
+        4244567218
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 1553686806,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430251": {
+    "hash": 183430251,
+    "displayProperties": {
+      "name": "Spirit of Vesper",
+      "description": "Rifts periodically release Arc shockwaves.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/ff55cfecf4c70924d0894b1d8a442a18.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 1553686807,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430248": {
+    "hash": 183430248,
+    "displayProperties": {
+      "name": "Spirit of the Stag",
+      "description": "Your Rift provides damage reduction to allies standing in it.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/c4f95301370c59ab4d7ce34825e83305.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        392767087,
+        1943323491
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 1553686804,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430249": {
+    "hash": 183430249,
+    "displayProperties": {
+      "name": "Spirit of Starfire",
+      "description": "Grenades recharge from empowered weapon damage, with empowered weapon final blows granting more energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/18c3e0503b1c9cd823dde3ded3680f8d.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 1553686805,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430246": {
+    "hash": 183430246,
+    "displayProperties": {
+      "name": "Spirit of the Swarm",
+      "description": "Destroying a Tangle spawns Threadlings.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/2c51c7358ab1de58c11edc89b5573e84.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 1553686810,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "183430247": {
+    "hash": 183430247,
+    "displayProperties": {
+      "name": "Spirit of the Claw",
+      "description": "Gain an additional melee charge.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/569a1a4cbdd7a014159ebdf304c8a9b5.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 1553686811,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490509": {
+    "hash": 3573490509,
+    "displayProperties": {
+      "name": "Spirit of Severance",
+      "description": "Powered melee or finisher final blows unleash a damaging explosion.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/baed176aaf20399a3abb8b287790747a.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        4244567218,
+        392767087
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2810944065,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490508": {
+    "hash": 3573490508,
+    "displayProperties": {
+      "name": "Spirit of Hoarfrost",
+      "description": "Your Barricade becomes a wall of Stasis crystals that slows nearby targets when created. Activating Thruster creates Stasis crystals.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/f093d552bec2248e94fed1a960d62dde.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        1943323491,
+        2996146975
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2810944064,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490511": {
+    "hash": 3573490511,
+    "displayProperties": {
+      "name": "Spirit of the Eternal Warrior",
+      "description": "Gain bonus damage for weapons matching your Super's element when your Super ends.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/abaff19620ec578f1f379a359de7134c.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        144602215,
+        4244567218
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2810944067,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490510": {
+    "hash": 3573490510,
+    "displayProperties": {
+      "name": "Spirit of the Abeyant",
+      "description": "Improves Drengr's Lash. Drengr's Lash projectiles track targets more aggressively and travel farther.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/245108de9d46cabc0ca3f16c665321dd.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        1943323491,
+        2996146975
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2810944066,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490505": {
+    "hash": 3573490505,
+    "displayProperties": {
+      "name": "Spirit of the Bear",
+      "description": "Move faster while guarding with the Unbreakable shield. Damage blocked with Unbreakable is converted to grenade energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/c792f09ce9d03c03064724af10be0349.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        1735777505,
+        144602215
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 2810944069,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490504": {
+    "hash": 3573490504,
+    "displayProperties": {
+      "name": "Spirit of Contact",
+      "description": "Damaging a target with a powered melee causes all nearby targets to suffer lightning strikes and become jolted.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/a4ead8e3316d22dbb9fc48e6c643dde3.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2810944068,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490507": {
+    "hash": 3573490507,
+    "displayProperties": {
+      "name": "Spirit of Scars",
+      "description": "Final blows with weapons that have a damage type matching your Super's element create a burst of healing around you that grants allies restoration.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/811e014f935edafdc52042602ca2429d.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2810944071,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490506": {
+    "hash": 3573490506,
+    "displayProperties": {
+      "name": "Spirit of the Horn",
+      "description": "Your class ability unleashes waves of Solar energy that damage and scorch nearby targets. Combatants damaged and Guardians defeated by these waves are enveloped in a Sunspot.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/784bd1d46cc9bd60e1d510e915aedb04.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2810944070,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490501": {
+    "hash": 3573490501,
+    "displayProperties": {
+      "name": "Spirit of Alpha Lupi",
+      "description": "Creates a healing pulse when your class ability is activated. Healing allies provides class ability energy.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/a5c5979f3630735a03bee7f2d32e9043.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2810944073,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1888451481,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "3573490500": {
+    "hash": 3573490500,
+    "displayProperties": {
+      "name": "Spirit of the Armamentarium",
+      "description": "Gain an additional grenade charge.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/87ed6eb97c923d6a8d0e14639f4b7791.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 2810944072,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "1476923952": {
+    "hash": 1476923952,
+    "displayProperties": {
+      "name": "Spirit of the Assassin",
+      "description": "Finishers and powered melee final blows grant invisibility.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/961559205e83e96cd590b34c28efadb7.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        4244567218,
+        392767087
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 3465434116,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "1476923953": {
+    "hash": 1476923953,
+    "displayProperties": {
+      "name": "Spirit of Inmost Light",
+      "description": "Using an ability empowers the other two abilities, granting them improved energy regeneration.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/51756fc7603bd72a83d1859d8c33f0b9.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        144602215,
+        4244567218
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 3465434117,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "1476923954": {
+    "hash": 1476923954,
+    "displayProperties": {
+      "name": "Spirit of the Ophidian",
+      "description": "Weapons ready very quickly.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/3945ff76d8e7ec70991cb0f6601c6797.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "investmentStats": {
+      "isInstanceItem": [
+        2996146975,
+        1735777505
+      ]
+    },
+    "perks": [
+      {
+        "perkHash": 3465434118,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "1476923955": {
+    "hash": 1476923955,
+    "displayProperties": {
+      "name": "Spirit of the Star-Eater",
+      "description": "While your Super energy is full, picking up an Orb of Power overcharges your Super, granting it bonus damage.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/b29ab6e87ec85bac4563f3d3a432c451.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 3465434119,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "1476923956": {
+    "hash": 1476923956,
+    "displayProperties": {
+      "name": "Spirit of Synthoceps",
+      "description": "Improves melee damage when you're surrounded.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/640d76fb6ab52e290116455379194b07.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 3465434112,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  },
+  "1476923957": {
+    "hash": 1476923957,
+    "displayProperties": {
+      "name": "Spirit of Verity",
+      "description": "Weapon final blows with a damage type matching your grenade grant a stacking grenade damage bonus and improved grenade regeneration.",
+      "icon": "https://bungie.net/common/destiny2_content/icons/9732f284c71054229671287ab43444b7.png"
+    },
+    "itemTypeDisplayName": "Intrinsic",
+    "itemTypeAndTierDisplayName": "Exotic Intrinsic",
+    "inventory": {
+      "bucketTypeHash": 3313201758,
+      "tierTypeHash": 2759499571,
+      "tierTypeName": "Exotic",
+      "tierType": 6,
+      "isInstanceItem": false
+    },
+    "perks": [
+      {
+        "perkHash": 3465434113,
+        "perkVisibility": 0
+      },
+      {
+        "perkHash": 1003602927,
+        "perkVisibility": 0
+      }
+    ],
+    "itemCategoryHashes": [
+      "59",
+      "2237038328",
+      "610365472"
+    ],
+    "itemType": 19,
+    "itemSubType": 0,
+    "classType": 3,
+    "breakerType": 0,
+    "equippable": false,
+    "defaultDamageType": 0,
+    "plug": {
+      "plugCategoryIdentifier": "intrinsics",
+      "plugCategoryHash": 1744546145,
+      "plugStyle": 0,
+      "plugAvailability": 0,
+      "isDummyPlug": false
+    }
+  }
+}
