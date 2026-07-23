@@ -18,7 +18,7 @@ body {
 .element-bg-stasis { background-image: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, transparent 100%); border-top: 2px solid #3b82f6; }
 .element-bg-strand { background-image: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, transparent 100%); border-top: 2px solid #22c55e; }
 .element-bg-kinetic, .element-bg-neutral { background-image: linear-gradient(135deg, rgba(148, 163, 184, 0.15) 0%, transparent 100%); border-top: 2px solid #94a3b8; }
-.element-bg-prismatic { background-image: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, transparent 100%); border-top: 2px solid #ec4899; }
+.element-bg-prism { background-image: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, transparent 100%); border-top: 2px solid #ec4899; }
 
 .spinner {
     border: 3px solid rgba(255,255,255,0.1);
